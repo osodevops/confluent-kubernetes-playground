@@ -9,3 +9,5 @@ verify_docker_and_memory
 verify_installed "minikube"
 
 minikube start --cpus=4 --memory=8192
+
+kubectl apply -k .

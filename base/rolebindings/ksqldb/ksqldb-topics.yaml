@@ -1,0 +1,19 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: ksqldb-cluster-topics
+spec:
+  principal:
+    name: ksql
+    type: user
+  resourcePatterns:
+    - name: _confluent-ksql-confluent.ksqldb_
+      patternType: PREFIXED
+      resourceType: Topic
+    - name: _confluent-ksql-ksqldb-cluster_command_topic
+      patternType: PREFIXED
+      resourceType: Topic
+    - name: ksqldb-clusterksql_processing_log
+      patternType: PREFIXED
+      resourceType: Topic
+  role: ResourceOwner

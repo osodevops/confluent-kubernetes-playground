@@ -1,0 +1,5 @@
+.idea
+sensitive-*
+identity
+identity.pub
+known_hosts

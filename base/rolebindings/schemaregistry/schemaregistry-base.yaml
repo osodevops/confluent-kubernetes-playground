@@ -1,0 +1,33 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: registry-base
+  namespace: confluent
+spec:
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_registry_confluent
+  principal:
+    name: registry
+    type: user
+  role: SecurityAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: registry-mds-client-resources-base
+  namespace: confluent
+spec:
+  principal:
+    name: registry
+    type: user
+  resourcePatterns:
+    - name: _confluent-license
+      patternType: LITERAL
+      resourceType: Topic
+    - name: _schemas_schemaregistry_confluent
+      patternType: LITERAL
+      resourceType: Topic
+    - name: id_schemaregistry_confluent
+      patternType: LITERAL
+      resourceType: Group
+  role: ResourceOwner

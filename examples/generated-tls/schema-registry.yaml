@@ -1,0 +1,11 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: SchemaRegistry
+metadata:
+  name: registry
+spec:
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka.generated-tls.svc.cluster.local:9071
+    mds:
+      endpoint: https://kafka.generated-tls.svc.cluster.local:8090

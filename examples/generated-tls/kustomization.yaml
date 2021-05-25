@@ -1,0 +1,12 @@
+namespace: generated-tls
+resources:
+  - ./namespace.yaml
+  - ../../base
+patchesStrategicMerge:
+  - clusterrolebinding.yaml
+  - control-centre.yaml
+  - deployment.yaml
+  - kafka.yaml
+  - kafka-connect.yaml
+  - ksqldb.yaml
+  - schema-registry.yaml

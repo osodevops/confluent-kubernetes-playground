@@ -1,0 +1,16 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: connect-groups
+spec:
+  principal:
+    name: connect
+    type: user
+  resourcePatterns:
+    - name: connect-cluster
+      patternType: LITERAL
+      resourceType: Group
+    - name: connect-secrets
+      patternType: LITERAL
+      resourceType: Group
+  role: ResourceOwner

@@ -1,0 +1,13 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connect
+metadata:
+  name: connect
+spec:
+  tls:
+    secretRef: tls-group1
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka.custom-tls.svc.cluster.local:9071
+    mds:
+      endpoint: https://kafka.custom-tls.svc.cluster.local:8090

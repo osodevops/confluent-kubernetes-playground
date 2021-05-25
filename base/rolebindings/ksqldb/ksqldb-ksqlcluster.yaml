@@ -1,0 +1,16 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: ksqldb-cluster-ksqlcluster
+spec:
+  clustersScopeByIds:
+    ksqlClusterId: confluent.ksqldb_
+  principal:
+    name: ksql
+    type: user
+  resourcePatterns:
+    - name: ksql-cluster
+      patternType: LITERAL
+      resourceType: KsqlCluster
+  role: ResourceOwner
+---

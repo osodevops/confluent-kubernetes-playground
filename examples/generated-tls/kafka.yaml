@@ -1,0 +1,11 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+spec:
+  dependencies:
+    zookeeper:
+      endpoint: zookeeper.generated-tls.svc.cluster.local:2182
+  metricReporter:
+    bootstrapEndpoint: kafka.generated-tls.svc.cluster.local:9071

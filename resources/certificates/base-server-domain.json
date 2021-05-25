@@ -1,0 +1,19 @@
+{
+  "CN": "*.svc.cluster.local",
+  "hosts": [
+    "*.production.svc.cluster.local",
+    "*.zookeeper.production.svc.cluster.local",
+    "*.kafka.production.svc.cluster.local"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "Universe",
+      "ST": "Pangea",
+      "L": "Earth"
+    }
+  ]
+}

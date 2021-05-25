@@ -1,0 +1,3 @@
+resources:
+- generated-tls
+- custom-tls

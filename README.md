@@ -33,6 +33,3 @@ An example of a deployment which is uses the Confluent Operators built-in certif
 ```
 $ kubectl apply --kustomize ./examples/generated-tls
 ```
-No newline at end of file
-## Prerequisites
-You will ne 

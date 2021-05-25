@@ -7,4 +7,5 @@ resources:
   - schema-registry.yaml
   - control-centre.yaml
   - ksqldb.yaml
+  - rest-class.yaml
 #  - rest-proxy.yaml

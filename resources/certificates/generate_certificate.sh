@@ -6,33 +6,19 @@ cfssl gencert -ca=./sensitive-ca.pem -ca-key=./sensitive-ca-key.pem -config=./ba
 # Verify with this:
 #openssl x509 -in sensitive-server.pem -text -noout
 
-#kubectl create namespace production
-#kubectl create namespace dev
-#kubectl create secret -n production generic tls-group1 \
-#  --dry-run=client \
-#  --from-file=fullchain.pem=./sensitive-server.pem \
-#  --from-file=cacerts.pem=./sensitive-ca.pem \
-#  --from-file=privkey.pem=./sensitive-server-key.pem -o yaml | kubectl apply -f -
-#kubectl create secret -n production tls ca-pair-sslcerts \
-#--dry-run=client \
-#--cert=sensitive-ca.pem \
-#--key=sensitive-ca-key.pem -o yaml | kubectl apply -f -
-#kubectl create secret -n dev tls ca-pair-sslcerts \
-#--dry-run=client \
-#--cert=./sensitive-ca.pem \
-#--key=./sensitive-ca-key.pem -o yaml | kubectl apply -f -
-
-kubectl create namespace production
-kubectl create namespace dev
+# this is required for the 'custom-tls' example
 kubectl create secret generic tls-group1 \
   --dry-run=client \
   --from-file=fullchain.pem=./sensitive-server.pem \
   --from-file=cacerts.pem=./sensitive-ca.pem \
-  --from-file=privkey.pem=./sensitive-server-key.pem -o yaml > ../../base/secrets/tls-group1.yaml
+  --from-file=privkey.pem=./sensitive-server-key.pem -o yaml > ../../kustomize/base/secrets/tls-group1.yaml
+
+# This is required for 'auto-generated' example
 kubectl create secret tls ca-pair-sslcerts \
 --dry-run=client \
 --cert=sensitive-ca.pem \
---key=sensitive-ca-key.pem -o yaml > ../../base/secrets/ca-pair-sslcerts.yaml
+--key=sensitive-ca-key.pem -o yaml > ../../kustomize/base/secrets/ca-pair-sslcerts.yaml
 
 md5sum sensitive-ca.pem
 md5sum sensitive-server.pem
+rm sensitive-*

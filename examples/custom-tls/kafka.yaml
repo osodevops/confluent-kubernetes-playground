@@ -4,10 +4,13 @@ kind: Kafka
 metadata:
   name: kafka
 spec:
-  tls:
-    secretRef: tls-group1
   dependencies:
     zookeeper:
-      endpoint: zookeeper.custom-tls.svc.cluster.local:2182
-  metricReporter:
-    bootstrapEndpoint: kafka.custom-tls.svc.cluster.local:9071
+      endpoint: zookeeper.sandbox.svc.cluster.local:2182
+      authentication:
+        type: digest
+        jaasConfig:
+          secretRef: broker-credential
+      tls:
+        enabled: true
+

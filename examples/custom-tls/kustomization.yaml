@@ -1,7 +1,8 @@
-namespace: custom-tls
+namespace: sandbox
 resources:
 - ./namespace.yaml
 - ../../kustomize/base
+- controlcenter-testadmin-rolebindings.yaml
 patchesStrategicMerge:
   - clusterrolebinding.yaml
   - control-centre.yaml

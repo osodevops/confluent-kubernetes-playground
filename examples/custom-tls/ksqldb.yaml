@@ -4,10 +4,22 @@ kind: KsqlDB
 metadata:
   name: ksqldb
 spec:
-  tls:
-    secretRef: tls-group1
   dependencies:
     kafka:
-      bootstrapEndpoint: kafka.custom-tls.svc.cluster.local:9071
+      bootstrapEndpoint: kafka.sandbox.svc.cluster.local:9071
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: mds-client-connect
+      tls:
+        enabled: true
     mds:
-      endpoint: https://kafka.custom-tls.svc.cluster.local:8090
+      endpoint: https://kafka.sandbox.svc.cluster.local:8090
+      tokenKeyPair:
+        secretRef: mds-public
+      authentication:
+        type: bearer
+        bearer:
+          secretRef: mds-client-ksqldb
+      tls:
+        enabled: true

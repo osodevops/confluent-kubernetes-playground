@@ -1,9 +1,9 @@
 {
   "CN": "*.svc.cluster.local",
   "hosts": [
-    "*.production.svc.cluster.local",
-    "*.zookeeper.production.svc.cluster.local",
-    "*.kafka.production.svc.cluster.local"
+    "*.sandbox.svc.cluster.local",
+    "*.zookeeper.sandbox.svc.cluster.local",
+    "*.kafka.sandbox.svc.cluster.local"
   ],
   "key": {
     "algo": "rsa",

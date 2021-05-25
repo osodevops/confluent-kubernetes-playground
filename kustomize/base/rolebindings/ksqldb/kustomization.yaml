@@ -3,8 +3,3 @@ kind: Kustomization
 namespace: confluent
 resources:
   - ksqldb-base.yaml
-  - ksqldb-cluster.yaml
-  - ksqldb-groups.yaml
-  - ksqldb-ksqlcluster.yaml
-  - ksqldb-topics.yaml
-  - ksqldb-transaction.yaml

@@ -5,10 +5,10 @@ metadata:
 spec:
   kafkaClusterRef:
     name: kafka
-    namespace: custom-tls
+    namespace: sandbox
   kafkaRest:
     authentication:
       type: bearer
       bearer:
-        secretRef: mds-client
-    endpoint: https://kafka.custom-tls.svc.cluster.local:8090
+        secretRef: mds-client-c3
+    endpoint: https://kafka.sandbox.svc.cluster.local:8090

@@ -8,5 +8,5 @@ spec:
       containers:
         - args:
             - --debug=false
-            - --namespaces=custom-tls
+            - --namespaces=sandbox
           name: confluent-operator

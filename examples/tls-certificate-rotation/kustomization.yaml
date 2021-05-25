@@ -1,6 +1,6 @@
 namespace: example
 resources:
-- ../../base
+- ../../kustomize/base
 patchesStrategicMerge:
   - control-centre.yaml
   - kafka.yaml

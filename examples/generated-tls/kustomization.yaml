@@ -1,7 +1,7 @@
 namespace: generated-tls
 resources:
   - ./namespace.yaml
-  - ../../base
+  - ../../kustomize/base
 patchesStrategicMerge:
   - clusterrolebinding.yaml
   - control-centre.yaml

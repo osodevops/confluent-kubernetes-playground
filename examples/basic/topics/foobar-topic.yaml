@@ -12,3 +12,5 @@ spec:
       bearer:
         secretRef: mds-client-c3
     endpoint: https://kafka.sandbox.svc.cluster.local:8090
+  configs:
+    confluent.key.schema.validation: "true"

@@ -5,3 +5,4 @@ metadata:
 spec:
   replicas: 1
   partitionCount: 6
+

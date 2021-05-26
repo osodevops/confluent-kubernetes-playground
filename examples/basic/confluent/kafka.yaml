@@ -1,0 +1,22 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+spec:
+  configOverrides:
+    server:
+      - confluent.schema.registry.url=https://schemaregistry.sandbox.svc.cluster.local:8081
+      - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+  dependencies:
+    zookeeper:
+      endpoint: zookeeper.sandbox.svc.cluster.local:2182
+      authentication:
+        type: digest
+        jaasConfig:
+          secretRef: broker-credential
+      tls:
+        enabled: true
+

@@ -4,7 +4,7 @@ metadata:
   name: registry-base
 spec:
   clustersScopeByIds:
-    schemaRegistryClusterId: id_registry_confluent
+    schemaRegistryClusterId: id_registry_sandbox
   principal:
     name: registry
     type: user

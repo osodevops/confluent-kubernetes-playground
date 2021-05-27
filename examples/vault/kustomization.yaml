@@ -1,7 +1,8 @@
 namespace: sandbox
 resources:
+  - ../../kustomize/base/secrets
   - confluent
   - operator
   - rolebindings
   - topics
-  - ../../kustomize/base/secrets
+  - vault

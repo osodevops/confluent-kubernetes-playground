@@ -1,0 +1,80 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+spec:
+  podTemplate:
+    serviceAccountName: oso-confluent-vault-account
+    annotations:
+      vault.hashicorp.com/agent-inject: "true"
+      vault.hashicorp.com/agent-init-first: "true"
+      vault.hashicorp.com/role: "oso-confluent-vault-role"
+      vault.hashicorp.com/agent-inject-secret-mdstokenkeypair.pem: "oso-confluent/data/client/mds-token"
+      vault.hashicorp.com/agent-inject-secret-mdspublickey.pem: "oso-confluent/data/client/mds-key"
+      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent/data/client/bearer"
+      vault.hashicorp.com/agent-inject-secret-ldap.txt: "oso-confluent/data/client/ldap"
+      vault.hashicorp.com/agent-inject-secret-plain-jaas.conf: "oso-confluent/data/client/plain-jaas"
+  configOverrides:
+    server:
+      - confluent.schema.registry.url=https://schemaregistry.sandbox.svc.cluster.local:8081
+      - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+#      - confluent.metadata.server.token.key.path=${file:/vault/secrets/mdstokenkeypair.pem:data}
+#      - confluent.metadata.server.public.key.path=${file:/vault/secrets/mdspublickey.pem:data}
+#      - kafka.rest.public.key.path=${file:/vault/secrets/mdspublickey.pem:data}
+#      - listener.name.token.oauthbearer.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required publicKeyPath="${file:/vault/secrets/mdspublickey.pem:data}";
+#      - kafka.rest.confluent.metadata.basic.auth.user.info=${file:/vault/secrets/bearer.txt:username}:${file:/vault/secrets/bearer.txt:password}
+#      - listener.name.external.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:sasl.jaas.config}
+#      - listener.name.internal.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:sasl.jaas.config}
+#      - listener.name.replication.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:sasl.jaas.config}
+
+
+#      - confluent.metadata.server.ssl.key.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - confluent.metadata.server.ssl.keystore.location=/mnt/sslcerts/keystore.p12
+#      - confluent.metadata.server.ssl.keystore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - confluent.metadata.server.ssl.truststore.location=/mnt/sslcerts/truststore.p12
+#      - confluent.metadata.server.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - confluent.metrics.reporter.ssl.truststore.location=/mnt/sslcerts/truststore.p12
+#      - confluent.metrics.reporter.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - kafka.rest.client.ssl.truststore.location=/mnt/sslcerts/truststore.p12
+#      - kafka.rest.client.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - kafka.rest.confluent.metadata.ssl.truststore.location=/mnt/sslcerts/truststore.p12
+#      - kafka.rest.confluent.metadata.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - ldap.java.naming.security.credentials=${file:/vault/secrets/ldap.txt:password}
+#      - ldap.java.naming.security.principal=${file:/vault/secrets/ldap.txt:username}
+#      - ldap.ssl.truststore.location=/mnt/sslcerts/truststore.p12
+#      - ldap.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - listener.name.external.ssl.key.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - listener.name.external.ssl.keystore.location=/mnt/sslcerts/keystore.p12
+#      - listener.name.external.ssl.keystore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - listener.name.external.ssl.truststore.location=/mnt/sslcerts/truststore.p12
+#      - listener.name.external.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - listener.name.internal.ssl.key.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - listener.name.internal.ssl.keystore.location=/mnt/sslcerts/keystore.p12
+#      - listener.name.internal.ssl.keystore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - listener.name.internal.ssl.truststore.location=/mnt/sslcerts/truststore.p12
+#      - listener.name.internal.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - listener.name.replication.ssl.key.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - listener.name.replication.ssl.keystore.location=/mnt/sslcerts/keystore.p12
+#      - listener.name.replication.ssl.keystore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - listener.name.replication.ssl.truststore.location=/mnt/sslcerts/truststore.p12
+#      - listener.name.replication.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - listener.name.token.ssl.key.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - listener.name.token.ssl.keystore.location=/mnt/sslcerts/keystore.p12
+#      - listener.name.token.ssl.keystore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - listener.name.token.ssl.truststore.location=/mnt/sslcerts/truststore.p12
+#      - listener.name.token.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - zookeeper.ssl.truststore.location=/mnt/sslcerts/truststore.p12
+#      - zookeeper.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+  dependencies:
+    zookeeper:
+      endpoint: zookeeper.sandbox.svc.cluster.local:2182
+      authentication:
+        type: digest
+        jaasConfig:
+          secretRef: broker-credential
+      tls:
+        enabled: true
+

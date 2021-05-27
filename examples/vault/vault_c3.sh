@@ -2,8 +2,8 @@
 kubectl config set-context --current --namespace=sandbox
 helm repo add hashicorp https://helm.releases.hashicorp.com
 helm repo update
-helm install vault hashicorp/vault --set "server.dev.enabled=true"
-
+1
+sleep 5
 while [[ $(kubectl get pods vault-0 -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]];
 do echo "waiting for vault pod to be ready" && sleep 3;
 done
@@ -13,6 +13,14 @@ vault secrets enable -path=oso-confluent kv-v2
 
 kubectl exec -it vault-0 -- \
 vault auth enable kubernetes
+
+VA_TOKEN=$(kubectl exec -it vault-0 -- cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+echo $VA_TOKEN
+kubectl exec -it vault-0 -- \
+vault write auth/kubernetes/config \
+    token_reviewer_jwt="$VA_TOKEN" \
+    kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443" \
+    kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
 
 kubectl exec -it vault-0 -- \
 vault kv put oso-confluent/client/creds-kafka-zookeeper-credentials username="kafka" password="kafka-secret"
@@ -50,6 +58,7 @@ fkkvwFECgYAyXj5z6COPIDJ1E1VLrJiw1YBXaa7ZLk5Epw3QvCM7hTKSFbuSNwsp
 EuLmM7g8wMPZAbzs/RQOaf9IhE/x53dO2Imk5PARaoEsSFjND4dpVHaKem2cBomt
 x5q0SqUVq6xv42213glBQMDJ4qQXTrsEBdpNynv7oVeXXwcaOTUaBw==
 -----END RSA PRIVATE KEY-----"
+
 kubectl exec -it vault-0 -- \
 vault kv put oso-confluent/client/mds-key data="-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwMyjnP4qfdTKhCS5sPbV
@@ -65,19 +74,13 @@ NwIDAQAB
 
 # do this for every user/secret
 kubectl exec -it vault-0 -- \
-vault kv put oso-confluent/client/mds-client-c3 username="c3" password="c3-secret" \
-&& kubectl exec -it vault-0 -- \
-vault kv put oso-confluent/client/mds-client-connect username="connect" password="connect-secret" \
-&& kubectl exec -it vault-0 -- \
-vault kv put oso-confluent/client/mds-client-ksql username="ksql" password="ksql-secret" \
-&& kubectl exec -it vault-0 -- \
+vault kv put oso-confluent/client/mds-client-c3 username="c3" password="c3-secret"
+kubectl exec -it vault-0 -- \
+vault kv put oso-confluent/client/mds-client-connect username="connect" password="connect-secret"
+kubectl exec -it vault-0 -- \
+vault kv put oso-confluent/client/mds-client-ksql username="ksql" password="ksql-secret"
+kubectl exec -it vault-0 -- \
 vault kv put oso-confluent/client/mds-client-sr username="sr" password="sr-secret"
-
-kubectl exec -i vault-0 -- \
-vault write auth/kubernetes/config \
-    token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
-    kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443" \
-    kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
 
 kubectl exec -i vault-0 -- \
 vault policy write oso-confluent-vault-policy - <<EOF

@@ -21,14 +21,14 @@ spec:
       - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-#      - confluent.metadata.server.token.key.path=${file:/vault/secrets/mdstokenkeypair.pem:data}
-#      - confluent.metadata.server.public.key.path=${file:/vault/secrets/mdspublickey.pem:data}
-#      - kafka.rest.public.key.path=${file:/vault/secrets/mdspublickey.pem:data}
-#      - listener.name.token.oauthbearer.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required publicKeyPath="${file:/vault/secrets/mdspublickey.pem:data}";
-#      - kafka.rest.confluent.metadata.basic.auth.user.info=${file:/vault/secrets/bearer.txt:username}:${file:/vault/secrets/bearer.txt:password}
-#      - listener.name.external.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:sasl.jaas.config}
-#      - listener.name.internal.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:sasl.jaas.config}
-#      - listener.name.replication.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:sasl.jaas.config}
+      - confluent.metadata.server.token.key.path=${file:/vault/secrets/mdstokenkeypair.pem:data}
+      - confluent.metadata.server.public.key.path=${file:/vault/secrets/mdspublickey.pem:data}
+      - kafka.rest.public.key.path=${file:/vault/secrets/mdspublickey.pem:data}
+      - listener.name.token.oauthbearer.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required publicKeyPath="${file:/vault/secrets/mdspublickey.pem:data}";
+      - kafka.rest.confluent.metadata.basic.auth.user.info=${file:/vault/secrets/bearer.txt:username}:${file:/vault/secrets/bearer.txt:password}
+      - listener.name.external.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:sasl.jaas.config}
+      - listener.name.internal.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:sasl.jaas.config}
+      - listener.name.replication.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:sasl.jaas.config}
 
 
 #      - confluent.metadata.server.ssl.key.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}

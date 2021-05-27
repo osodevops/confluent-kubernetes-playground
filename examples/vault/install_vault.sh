@@ -14,6 +14,9 @@ vault secrets enable -path=internal kv-v2
 kubectl exec -it vault-0 -- \
 vault auth enable kubernetes
 #TODO: this seems to error when run from command all in one, OK when on container.
+
+
+VA_TOKEN=$(kubectl exec -it vault-0 -- cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 kubectl exec -it vault-0 -- \
 vault write auth/kubernetes/config \
     token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \

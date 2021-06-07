@@ -9,25 +9,23 @@ spec:
     annotations:
       vault.hashicorp.com/agent-inject: "true"
       vault.hashicorp.com/role: "oso-confluent-vault-role"
-      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent/data/client/mds-client-c3"
+      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent/client/mds-client-c3"
+      vault.hashicorp.com/agent-inject-template-bearer.txt: |
+        {{- with secret "oso-confluent/client/mds-client-c3" -}}
+        username={{ .Data.username }}
+        password={{ .Data.password }}
+        {{- end }}
+      vault.hashicorp.com/agent-inject-secret-mdspublickey.pem: "oso-confluent/client/mds-key"
+      vault.hashicorp.com/agent-inject-template-mdspublickey.pem: |
+        {{- with secret "oso-confluent/client/mds-key" -}}
+        {{ .Data.data.key }}
+        {{- end }}
   configOverrides:
     server:
-#      - confluent.controlcenter.connect.connect.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
-#      - confluent.controlcenter.ksql.ksqldb.ssl.truststore.location=/mnt/sslcerts/truststore.p12
-#      - confluent.controlcenter.ksql.ksqldb.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
       - confluent.controlcenter.metadata.password=${file:/vault/secrets/bearer.txt:password}
       - confluent.controlcenter.metadata.username=${file:/vault/secrets/bearer.txt:username}
-#      - confluent.controlcenter.rest.ssl.key.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
-#      - confluent.controlcenter.rest.ssl.keystore.location=/mnt/sslcerts/keystore.p12
-#      - confluent.controlcenter.rest.ssl.keystore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
-#      - confluent.controlcenter.rest.ssl.truststore.location=/mnt/sslcerts/truststore.p12
-#      - confluent.controlcenter.rest.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
-#      - confluent.controlcenter.schema.registry.ssl.truststore.location=/mnt/sslcerts/truststore.p12
-#      - confluent.controlcenter.schema.registry.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
-#      - confluent.controlcenter.streams.ssl.truststore.location=/mnt/sslcerts/truststore.p12
-#      - confluent.controlcenter.streams.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
       - confluent.metadata.basic.auth.user.info=${file:/vault/secrets/bearer.txt:username}:${file/vault/secrets/bearer.txt:password}
-#      - public.key.path=/mnt/secrets/mds-public/mdsPublicKey.pem
+      - public.key.path=/vault/secrets/mdspublickey.pem
   dependencies:
     kafka:
       bootstrapEndpoint: kafka.sandbox.svc.cluster.local:9071

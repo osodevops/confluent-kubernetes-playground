@@ -2,7 +2,7 @@
 kubectl config set-context --current --namespace=sandbox
 helm repo add hashicorp https://helm.releases.hashicorp.com
 helm repo update
-1
+helm install vault hashicorp/vault --set "server.dev.enabled=true"
 sleep 5
 while [[ $(kubectl get pods vault-0 -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]];
 do echo "waiting for vault pod to be ready" && sleep 3;
@@ -14,24 +14,16 @@ vault secrets enable -path=oso-confluent kv-v2
 kubectl exec -it vault-0 -- \
 vault auth enable kubernetes
 
-VA_TOKEN=$(kubectl exec -it vault-0 -- cat /var/run/secrets/kubernetes.io/serviceaccount/token)
-echo $VA_TOKEN
-kubectl exec -it vault-0 -- \
-vault write auth/kubernetes/config \
-    token_reviewer_jwt="$VA_TOKEN" \
-    kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443" \
-    kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-
 kubectl exec -it vault-0 -- \
 vault kv put oso-confluent/client/creds-kafka-zookeeper-credentials username="kafka" password="kafka-secret"
 kubectl exec -it vault-0 -- \
 vault kv put oso-confluent/client/ldap username="cn=mds,dc=test,dc=com" password="Developer!"
 kubectl exec -it vault-0 -- \
-vault kv put oso-confluent/client/plain-jaas sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kafka\" password=\"kafka-secret\";"
+vault kv put oso-confluent/client/plain-jaas string="org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kafka\" password=\"kafka-secret\";"
 kubectl exec -it vault-0 -- \
 vault kv put oso-confluent/client/bearer username="kafka" password="kafka-secret"
 kubectl exec -it vault-0 -- \
-vault kv put oso-confluent/client/mds-token data="-----BEGIN RSA PRIVATE KEY-----
+vault kv put oso-confluent/client/mds-token token="-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAwMyjnP4qfdTKhCS5sPbVqiXVyQ15wreVAsEqEsnMFt2JtML1
 3ELOQ2szWn57Wzu782byEtYFlF3ToVW3cl4dOJRzaSEQ6xe10R/i7TneItEQfpJr
 /2L4bubuQRGNe/KrLME0ivr9u4IEbbRS+ltu6A9ggzGcaDSxV/eyKMNPadHQ/AN4
@@ -60,7 +52,7 @@ x5q0SqUVq6xv42213glBQMDJ4qQXTrsEBdpNynv7oVeXXwcaOTUaBw==
 -----END RSA PRIVATE KEY-----"
 
 kubectl exec -it vault-0 -- \
-vault kv put oso-confluent/client/mds-key data="-----BEGIN PUBLIC KEY-----
+vault kv put oso-confluent/client/mds-key key="-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwMyjnP4qfdTKhCS5sPbV
 qiXVyQ15wreVAsEqEsnMFt2JtML13ELOQ2szWn57Wzu782byEtYFlF3ToVW3cl4d
 OJRzaSEQ6xe10R/i7TneItEQfpJr/2L4bubuQRGNe/KrLME0ivr9u4IEbbRS+ltu
@@ -115,6 +107,8 @@ path "oso-confluent/data/client/mds-key" {
   capabilities = ["read"]
 }
 EOF
+
+
 
 kubectl exec -i vault-0 -- \
 vault write auth/kubernetes/role/oso-confluent-vault-role \

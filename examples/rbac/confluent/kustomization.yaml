@@ -5,9 +5,9 @@ resources:
 - ../../../kustomize/base/secrets-tls
 - ../../../kustomize/base/secrets-user
 patchesStrategicMerge:
+  - zookeeper.yaml
   - control-centre.yaml
   - kafka.yaml
   - kafka-connect.yaml
   - ksqldb.yaml
   - schema-registry.yaml
-  - zookeeper.yaml

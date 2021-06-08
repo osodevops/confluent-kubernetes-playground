@@ -4,4 +4,3 @@ resources:
   - operator
   - rolebindings
   - topics
-  - ../../kustomize/base/secrets-user

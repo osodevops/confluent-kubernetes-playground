@@ -2,10 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - zookeeper.yaml
-  - kafka.yaml
-  - kafka-connect.yaml
-  - schema-registry.yaml
-  - control-centre.yaml
-  - ksqldb.yaml
-  - rest-class.yaml
+#  - kafka.yaml
+#  - kafka-connect.yaml
+#  - schema-registry.yaml
+#  - control-centre.yaml
+#  - ksqldb.yaml
+#  - rest-class.yaml
 #  - rest-proxy.yaml

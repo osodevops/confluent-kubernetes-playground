@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - ca-pair-sslcerts.yaml
   - confluent-license.yaml
+  - mds-public.yaml
   - tls-group1.yaml

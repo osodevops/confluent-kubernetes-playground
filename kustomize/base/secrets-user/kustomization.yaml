@@ -2,13 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - broker-credential.yaml
-  - ca-pair-sslcerts.yaml
-  - confluent-license.yaml
   - mds-client-c3.yaml
   - mds-client-connect.yaml
   - mds-client-ksqldb.yaml
   - mds-client-sr.yaml
-  - mds-public.yaml
   - rest-credential.yaml
-  - tls-group1.yaml
   - zk-credential.yaml

@@ -4,11 +4,12 @@ kind: Kafka
 metadata:
   name: kafka
 spec:
-configOverrides:
-  server:
-    - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-    - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-    - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+  configOverrides:
+    server:
+      - confluent.schema.registry.url=https://schemaregistry.sandbox.svc.cluster.local:8081
+      - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
   tls:
     secretRef: tls-group1
   metricReporter:
@@ -71,7 +72,7 @@ configOverrides:
         bearer:
           secretRef: broker-credential
     zookeeper:
-      endpoint: zookeeper.confluent.svc.cluster.local:2182
+      endpoint: zookeeper.sandbox.svc.cluster.local:2182
       authentication:
         type: digest
         jaasConfig:

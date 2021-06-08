@@ -3,3 +3,23 @@ kind: Zookeeper
 metadata:
   name: zookeeper
 spec:
+  podTemplate:
+    serviceAccountName: oso-confluent-vault-account
+    annotations:
+      vault.hashicorp.com/agent-inject: "true"
+      vault.hashicorp.com/role: "oso-confluent-vault-role"
+      vault.hashicorp.com/agent-inject-secret-digest-jass.conf: "oso-confluent/client/zookeeper"
+      vault.hashicorp.com/agent-inject-template-digest-jass.conf: |
+        {{- with secret "oso-confluent/client/zookeeper" -}}
+        {{ .Data.data.jaas }}
+        {{- end }}
+  authentication:
+    type: digest
+    jaasConfigPassThrough:
+      directoryPathInContainer: /vault/secrets
+#  authentication:
+#    type: digest
+#    jaasConfig:
+#      secretRef: zk-credential
+  tls:
+    secretRef: tls-group1

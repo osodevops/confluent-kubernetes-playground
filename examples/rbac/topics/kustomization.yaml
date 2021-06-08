@@ -1,0 +1,5 @@
+namespace: sandbox
+resources:
+  - ../../../kustomize/base/topics
+patchesStrategicMerge:
+  - foobar-topic.yaml

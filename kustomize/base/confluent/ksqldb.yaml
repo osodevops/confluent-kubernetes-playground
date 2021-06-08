@@ -8,26 +8,3 @@ spec:
     application: confluentinc/cp-ksqldb-server-operator:6.1.1.0
     init: confluentinc/cp-init-container-operator:6.1.1.0
   dataVolumeCapacity: 10Gi
-  authorization:
-    type: rbac
-  tls:
-    secretRef: tls-group1
-  dependencies:
-    kafka:
-      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
-      authentication:
-        type: plain
-        jaasConfig:
-          secretRef: mds-client-connect
-      tls:
-        enabled: true
-    mds:
-      endpoint: https://kafka.confluent.svc.cluster.local:8090
-      tokenKeyPair:
-        secretRef: mds-public
-      authentication:
-        type: bearer
-        bearer:
-          secretRef: mds-client-ksqldb
-      tls:
-        enabled: true

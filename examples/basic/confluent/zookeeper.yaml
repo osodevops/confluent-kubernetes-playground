@@ -3,3 +3,5 @@ kind: Zookeeper
 metadata:
   name: zookeeper
 spec:
+  tls:
+    secretRef: tls-group1

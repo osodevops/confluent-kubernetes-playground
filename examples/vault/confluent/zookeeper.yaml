@@ -8,9 +8,9 @@ spec:
     annotations:
       vault.hashicorp.com/agent-inject: "true"
       vault.hashicorp.com/role: "oso-confluent-vault-role"
-      vault.hashicorp.com/agent-inject-secret-digest-jaas.conf: "oso-confluent/client/zookeeper"
+      vault.hashicorp.com/agent-inject-secret-digest-jaas.conf: "oso-confluent/client/zookeeper-jaas"
       vault.hashicorp.com/agent-inject-template-digest-jaas.conf: |
-        {{- with secret "oso-confluent/client/zookeeper" -}}
+        {{- with secret "oso-confluent/client/zookeeper-jaas" -}}
         {{ .Data.data.jaas }}
         {{- end }}
   authentication:

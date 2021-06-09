@@ -15,18 +15,18 @@ kubectl exec -it vault-0 -- \
 vault auth enable kubernetes
 
 kubectl exec -it vault-0 -- \
-vault kv put oso-confluent/client/kafka jaas="
+vault kv put oso-confluent/client/kafka-jaas jaas="
 Client {
-  org.apache.zookeeper.server.auth.DigestLoginModule required
-  username=\"kafka\"
-  password=\"kafka-secret\";
+org.apache.zookeeper.server.auth.DigestLoginModule required
+username="kafka"
+password="kafka-secret";
 };"
 
 kubectl exec -it vault-0 -- \
-vault kv put oso-confluent/client/zookeeper jaas="
+vault kv put oso-confluent/client/zookeeper-jaas jaas="
 Server {
-                org.apache.zookeeper.server.auth.DigestLoginModule required
-                user_kafka=\"kafka-secret\";
+    org.apache.zookeeper.server.auth.DigestLoginModule required
+    user_kafka=\"kafka-secret\";
 };
 
 QuorumServer {
@@ -39,6 +39,18 @@ QuorumLearner {
     username=\"zookeeper\"
     password=\"zookeeper-secret\";
 };"
+
+kubectl exec -it vault-0 -- \
+vault kv put oso-confluent/client/c3-jaas jaas="TBD"
+
+kubectl exec -it vault-0 -- \
+vault kv put oso-confluent/client/connect-jaas jaas="TBD"
+
+kubectl exec -it vault-0 -- \
+vault kv put oso-confluent/client/ksqldb-jaas jaas="TBD"
+
+kubectl exec -it vault-0 -- \
+vault kv put oso-confluent/client/sr-jaas jaas="TBD"
 
 kubectl exec -it vault-0 -- \
 vault kv put oso-confluent/client/creds-kafka-zookeeper-credentials username="kafka" password="kafka-secret"
@@ -102,10 +114,22 @@ vault kv put oso-confluent/client/mds-client-sr username="sr" password="sr-secre
 
 kubectl exec -i vault-0 -- \
 vault policy write oso-confluent-vault-policy - <<EOF
-path "oso-confluent/data/client/kafka" {
+path "oso-confluent/data/client/kafka-jaas" {
   capabilities = ["read"]
 }
-path "oso-confluent/data/client/zookeeper" {
+path "oso-confluent/data/client/zookeeper-jaas" {
+  capabilities = ["read"]
+}
+path "oso-confluent/data/client/c3-jaas" {
+  capabilities = ["read"]
+}
+path "oso-confluent/data/client/connect-jaas" {
+  capabilities = ["read"]
+}
+path "oso-confluent/data/client/ksqldb-jaas" {
+  capabilities = ["read"]
+}
+path "oso-confluent/data/client/sr-jaas" {
   capabilities = ["read"]
 }
 path "oso-confluent/data/client/mds-client-c3" {

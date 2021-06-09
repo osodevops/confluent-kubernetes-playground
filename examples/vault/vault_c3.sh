@@ -15,15 +15,15 @@ kubectl exec -it vault-0 -- \
 vault auth enable kubernetes
 
 kubectl exec -it vault-0 -- \
-vault kv put oso-confluent/client/kafka jaas="Client {
-org.apache.zookeeper.server.auth.DigestLoginModule required
-username=\"kafka\"
-password=\"kafka-secret\";
+vault kv put oso-confluent/client/kafka jaas="
+Client {
+  org.apache.zookeeper.server.auth.DigestLoginModule required
+  username=\"kafka\"
+  password=\"kafka-secret\";
 };"
 
 kubectl exec -it vault-0 -- \
 vault kv put oso-confluent/client/zookeeper jaas="
-
 Server {
     org.apache.zookeeper.server.auth.DigestLoginModule required
     user_kafka=\"kafka-secret\";

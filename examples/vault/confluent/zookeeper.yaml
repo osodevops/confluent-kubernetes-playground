@@ -13,13 +13,16 @@ spec:
         {{- with secret "oso-confluent/client/zookeeper" -}}
         {{ .Data.data.jaas }}
         {{- end }}
-  authentication:
-    type: digest
-    jaasConfigPassThrough:
-      directoryPathInContainer: /vault/secrets
+#  configOverrides:
+#    jvm:
+#      - -Djava.security.auth.login.config=/vault/secrets/digest-jaas.conf
 #  authentication:
 #    type: digest
-#    jaasConfig:
-#      secretRef: zk-credential
+#    jaasConfigPassThrough:
+#      directoryPathInContainer: /vault/secrets
+  authentication:
+    type: digest
+    jaasConfig:
+      secretRef: zk-credential
   tls:
     secretRef: tls-group1

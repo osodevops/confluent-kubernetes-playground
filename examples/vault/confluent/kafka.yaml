@@ -36,10 +36,10 @@ spec:
         {{- with secret "oso-confluent/client/plain-jaas" -}}
         string={{ .Data.data.string }}
         {{- end }}
-      vault.hashicorp.com/agent-inject-secret-kafka-jaas.conf: "oso-confluent/client/kafka-jaas"
-      vault.hashicorp.com/agent-inject-template-kafka-jaas.conf: |
-        {{- with secret "oso-confluent/client/kafka-jaas" -}}
-        string={{ .Data.data.string }}
+      vault.hashicorp.com/agent-inject-secret-digest-jaas.conf: "oso-confluent/client/kafka"
+      vault.hashicorp.com/agent-inject-template-digest-jaas.conf: |
+        {{- with secret "oso-confluent/client/kafka" -}}
+        string={{ .Data.data.jaas }}
         {{- end }}
   configOverrides:
     server:
@@ -57,13 +57,21 @@ spec:
 #      - listener.name.external.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:string}
 #      - listener.name.internal.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:string}
 #      - listener.name.replication.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:string}
+#    jvm:
+#      - -Djava.security.auth.login.config=/vault/secrets/digest-jaas.conf
+  tls:
+    secretRef: tls-group1
   dependencies:
     zookeeper:
       endpoint: zookeeper.sandbox.svc.cluster.local:2182
+#      authentication:
+#        type: digest
+#        jaasConfig:
+#          secretRef: broker-credential
       authentication:
         type: digest
         jaasConfigPassThrough:
-          directoryPathInContainer: /vault/secrets/kafka-jaas.conf
+          directoryPathInContainer: /vault/secrets
       tls:
         enabled: true
 

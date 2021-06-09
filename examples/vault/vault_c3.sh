@@ -25,8 +25,8 @@ Client {
 kubectl exec -it vault-0 -- \
 vault kv put oso-confluent/client/zookeeper jaas="
 Server {
-    org.apache.zookeeper.server.auth.DigestLoginModule required
-    user_kafka=\"kafka-secret\";
+                org.apache.zookeeper.server.auth.DigestLoginModule required
+                user_kafka=\"kafka-secret\";
 };
 
 QuorumServer {

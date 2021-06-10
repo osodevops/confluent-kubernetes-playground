@@ -47,10 +47,10 @@ spec:
         enabled: true
     mds:
       endpoint: https://kafka.sandbox.svc.cluster.local:8090
-      tokenKeyPair:
-        secretRef: mds-public
 #      tokenKeyPair:
-#        directoryPathInContainer: /vault/secrets
+#        secretRef: mds-public
+      tokenKeyPair:
+        directoryPathInContainer: /vault/secrets
       authentication:
         type: bearer
         bearer:

@@ -2,6 +2,6 @@ namespace: sandbox
 resources:
   - confluent
   - operator
-#  - rolebindings
+  - rolebindings
 #  - topics
   - vault

@@ -1,0 +1,77 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+spec:
+  podTemplate:
+    serviceAccountName: oso-confluent-vault-account
+    annotations:
+      vault.hashicorp.com/agent-inject: "true"
+      vault.hashicorp.com/role: "oso-confluent-vault-role"
+      vault.hashicorp.com/agent-inject-secret-mdstokenkeypair.pem: "oso-confluent/client/mds-token"
+      vault.hashicorp.com/agent-inject-template-mdstokenkeypair.pem: |
+        {{- with secret "oso-confluent/client/mds-token" -}}
+        {{ .Data.data.token }}
+        {{- end }}
+      vault.hashicorp.com/agent-inject-secret-mdspublickey.pem: "oso-confluent/client/mds-key"
+      vault.hashicorp.com/agent-inject-template-mdspublickey.pem: |
+        {{- with secret "oso-confluent/client/mds-key" -}}
+        {{ .Data.data.key }}
+        {{- end }}
+      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent/client/bearer"
+      vault.hashicorp.com/agent-inject-template-bearer.txt: |
+        {{- with secret "oso-confluent/client/bearer" -}}
+        username={{ .Data.data.username }}
+        password={{ .Data.data.password }}
+        {{- end }}
+      vault.hashicorp.com/agent-inject-secret-ldap.txt: "oso-confluent/client/ldap"
+      vault.hashicorp.com/agent-inject-template-ldap.txt: |
+        {{- with secret "oso-confluent/client/ldap" -}}
+        username={{ .Data.data.username }}
+        password={{ .Data.data.password }}
+        {{- end }}
+      vault.hashicorp.com/agent-inject-secret-plain-jaas.conf: "oso-confluent/client/plain-jaas"
+      vault.hashicorp.com/agent-inject-template-plain-jaas.conf: |
+        {{- with secret "oso-confluent/client/plain-jaas" -}}
+        string={{ .Data.data.string }}
+        {{- end }}
+      vault.hashicorp.com/agent-inject-secret-digest-jaas.conf: "oso-confluent/client/kafka"
+      vault.hashicorp.com/agent-inject-template-digest-jaas.conf: |
+        {{- with secret "oso-confluent/client/kafka" -}}
+        string={{ .Data.data.jaas }}
+        {{- end }}
+  configOverrides:
+    server:
+      - confluent.schema.registry.url=https://schemaregistry.sandbox.svc.cluster.local:8081
+      - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - ldap.java.naming.security.credentials=${file:/vault/secrets/ldap.txt:password}
+      - ldap.java.naming.security.principal=${file:/vault/secrets/ldap.txt:username}
+      - confluent.metadata.server.token.key.path=/vault/secrets/mdstokenkeypair.pem
+      - confluent.metadata.server.public.key.path=/vault/secrets/mdspublickey.pem
+      - kafka.rest.public.key.path=/vault/secrets/mdspublickey.pem
+      - listener.name.token.oauthbearer.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required publicKeyPath="/vault/secrets/mdspublickey.pem";
+      - kafka.rest.confluent.metadata.basic.auth.user.info=${file:/vault/secrets/bearer.txt:username}:${file:/vault/secrets/bearer.txt:password}
+#      - listener.name.external.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:string}
+#      - listener.name.internal.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:string}
+#      - listener.name.replication.plain.sasl.jaas.config=${file:/vault/secrets/plain-jaas.conf:string}
+#    jvm:
+#      - -Djava.security.auth.login.config=/vault/secrets/digest-jaas.conf
+  tls:
+    secretRef: tls-group1
+  dependencies:
+    zookeeper:
+      endpoint: zookeeper.sandbox.svc.cluster.local:2182
+#      authentication:
+#        type: digest
+#        jaasConfig:
+#          secretRef: broker-credential
+      authentication:
+        type: digest
+        jaasConfigPassThrough:
+          directoryPathInContainer: /vault/secrets
+      tls:
+        enabled: true
+

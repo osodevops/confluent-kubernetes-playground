@@ -8,6 +8,12 @@ spec:
     annotations:
       vault.hashicorp.com/agent-inject: "true"
       vault.hashicorp.com/role: "oso-confluent-vault-role"
+      vault.hashicorp.com/agent-inject-secret-client.txt: "oso-confluent/client/mds-client-connect"
+      vault.hashicorp.com/agent-inject-template-client.txt: |
+        {{- with secret "oso-confluent/client/mds-client-connect" -}}
+        username={{ .Data.data.username }}
+        password={{ .Data.data.password }}
+        {{- end }}
       vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent/client/mds-client-connect"
       vault.hashicorp.com/agent-inject-template-bearer.txt: |
         {{- with secret "oso-confluent/client/mds-client-connect" -}}
@@ -36,8 +42,6 @@ spec:
       bootstrapEndpoint: kafka.sandbox.svc.cluster.local:9071
       authentication:
         type: plain
-#        jaasConfig:
-#          secretRef: mds-client-connect
         jaasConfigPassThrough:
           directoryPathInContainer: /vault/secrets
       tls:
@@ -45,8 +49,11 @@ spec:
     mds:
       endpoint: https://kafka.sandbox.svc.cluster.local:8090
       tokenKeyPair:
-        secretRef: mds-public
+        directoryPathInContainer: /vault/secrets
       authentication:
         type: bearer
         bearer:
-          secretRef: mds-client-connect
+#          directoryPathInContainer: /vault/secrets
+          secretRef: dummy-secret
+      tls:
+        enabled: true

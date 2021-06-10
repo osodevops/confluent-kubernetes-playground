@@ -4,7 +4,7 @@ metadata:
   name: connect-cluster-base
 spec:
   clustersScopeByIds:
-    connectClusterId: confluent.connect
+    connectClusterId: sandbox.connect
   principal:
     name: connect
     type: user
@@ -19,10 +19,10 @@ spec:
     name: connect
     type: user
   resourcePatterns:
-    - name: confluent.connect
+    - name: sandbox.connect
       patternType: LITERAL
       resourceType: Group
-    - name: confluent.connect-
+    - name: sandbox.connect-
       patternType: PREFIXED
       resourceType: Topic
   role: ResourceOwner

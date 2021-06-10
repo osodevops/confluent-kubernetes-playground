@@ -81,12 +81,13 @@ spec:
     type: rbac
     superUsers:
       - User:kafka
+      - User:c3
   services:
     mds:
       tls:
         enabled: true
       tokenKeyPair:
-        secretRef: broker-credential
+        directoryPathInContainer: /vault/secrets
       provider:
         type: ldap
         ldap:

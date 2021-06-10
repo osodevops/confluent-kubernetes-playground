@@ -8,8 +8,14 @@ spec:
     annotations:
       vault.hashicorp.com/agent-inject: "true"
       vault.hashicorp.com/role: "oso-confluent-vault-role"
-      vault.hashicorp.com/agent-inject-secret-mds-client.txt: "oso-confluent/client/mds-client-sr"
-      vault.hashicorp.com/agent-inject-template-mds-client.txt: |
+      vault.hashicorp.com/agent-inject-secret-client.txt: "oso-confluent/client/mds-client-sr"
+      vault.hashicorp.com/agent-inject-template-client.txt: |
+        {{- with secret "oso-confluent/client/mds-client-sr" -}}
+        username={{ .Data.data.username }}
+        password={{ .Data.data.password }}
+        {{- end }}
+      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent/client/mds-client-sr"
+      vault.hashicorp.com/agent-inject-template-bearer.txt: |
         {{- with secret "oso-confluent/client/mds-client-sr" -}}
         username={{ .Data.data.username }}
         password={{ .Data.data.password }}
@@ -21,8 +27,8 @@ spec:
         {{- end }}
   configOverrides:
     server:
-      - confluent.metadata.basic.auth.user.info=${file:/vault/secrets/mds-client.txt:username}:${file:/vault/secrets/mds-client.txt:password}
-      - kafkastore.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required metadataServerUrls="https://kafka.sandbox.svc.cluster.local:8090" username="${file:/vault/secrets/mds-client.txt:username}" password="${file:/vault/secrets/mds-client.txt:password}";
+      - confluent.metadata.basic.auth.user.info=${file:/vault/secrets/client.txt:username}:${file:/vault/secrets/client.txt:password}
+      - kafkastore.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required metadataServerUrls="https://kafka.sandbox.svc.cluster.local:8090" username="${file:/vault/secrets/client.txt:username}" password="${file:/vault/secrets/client.txt:password}";
       - public.key.path=/vault/secrets/mdspublickey.pem
   authorization:
     type: rbac
@@ -33,17 +39,18 @@ spec:
       bootstrapEndpoint: kafka.sandbox.svc.cluster.local:9071
       authentication:
         type: plain
-        jaasConfig:
-          secretRef: mds-client-sr
+        jaasConfigPassThrough:
+          directoryPathInContainer: /vault/secrets
       tls:
         enabled: true
     mds:
       endpoint: https://kafka.sandbox.svc.cluster.local:8090
       tokenKeyPair:
-        secretRef: mds-public
+        directoryPathInContainer: /vault/secrets
       authentication:
         type: bearer
         bearer:
-          secretRef: mds-client-sr
+#          directoryPathInContainer: /vault/secrets
+          secretRef: dummy-secret
       tls:
         enabled: true

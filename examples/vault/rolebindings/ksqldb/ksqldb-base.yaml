@@ -23,7 +23,7 @@ spec:
     name: ksql
     type: user
   resourcePatterns:
-    - name: _confluent-ksql-confluent.ksqldb_
+    - name: _confluent-ksql-sandbox.ksqldb_
       patternType: PREFIXED
       resourceType: Topic
   role: ResourceOwner

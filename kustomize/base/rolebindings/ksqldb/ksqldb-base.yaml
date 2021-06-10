@@ -4,7 +4,7 @@ metadata:
   name: ksqldb-cluster-base
 spec:
   clustersScopeByIds:
-    ksqlClusterId: confluent.ksqldb_
+    ksqlClusterId: sandbox.ksqldb_
   principal:
     name: ksql
     type: user

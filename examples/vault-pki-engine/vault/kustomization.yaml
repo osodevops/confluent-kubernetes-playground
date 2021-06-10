@@ -1,3 +1,0 @@
-namespace: sandbox
-resources:
-  - service-account-controlcenter.yml

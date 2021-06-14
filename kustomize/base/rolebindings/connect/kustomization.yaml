@@ -3,5 +3,3 @@ kind: Kustomization
 namespace: confluent
 resources:
   - connect-base.yaml
-  - connect-groups.yaml
-  - connect-topics.yaml

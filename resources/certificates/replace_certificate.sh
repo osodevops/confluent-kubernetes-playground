@@ -23,3 +23,4 @@ kubectl create secret -n dev tls ca-pair-sslcerts \
 
 md5sum sensitive-ca.pem
 md5sum sensitive-server.pem
+rm sensitive-*

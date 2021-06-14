@@ -3,5 +3,3 @@ kind: Kustomization
 namespace: confluent
 resources:
   - schemaregistry-base.yaml
-  - schemaregistry-groups.yaml
-  - schemaregistry-topics.yaml

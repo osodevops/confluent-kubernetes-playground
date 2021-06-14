@@ -1,0 +1,5 @@
+namespace: sandbox
+resources:
+  - ../../../../kustomize/base/rolebindings/schemaregistry
+patchesStrategicMerge:
+  - schemaregistry-base.yaml

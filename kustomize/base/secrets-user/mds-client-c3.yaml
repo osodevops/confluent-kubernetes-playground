@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  bearer.txt: dXNlcm5hbWU9YzMKcGFzc3dvcmQ9YzMtc2VjcmV0Cg==
+  plain.txt: dXNlcm5hbWU9YzMKcGFzc3dvcmQ9YzMtc2VjcmV0Cg==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: mds-client-c3

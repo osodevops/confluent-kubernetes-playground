@@ -3,8 +3,9 @@ kind: Kustomization
 resources:
   - zookeeper.yaml
   - kafka.yaml
+  - rest-class.yaml
+  - control-centre.yaml
   - kafka-connect.yaml
   - schema-registry.yaml
-  - control-centre.yaml
   - ksqldb.yaml
-#  - rest-proxy.yaml
+

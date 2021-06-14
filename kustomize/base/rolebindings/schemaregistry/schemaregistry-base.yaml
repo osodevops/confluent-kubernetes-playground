@@ -2,10 +2,9 @@ apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: registry-base
-  namespace: confluent
 spec:
   clustersScopeByIds:
-    schemaRegistryClusterId: id_registry_confluent
+    schemaRegistryClusterId: id_registry_sandbox
   principal:
     name: registry
     type: user
@@ -15,7 +14,6 @@ apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: registry-mds-client-resources-base
-  namespace: confluent
 spec:
   principal:
     name: registry
@@ -27,7 +25,7 @@ spec:
     - name: _schemas_schemaregistry_confluent
       patternType: LITERAL
       resourceType: Topic
-    - name: id_schemaregistry_confluent
+    - name: id_schemaregistry_sandbox
       patternType: LITERAL
       resourceType: Group
   role: ResourceOwner

@@ -5,6 +5,5 @@ metadata:
 spec:
   kafkaRest:
     authentication:
-      type: bearer
-      bearer:
-        secretRef: rest-credential
+      type: basic
+    basic:

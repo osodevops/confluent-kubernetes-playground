@@ -2,6 +2,5 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ca-pair-sslcerts.yaml
-  - confluent-license.yaml
   - mds-public.yaml
   - tls-group1.yaml

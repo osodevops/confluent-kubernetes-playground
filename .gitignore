@@ -3,3 +3,7 @@ sensitive-*
 identity
 identity.pub
 known_hosts
+ca.pem
+intermediate.cert.pem
+pki_intermediate.csr
+pki-ca-root.json

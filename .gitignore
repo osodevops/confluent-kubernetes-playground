@@ -7,3 +7,4 @@ ca.pem
 intermediate.cert.pem
 pki_intermediate.csr
 pki-ca-root.json
+cert_key_list

@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-issuer
+  namespace: sandbox
+spec:
+  vault:
+    path: pki_int/sign/sandbox.svc.cluster.local
+    server: https://vault-0.vault-internal:8201
+    caBundle: <base64 encoded caBundle PEM file>
+    auth:
+      kubernetes:
+        role: issuer
+        mountPath: /v1/auth/kubernetes
+        secretRef:
+          name: oso-confluent-vault-account-token-rrr7g
+          key: token

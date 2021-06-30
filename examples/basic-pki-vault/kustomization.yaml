@@ -1,5 +1,6 @@
-namespace: sandbox
 resources:
+#  - cert-manager
+#  - cert-manager-sandbox
   - confluent
   - operator
-  - topics
+#  - topics

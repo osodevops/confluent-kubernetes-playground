@@ -37,6 +37,10 @@ vault write pki/config/urls \
 kubectl exec -it vault-0 -- \
 vault secrets enable -path=pki_int pki
 
+# This is how you would write a cert
+#kubectl exec -it vault-0 -- \
+#vault write -format=json pki_int/issue/sandbox.svc.cluster.local common_name=kafka.sandbox.svc.cluster.local
+
 #set default ttl
 kubectl exec -it vault-0 -- \
 vault secrets tune -max-lease-ttl=43800h pki_int
@@ -83,30 +87,6 @@ vault write pki_int/roles/sandbox.svc.cluster.local \
 kubectl exec -it vault-0 -- \
 vault secrets disable pki
 
-kubectl exec -it vault-0 -- \
-vault write -format=json pki_int/issue/sandbox.svc.cluster.local \
-    common_name=kafka.sandbox.svc.cluster.local
-
-kubectl exec -it vault-0 -- \
-vault write -format=json pki_int/issue/sandbox.svc.cluster.local \
-    common_name=zookeeper.sandbox.svc.cluster.local
-
-kubectl exec -it vault-0 -- \
-vault write -format=json pki_int/issue/sandbox.svc.cluster.local \
-    common_name=ksqldb.sandbox.svc.cluster.local
-
-kubectl exec -it vault-0 -- \
-vault write -format=json pki_int/issue/sandbox.svc.cluster.local \
-    common_name=controlcenter.sandbox.svc.cluster.local
-
-kubectl exec -it vault-0 -- \
-vault write -format=json pki_int/issue/sandbox.svc.cluster.local \
-    common_name=connect.sandbox.svc.cluster.local
-
-kubectl exec -it vault-0 -- \
-vault write -format=json pki_int/issue/sandbox.svc.cluster.local \
-    common_name=registry.sandbox.svc.cluster.local
-
 #create a new policy to create update revoke and list certificates
 kubectl exec -it vault-0 -- \
 vault policy write pki_int - <<EOF
@@ -141,34 +121,22 @@ EOF
 
 
 kubectl exec -it vault-0 -- \
-vault write auth/kubernetes/role/issuer \
-    bound_service_account_names=issuer \
-    bound_service_account_namespaces=default \
-    policies=pki_int \
-    ttl=20m
+vault write auth/kubernetes/role/oso-confluent-vault-role \
+bound_service_account_names=oso-confluent-vault-account \
+bound_service_account_namespaces=sandbox \
+policies=pki_int \
+ttl=3h
 
-#enable userpass to create an authentication method for creating and managing the certificates
-kubectl exec -it vault-0 -- \
-vault auth enable userpass
-
-#create a new username and password with the policy we created earlier
-kubectl exec -it vault-0 -- \
-vault write auth/userpass/users/alice \
-    password=alice-secret \
-    token_policies="pki_int"
-
-#list all certificates created by the intermediate CA
-kubectl exec -it vault-0 -- \
-vault list pki_int/certs
-
-exit
+export TOKEN=$(kubectl exec -it vault-0 -- \
+cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 
 kubectl exec -it vault-0 -- \
-vault list pki_int/certs > cert_key_list
-CERT1=$(sed '3q;d' cert_key_list)
-#echo $CERT1
-kubectl exec -it vault-0 -- \
-vault read  pki_int/cert/"$CERT1"
+vault write auth/kubernetes/config \
+token_reviewer_jwt=$TOKEN \
+kubernetes_host=https://10.96.0.1:443 \
+kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
 
-kubectl exec -it vault-0 -- \
-vault write pki_int/revoke serial_number="$CERT1"
+#rm ca.pem
+#rm intermediate.cert.pem
+#rm pki-ca-root.json
+#rm pki_intermediate.csr

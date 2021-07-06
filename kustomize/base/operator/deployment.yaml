@@ -30,7 +30,7 @@ spec:
         app.kubernetes.io/name: "confluent-operator"
         app.kubernetes.io/instance: "confluent"
         confluent-platform: "true"
-        version: "0.174.6"
+        version: "0.174.13"
     spec:
       containers:
         - args:
@@ -52,7 +52,7 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.uid
-          image: docker.io/confluentinc/confluent-operator:0.174.6
+          image: docker.io/confluentinc/confluent-operator:0.174.13
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3

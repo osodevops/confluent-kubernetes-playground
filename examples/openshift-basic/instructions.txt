@@ -1,0 +1,7 @@
+
+
+To allow other groups to run the operator
+> oc edit scc restricted
+change fsGroup to >>
+fsGroup:
+type: RunAsAny

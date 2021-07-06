@@ -10,5 +10,8 @@ spec:
             - --debug=false
             - --namespaces=sandbox
           name: confluent-operator
-
-
+          image: public.ecr.aws/h0s0v2g0/confluennt-operator-mccullya:latest
+      securityContext:
+        fsGroup: 1000620000
+        runAsNonRoot: true
+        runAsUser: 1000620000

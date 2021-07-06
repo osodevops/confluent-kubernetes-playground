@@ -1,4 +1,7 @@
 
+crc config set cpus 12
+crc config set memory 24576
+
 
 To allow other groups to run the operator
 > oc edit scc restricted

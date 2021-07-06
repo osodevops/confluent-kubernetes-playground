@@ -4,6 +4,9 @@ kind: Connect
 metadata:
   name: connect
 spec:
+  podTemplate:
+    podSecurityContext:
+      fsGroup: 1000610000
   tls:
     secretRef: tls-group1
   dependencies:

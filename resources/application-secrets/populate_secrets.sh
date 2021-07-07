@@ -37,12 +37,6 @@ kubectl create secret generic rest-credential \
 --from-file=bearer.txt=./users/bearer.txt \
 --dry-run=client --output=yaml > ../../kustomize/base/secrets-user/rest-credential.yaml
 
-# Confluent licensing
-kubectl create secret generic confluent-operator-licensing \
---from-file=license.txt=./licensing/license-key.txt \
---from-file=publicKey.pem=./licensing/license-pem.txt \
---dry-run=client --output=yaml > ../../kustomize/base/secrets-tls/confluent-license.yaml
-
 kubectl create secret generic mds-public \
 --from-file=mdsPublicKey.pem=./certs/mds-publickey.txt \
 --dry-run=client --output=yaml > ../../kustomize/base/secrets-tls/mds-public.yaml

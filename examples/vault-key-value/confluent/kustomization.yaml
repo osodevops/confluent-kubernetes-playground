@@ -4,7 +4,6 @@ resources:
 - secret-for-bug.yaml
 - ../../../kustomize/base/confluent
 - ../../../kustomize/base/secrets-tls
-#- confluent-license.yaml
 - ../../../kustomize/base/secrets-user
 patchesStrategicMerge:
   - zookeeper.yaml

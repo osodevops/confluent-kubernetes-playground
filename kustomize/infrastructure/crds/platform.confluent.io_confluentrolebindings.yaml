@@ -9,40 +9,40 @@ metadata:
   name: confluentrolebindings.platform.confluent.io
 spec:
   additionalPrinterColumns:
-  - JSONPath: .status.state
-    name: Status
-    type: string
-  - JSONPath: .status.kafkaClusterId
-    name: KafkaClusterId
-    type: string
-  - JSONPath: .status.principal
-    name: Principal
-    type: string
-  - JSONPath: .status.role
-    name: Role
-    type: string
-  - JSONPath: .status.kafkaRestClass
-    name: KafkaRestClass
-    type: string
-  - JSONPath: .metadata.creationTimestamp
-    name: Age
-    type: date
-  - JSONPath: .status.clusterRegistryName
-    name: ClusterRegistryName
-    priority: 1
-    type: string
+    - JSONPath: .status.state
+      name: Status
+      type: string
+    - JSONPath: .status.kafkaClusterId
+      name: KafkaClusterId
+      type: string
+    - JSONPath: .status.principal
+      name: Principal
+      type: string
+    - JSONPath: .status.role
+      name: Role
+      type: string
+    - JSONPath: .status.kafkaRestClass
+      name: KafkaRestClass
+      type: string
+    - JSONPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - JSONPath: .status.clusterRegistryName
+      name: ClusterRegistryName
+      priority: 1
+      type: string
   group: platform.confluent.io
   names:
     categories:
-    - all
-    - confluent-platform
-    - confluent
+      - all
+      - confluent-platform
+      - confluent
     kind: ConfluentRolebinding
     listKind: ConfluentRolebindingList
     plural: confluentrolebindings
     shortNames:
-    - cfrb
-    - confluentrolebinding
+      - cfrb
+      - confluentrolebinding
     singular: confluentrolebinding
   preserveUnknownFields: false
   scope: Namespaced
@@ -102,7 +102,7 @@ spec:
                   description: Namespace defines the namespace of the KafkaRestClass
                   type: string
               required:
-              - name
+                - name
               type: object
             principal:
               description: Principal defines the confluent rolebinding principal name
@@ -114,12 +114,12 @@ spec:
                   type: string
                 type:
                   enum:
-                  - user
-                  - group
+                    - user
+                    - group
                   type: string
               required:
-              - name
-              - type
+                - name
+                - type
               type: object
             resourcePatterns:
               description: ResourcePatterns define the qualified resources associated
@@ -137,16 +137,16 @@ spec:
                     description: PatternType defines whether the pattern of resource
                       is PREFIXED or LITERAL, default is LITERAL if not set
                     enum:
-                    - PREFIXED
-                    - LITERAL
+                      - PREFIXED
+                      - LITERAL
                     type: string
                   resourceType:
                     description: ResourceType defines the type of resource
                     minLength: 1
                     type: string
                 required:
-                - name
-                - resourceType
+                  - name
+                  - resourceType
                 type: object
               type: array
             role:
@@ -154,8 +154,8 @@ spec:
               minLength: 1
               type: string
           required:
-          - principal
-          - role
+            - principal
+            - role
           type: object
         status:
           description: ConfluentRolebindingStatus defines the observed state of ConfluentRolebinding
@@ -216,16 +216,16 @@ spec:
                     description: PatternType defines whether the pattern of resource
                       is PREFIXED or LITERAL, default is LITERAL if not set
                     enum:
-                    - PREFIXED
-                    - LITERAL
+                      - PREFIXED
+                      - LITERAL
                     type: string
                   resourceType:
                     description: ResourceType defines the type of resource
                     minLength: 1
                     type: string
                 required:
-                - name
-                - resourceType
+                  - name
+                  - resourceType
                 type: object
               type: array
             role:
@@ -234,13 +234,13 @@ spec:
               type: string
           type: object
       required:
-      - spec
+        - spec
       type: object
   version: v1beta1
   versions:
-  - name: v1beta1
-    served: true
-    storage: true
+    - name: v1beta1
+      served: true
+      storage: true
 status:
   acceptedNames:
     kind: ""

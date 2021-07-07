@@ -9,33 +9,33 @@ metadata:
   name: kafkatopics.platform.confluent.io
 spec:
   additionalPrinterColumns:
-  - JSONPath: .status.replicas
-    name: Replicas
-    type: string
-  - JSONPath: .status.partitionCount
-    name: Partition
-    type: string
-  - JSONPath: .status.state
-    name: Status
-    type: string
-  - JSONPath: .status.kafkaClusterId
-    name: ClusterId
-    type: string
-  - JSONPath: .metadata.creationTimestamp
-    name: Age
-    type: date
+    - JSONPath: .status.replicas
+      name: Replicas
+      type: string
+    - JSONPath: .status.partitionCount
+      name: Partition
+      type: string
+    - JSONPath: .status.state
+      name: Status
+      type: string
+    - JSONPath: .status.kafkaClusterId
+      name: ClusterId
+      type: string
+    - JSONPath: .metadata.creationTimestamp
+      name: Age
+      type: date
   group: platform.confluent.io
   names:
     categories:
-    - all
-    - confluent-platform
-    - confluent
+      - all
+      - confluent-platform
+      - confluent
     kind: KafkaTopic
     listKind: KafkaTopicList
     plural: kafkatopics
     shortNames:
-    - kt
-    - topic
+      - kt
+      - topic
     singular: kafkatopic
   preserveUnknownFields: false
   scope: Namespaced
@@ -79,7 +79,7 @@ spec:
                   minLength: 1
                   type: string
               required:
-              - name
+                - name
               type: object
             kafkaRest:
               description: KafkaRestRef defines the Kafka Rest API configuration
@@ -134,11 +134,11 @@ spec:
                       type: object
                     type:
                       enum:
-                      - basic
-                      - bearer
+                        - basic
+                        - bearer
                       type: string
                   required:
-                  - type
+                    - type
                   type: object
                 endpoint:
                   description: Endpoint defines where confluent Kafka Rest API is
@@ -177,7 +177,7 @@ spec:
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
                       required:
-                      - secretRef
+                        - secretRef
                       type: object
                     secretRef:
                       description: SecretRef defines the secret name referenced for
@@ -188,7 +188,7 @@ spec:
                       pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                       type: string
                   required:
-                  - enabled
+                    - enabled
                   type: object
               type: object
             kafkaRestClassRef:
@@ -203,7 +203,7 @@ spec:
                   description: Namespace defines the namespace of the KafkaRestClass
                   type: string
               required:
-              - name
+                - name
               type: object
             name:
               description: Name defines the topic name. If not configured uses the
@@ -213,14 +213,15 @@ spec:
               pattern: ^[a-zA-Z0-9\._\-]*$
               type: string
             partitionCount:
-              description: PartitionCount defines the partition count
+              description: PartitionCount defines the partition count. If not configured
+                then it will be defaulted to whatever kafkarest V3 APIs supports
               format: int32
-              minimum: 1
               type: integer
             replicas:
-              description: Replicas defines the replication factor for a topic
+              description: Replicas defines the replication factor for a topic. If
+                not configured then it will be defaulted to whatever kafkarest V3
+                APIs supports
               format: int32
-              minimum: 1
               type: integer
           type: object
         status:
@@ -271,14 +272,12 @@ spec:
             state:
               type: string
           type: object
-      required:
-      - spec
       type: object
   version: v1beta1
   versions:
-  - name: v1beta1
-    served: true
-    storage: true
+    - name: v1beta1
+      served: true
+      storage: true
 status:
   acceptedNames:
     kind: ""

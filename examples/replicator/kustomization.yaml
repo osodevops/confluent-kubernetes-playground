@@ -1,0 +1,6 @@
+resources:
+  - source
+  - destination
+  - operator
+  - rolebindings
+  - topics

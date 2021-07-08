@@ -1,0 +1,8 @@
+namespace: destination
+
+resources:
+- ./namespace.yaml
+- ../../../kustomize/base/confluent
+
+patchesStrategicMerge:
+  - zookeeper.yaml

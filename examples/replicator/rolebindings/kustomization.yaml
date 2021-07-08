@@ -1,0 +1,5 @@
+namespace: sandbox
+resources:
+  - connect
+  - schemaregistry
+  - controlcenter-testadmin-rolebindings.yaml

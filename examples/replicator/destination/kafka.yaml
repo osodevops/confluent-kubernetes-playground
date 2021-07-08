@@ -6,6 +6,7 @@ metadata:
 spec:
   configOverrides:
     server:
+      - confluent.schema.registry.url=https://schemaregistry.destination.svc.cluster.local:8081
       - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
@@ -71,7 +72,7 @@ spec:
         bearer:
           secretRef: broker-credential
     zookeeper:
-      endpoint: zookeeper.sandbox.svc.cluster.local:2182
+      endpoint: zookeeper.destination.svc.cluster.local:2182
       authentication:
         type: digest
         jaasConfig:

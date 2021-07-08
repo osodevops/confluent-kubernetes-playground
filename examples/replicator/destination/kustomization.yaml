@@ -1,8 +1,12 @@
 namespace: destination
-
 resources:
 - ./namespace.yaml
 - ../../../kustomize/base/confluent
-
+- ../../../kustomize/base/secrets-user
+- ./mds-public.yaml
+- ./tls-group1.yaml
+- ./ca-pair-sslcerts.yaml
+- ./replicator.yaml
 patchesStrategicMerge:
   - zookeeper.yaml
+  - kafka.yaml

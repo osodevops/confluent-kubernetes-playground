@@ -4,10 +4,9 @@ resources:
 - ../../../kustomize/base/confluent
 - ../../../kustomize/base/secrets-tls
 - ../../../kustomize/base/secrets-user
-- ./replicator.yaml
 patchesStrategicMerge:
   - zookeeper.yaml
   - kafka.yaml
   - rest-class.yaml
-  - control-centre.yaml
-  - schema-registry.yaml
+#  - control-centre.yaml
+#  - schema-registry.yaml

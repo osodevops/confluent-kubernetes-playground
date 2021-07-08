@@ -1,5 +1,5 @@
+namespace: sandbox
 resources:
 - ../../../kustomize/base/operator
-- clusterrolebinding.yaml
 patchesStrategicMerge:
   - deployment.yaml

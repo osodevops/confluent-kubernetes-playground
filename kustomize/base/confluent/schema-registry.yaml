@@ -5,5 +5,5 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: confluentinc/cp-schema-registry-operator:6.1.1.0
-    init: confluentinc/cp-init-container-operator:6.1.1.0
+    application: confluentinc/cp-schema-registry-operator:6.0.3.0
+    init: confluentinc/cp-init-container-operator:6.0.3.0

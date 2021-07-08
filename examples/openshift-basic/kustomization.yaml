@@ -2,6 +2,3 @@ namespace: sandbox
 resources:
   - confluent
   - operator
-  - rolebindings
-  - topics
-  - ldap.yaml

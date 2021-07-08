@@ -9,34 +9,34 @@ metadata:
   name: zookeepers.platform.confluent.io
 spec:
   additionalPrinterColumns:
-  - JSONPath: .status.replicas
-    name: Replicas
-    type: string
-  - JSONPath: .status.readyReplicas
-    name: Ready
-    type: string
-  - JSONPath: .status.phase
-    name: Status
-    type: string
-  - JSONPath: .metadata.creationTimestamp
-    name: Age
-    type: date
-  - JSONPath: .status.endpoint
-    name: Endpoint
-    priority: 1
-    type: string
+    - JSONPath: .status.replicas
+      name: Replicas
+      type: string
+    - JSONPath: .status.readyReplicas
+      name: Ready
+      type: string
+    - JSONPath: .status.phase
+      name: Status
+      type: string
+    - JSONPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - JSONPath: .status.endpoint
+      name: Endpoint
+      priority: 1
+      type: string
   group: platform.confluent.io
   names:
     categories:
-    - all
-    - confluent-platform
-    - confluent
+      - all
+      - confluent-platform
+      - confluent
     kind: Zookeeper
     listKind: ZookeeperList
     plural: zookeepers
     shortNames:
-    - zookeeper
-    - zk
+      - zookeeper
+      - zk
     singular: zookeeper
   preserveUnknownFields: false
   scope: Namespaced
@@ -79,7 +79,7 @@ spec:
                       pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                       type: string
                   required:
-                  - secretRef
+                    - secretRef
                   type: object
                 jaasConfigPassThrough:
                   description: JaaSPassThrough user provided complete JaaS configuration.
@@ -102,15 +102,15 @@ spec:
                 type:
                   description: Type defines supported kafka authentication types
                   enum:
-                  - plain
-                  - oauthbearer
-                  - scram
-                  - digest
-                  - kerberos
-                  - mtls
+                    - plain
+                    - oauthbearer
+                    - scram
+                    - digest
+                    - kerberos
+                    - mtls
                   type: string
               required:
-              - type
+                - type
               type: object
             configOverrides:
               description: ConfigurationOverrides defines capability to override server/jvm/log4j
@@ -138,8 +138,8 @@ spec:
               type: object
             dataVolumeCapacity:
               anyOf:
-              - type: integer
-              - type: string
+                - type: integer
+                - type: string
               description: DataVolumeCapacity defines the data volume size
               pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
               x-kubernetes-int-or-string: true
@@ -165,8 +165,8 @@ spec:
                     type: string
                   type: array
               required:
-              - application
-              - init
+                - application
+                - init
               type: object
             injectAnnotations:
               additionalProperties:
@@ -213,8 +213,8 @@ spec:
               type: object
             logVolumeCapacity:
               anyOf:
-              - type: integer
-              - type: string
+                - type: integer
+                - type: string
               description: LogVolumeCapacity defines the log volume size
               pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
               x-kubernetes-int-or-string: true
@@ -226,10 +226,10 @@ spec:
                   properties:
                     type:
                       enum:
-                      - mtls
+                        - mtls
                       type: string
                   required:
-                  - type
+                    - type
                   type: object
                 prometheus:
                   description: Override for jmx-prometheus exporter configs
@@ -308,7 +308,7 @@ spec:
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
                       required:
-                      - secretRef
+                        - secretRef
                       type: object
                     secretRef:
                       description: SecretRef defines the secret name referenced for
@@ -319,7 +319,7 @@ spec:
                       pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                       type: string
                   required:
-                  - enabled
+                    - enabled
                   type: object
               type: object
             mountedSecrets:
@@ -355,8 +355,8 @@ spec:
                             element '..'. May not start with the string '..'.
                           type: string
                       required:
-                      - key
-                      - path
+                        - key
+                        - path
                       type: object
                     type: array
                   secretRef:
@@ -366,7 +366,7 @@ spec:
                     pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                     type: string
                 required:
-                - secretRef
+                  - secretRef
                 type: object
               type: array
             oneReplicaPerNode:
@@ -439,8 +439,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                   matchFields:
@@ -475,8 +475,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                 type: object
@@ -486,8 +486,8 @@ spec:
                                 format: int32
                                 type: integer
                             required:
-                            - preference
-                            - weight
+                              - preference
+                              - weight
                             type: object
                           type: array
                         requiredDuringSchedulingIgnoredDuringExecution:
@@ -540,8 +540,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                   matchFields:
@@ -576,14 +576,14 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                 type: object
                               type: array
                           required:
-                          - nodeSelectorTerms
+                            - nodeSelectorTerms
                           type: object
                       type: object
                     podAffinity:
@@ -647,8 +647,8 @@ spec:
                                                 type: string
                                               type: array
                                           required:
-                                          - key
-                                          - operator
+                                            - key
+                                            - operator
                                           type: object
                                         type: array
                                       matchLabels:
@@ -680,7 +680,7 @@ spec:
                                       is not allowed.
                                     type: string
                                 required:
-                                - topologyKey
+                                  - topologyKey
                                 type: object
                               weight:
                                 description: weight associated with matching the corresponding
@@ -688,8 +688,8 @@ spec:
                                 format: int32
                                 type: integer
                             required:
-                            - podAffinityTerm
-                            - weight
+                              - podAffinityTerm
+                              - weight
                             type: object
                           type: array
                         requiredDuringSchedulingIgnoredDuringExecution:
@@ -744,8 +744,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                   matchLabels:
@@ -776,7 +776,7 @@ spec:
                                   is running. Empty topologyKey is not allowed.
                                 type: string
                             required:
-                            - topologyKey
+                              - topologyKey
                             type: object
                           type: array
                       type: object
@@ -843,8 +843,8 @@ spec:
                                                 type: string
                                               type: array
                                           required:
-                                          - key
-                                          - operator
+                                            - key
+                                            - operator
                                           type: object
                                         type: array
                                       matchLabels:
@@ -876,7 +876,7 @@ spec:
                                       is not allowed.
                                     type: string
                                 required:
-                                - topologyKey
+                                  - topologyKey
                                 type: object
                               weight:
                                 description: weight associated with matching the corresponding
@@ -884,8 +884,8 @@ spec:
                                 format: int32
                                 type: integer
                             required:
-                            - podAffinityTerm
-                            - weight
+                              - podAffinityTerm
+                              - weight
                             type: object
                           type: array
                         requiredDuringSchedulingIgnoredDuringExecution:
@@ -940,8 +940,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                   matchLabels:
@@ -972,7 +972,7 @@ spec:
                                   is running. Empty topologyKey is not allowed.
                                 type: string
                             required:
-                            - topologyKey
+                              - topologyKey
                             type: object
                           type: array
                       type: object
@@ -1025,7 +1025,7 @@ spec:
                                   key must be defined
                                 type: boolean
                             required:
-                            - key
+                              - key
                             type: object
                           fieldRef:
                             description: 'Selects a field of the pod: supports metadata.name,
@@ -1042,7 +1042,7 @@ spec:
                                   API version.
                                 type: string
                             required:
-                            - fieldPath
+                              - fieldPath
                             type: object
                           resourceFieldRef:
                             description: 'Selects a resource of the container: only
@@ -1056,8 +1056,8 @@ spec:
                                 type: string
                               divisor:
                                 anyOf:
-                                - type: integer
-                                - type: string
+                                  - type: integer
+                                  - type: string
                                 description: Specifies the output format of the exposed
                                   resources, defaults to "1"
                                 pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
@@ -1066,7 +1066,7 @@ spec:
                                 description: 'Required: resource to select'
                                 type: string
                             required:
-                            - resource
+                              - resource
                             type: object
                           secretKeyRef:
                             description: Selects a key of a secret in the pod's namespace
@@ -1085,11 +1085,11 @@ spec:
                                   must be defined
                                 type: boolean
                             required:
-                            - key
+                              - key
                             type: object
                         type: object
                     required:
-                    - name
+                      - name
                     type: object
                   type: array
                 labels:
@@ -1196,8 +1196,8 @@ spec:
                             description: Value of a property to set
                             type: string
                         required:
-                        - name
-                        - value
+                          - name
+                          - value
                         type: object
                       type: array
                     windowsOptions:
@@ -1317,8 +1317,8 @@ spec:
                     limits:
                       additionalProperties:
                         anyOf:
-                        - type: integer
-                        - type: string
+                          - type: integer
+                          - type: string
                         pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                         x-kubernetes-int-or-string: true
                       description: 'Limits describes the maximum amount of compute
@@ -1327,8 +1327,8 @@ spec:
                     requests:
                       additionalProperties:
                         anyOf:
-                        - type: integer
-                        - type: string
+                          - type: integer
+                          - type: string
                         pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                         x-kubernetes-int-or-string: true
                       description: 'Requests describes the minimum amount of compute
@@ -1404,7 +1404,7 @@ spec:
                   pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                   type: string
               required:
-              - name
+                - name
               type: object
             tls:
               description: TLS defines TLS setting
@@ -1437,7 +1437,7 @@ spec:
                       pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                       type: string
                   required:
-                  - secretRef
+                    - secretRef
                   type: object
                 secretRef:
                   description: SecretRef defines the secret name referenced for certificates
@@ -1449,10 +1449,10 @@ spec:
                   type: string
               type: object
           required:
-          - dataVolumeCapacity
-          - image
-          - logVolumeCapacity
-          - replicas
+            - dataVolumeCapacity
+            - image
+            - logVolumeCapacity
+            - replicas
           type: object
         status:
           description: ZookeeperStatus defines the observed state of Zookeeper
@@ -1536,13 +1536,13 @@ spec:
               type: boolean
           type: object
       required:
-      - spec
+        - spec
       type: object
   version: v1beta1
   versions:
-  - name: v1beta1
-    served: true
-    storage: true
+    - name: v1beta1
+      served: true
+      storage: true
 status:
   acceptedNames:
     kind: ""

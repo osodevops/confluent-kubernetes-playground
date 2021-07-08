@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: ldap
-  namespace: tools
+  namespace: sandbox
   labels:
     role: ldap
     app: ldap

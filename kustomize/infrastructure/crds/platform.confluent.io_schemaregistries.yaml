@@ -9,34 +9,34 @@ metadata:
   name: schemaregistries.platform.confluent.io
 spec:
   additionalPrinterColumns:
-  - JSONPath: .status.replicas
-    name: Replicas
-    type: string
-  - JSONPath: .status.readyReplicas
-    name: Ready
-    type: string
-  - JSONPath: .status.phase
-    name: Status
-    type: string
-  - JSONPath: .metadata.creationTimestamp
-    name: Age
-    type: date
-  - JSONPath: .status.kafka.bootstrapEndpoint
-    name: Kafka
-    priority: 1
-    type: string
+    - JSONPath: .status.replicas
+      name: Replicas
+      type: string
+    - JSONPath: .status.readyReplicas
+      name: Ready
+      type: string
+    - JSONPath: .status.phase
+      name: Status
+      type: string
+    - JSONPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - JSONPath: .status.kafka.bootstrapEndpoint
+      name: Kafka
+      priority: 1
+      type: string
   group: platform.confluent.io
   names:
     categories:
-    - all
-    - confluent-platform
-    - confluent
+      - all
+      - confluent-platform
+      - confluent
     kind: SchemaRegistry
     listKind: SchemaRegistryList
     plural: schemaregistries
     shortNames:
-    - schemaregistry
-    - sr
+      - schemaregistry
+      - sr
     singular: schemaregistry
   preserveUnknownFields: false
   scope: Namespaced
@@ -101,11 +101,11 @@ spec:
                   description: Type defines supported authentication scheme for Rest
                     Server
                   enum:
-                  - basic
-                  - mtls
+                    - basic
+                    - mtls
                   type: string
               required:
-              - type
+                - type
               type: object
             authorization:
               description: Authorization defines authorization configurations
@@ -122,14 +122,14 @@ spec:
                       description: Namespace defines the namespace of the KafkaRestClass
                       type: string
                   required:
-                  - name
+                    - name
                   type: object
                 type:
                   enum:
-                  - rbac
+                    - rbac
                   type: string
               required:
-              - type
+                - type
               type: object
             configOverrides:
               description: ConfigurationOverrides defines capability to override server/jvm/log4j
@@ -177,7 +177,7 @@ spec:
                               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                               type: string
                           required:
-                          - secretRef
+                            - secretRef
                           type: object
                         jaasConfigPassThrough:
                           description: JaaSPassThrough user provided complete JaaS
@@ -196,15 +196,15 @@ spec:
                           type: object
                         type:
                           enum:
-                          - plain
-                          - oauthbearer
-                          - scram
-                          - digest
-                          - kerberos
-                          - mtls
+                            - plain
+                            - oauthbearer
+                            - scram
+                            - digest
+                            - kerberos
+                            - mtls
                           type: string
                       required:
-                      - type
+                        - type
                       type: object
                     bootstrapEndpoint:
                       description: BootstrapEndpoint defines the kafka bootstrap endpoint
@@ -230,7 +230,7 @@ spec:
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
                       required:
-                      - name
+                        - name
                       type: object
                     tls:
                       description: TLSDependencyConfig defines the client side TLS
@@ -265,7 +265,7 @@ spec:
                               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                               type: string
                           required:
-                          - secretRef
+                            - secretRef
                           type: object
                         secretRef:
                           description: SecretRef defines the secret name referenced
@@ -276,7 +276,7 @@ spec:
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
                       required:
-                      - enabled
+                        - enabled
                       type: object
                   type: object
                 mds:
@@ -302,11 +302,11 @@ spec:
                           description: Type defines the authentication type support
                             for MDS
                           enum:
-                          - bearer
+                            - bearer
                           type: string
                       required:
-                      - bearer
-                      - type
+                        - bearer
+                        - type
                       type: object
                     endpoint:
                       description: Endpoint defines the mds endpoint
@@ -346,7 +346,7 @@ spec:
                               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                               type: string
                           required:
-                          - secretRef
+                            - secretRef
                           type: object
                         secretRef:
                           description: SecretRef defines the secret name referenced
@@ -357,7 +357,7 @@ spec:
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
                       required:
-                      - enabled
+                        - enabled
                       type: object
                     tokenKeyPair:
                       description: TokenKeyPair defines the token keypair to configure
@@ -374,9 +374,9 @@ spec:
                           type: string
                       type: object
                   required:
-                  - authentication
-                  - endpoint
-                  - tokenKeyPair
+                    - authentication
+                    - endpoint
+                    - tokenKeyPair
                   type: object
               type: object
             externalAccess:
@@ -424,16 +424,16 @@ spec:
                                     referenced
                                   type: string
                               required:
-                              - kind
-                              - name
+                                - kind
+                                - name
                               type: object
                             serviceName:
                               description: Specifies the name of the referenced service.
                               type: string
                             servicePort:
                               anyOf:
-                              - type: integer
-                              - type: string
+                                - type: integer
+                                - type: string
                               description: Specifies the port of the referenced service.
                               x-kubernetes-int-or-string: true
                           type: object
@@ -539,8 +539,8 @@ spec:
                                                     resource being referenced
                                                   type: string
                                               required:
-                                              - kind
-                                              - name
+                                                - kind
+                                                - name
                                               type: object
                                             serviceName:
                                               description: Specifies the name of the
@@ -548,8 +548,8 @@ spec:
                                               type: string
                                             servicePort:
                                               anyOf:
-                                              - type: integer
-                                              - type: string
+                                                - type: integer
+                                                - type: string
                                               description: Specifies the port of the
                                                 referenced service.
                                               x-kubernetes-int-or-string: true
@@ -589,11 +589,11 @@ spec:
                                             ImplementationSpecific.'
                                           type: string
                                       required:
-                                      - backend
+                                        - backend
                                       type: object
                                     type: array
                                 required:
-                                - paths
+                                  - paths
                                 type: object
                             type: object
                           type: array
@@ -630,7 +630,7 @@ spec:
                           type: array
                       type: object
                   required:
-                  - spec
+                    - spec
                   type: object
                 loadBalancer:
                   description: LoadBalancer allows to create a kubernetes load balancer
@@ -651,8 +651,8 @@ spec:
                       description: ExternalTrafficPolicy allows to configure Service
                         External Traffic Policy
                       enum:
-                      - Local
-                      - Cluster
+                        - Local
+                        - Cluster
                       type: string
                     loadBalancerSourceRanges:
                       description: LoadBalancerSourceRanges allows configuring source
@@ -717,8 +717,8 @@ spec:
                             type: string
                           targetPort:
                             anyOf:
-                            - type: integer
-                            - type: string
+                              - type: integer
+                              - type: string
                             description: 'Number or name of the port to access on
                               the pods targeted by the service. Number must be in
                               the range 1 to 65535. Name must be an IANA_SVC_NAME.
@@ -730,11 +730,11 @@ spec:
                               to the ''port'' field. More info: https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service'
                             x-kubernetes-int-or-string: true
                         required:
-                        - port
+                          - port
                         type: object
                       type: array
                   required:
-                  - domain
+                    - domain
                   type: object
                 nodePort:
                   description: NodePort allows to create a kubernetes node port service
@@ -749,8 +749,8 @@ spec:
                       description: ExternalTrafficPolicy allows to configure Service
                         External Traffic Policy
                       enum:
-                      - Local
-                      - Cluster
+                        - Local
+                        - Cluster
                       type: string
                     host:
                       minLength: 1
@@ -807,8 +807,8 @@ spec:
                             type: string
                           targetPort:
                             anyOf:
-                            - type: integer
-                            - type: string
+                              - type: integer
+                              - type: string
                             description: 'Number or name of the port to access on
                               the pods targeted by the service. Number must be in
                               the range 1 to 65535. Name must be an IANA_SVC_NAME.
@@ -820,12 +820,12 @@ spec:
                               to the ''port'' field. More info: https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service'
                             x-kubernetes-int-or-string: true
                         required:
-                        - port
+                          - port
                         type: object
                       type: array
                   required:
-                  - host
-                  - nodePortOffset
+                    - host
+                    - nodePortOffset
                   type: object
                 route:
                   description: Route allows to create a route service for OpenShift
@@ -852,22 +852,22 @@ spec:
                       description: WildcardPolicy allows wild card polices. It defaults
                         to None if not configured
                       enum:
-                      - Subdomain
-                      - None
+                        - Subdomain
+                        - None
                       type: string
                   required:
-                  - domain
+                    - domain
                   type: object
                 type:
                   description: Type defines supported kubernetes external services
                   enum:
-                  - loadBalancer
-                  - nodePort
-                  - route
+                    - loadBalancer
+                    - nodePort
+                    - route
                   minLength: 1
                   type: string
               required:
-              - type
+                - type
               type: object
             image:
               description: Image defines application and init docker image configuration.
@@ -891,8 +891,8 @@ spec:
                     type: string
                   type: array
               required:
-              - application
-              - init
+                - application
+                - init
               type: object
             injectAnnotations:
               additionalProperties:
@@ -949,10 +949,10 @@ spec:
                   properties:
                     type:
                       enum:
-                      - mtls
+                        - mtls
                       type: string
                   required:
-                  - type
+                    - type
                   type: object
                 prometheus:
                   description: Override for jmx-prometheus exporter configs
@@ -1031,7 +1031,7 @@ spec:
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
                       required:
-                      - secretRef
+                        - secretRef
                       type: object
                     secretRef:
                       description: SecretRef defines the secret name referenced for
@@ -1042,7 +1042,7 @@ spec:
                       pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                       type: string
                   required:
-                  - enabled
+                    - enabled
                   type: object
               type: object
             mountedSecrets:
@@ -1078,8 +1078,8 @@ spec:
                             element '..'. May not start with the string '..'.
                           type: string
                       required:
-                      - key
-                      - path
+                        - key
+                        - path
                       type: object
                     type: array
                   secretRef:
@@ -1089,7 +1089,7 @@ spec:
                     pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                     type: string
                 required:
-                - secretRef
+                  - secretRef
                 type: object
               type: array
             oneReplicaPerNode:
@@ -1162,8 +1162,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                   matchFields:
@@ -1198,8 +1198,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                 type: object
@@ -1209,8 +1209,8 @@ spec:
                                 format: int32
                                 type: integer
                             required:
-                            - preference
-                            - weight
+                              - preference
+                              - weight
                             type: object
                           type: array
                         requiredDuringSchedulingIgnoredDuringExecution:
@@ -1263,8 +1263,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                   matchFields:
@@ -1299,14 +1299,14 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                 type: object
                               type: array
                           required:
-                          - nodeSelectorTerms
+                            - nodeSelectorTerms
                           type: object
                       type: object
                     podAffinity:
@@ -1370,8 +1370,8 @@ spec:
                                                 type: string
                                               type: array
                                           required:
-                                          - key
-                                          - operator
+                                            - key
+                                            - operator
                                           type: object
                                         type: array
                                       matchLabels:
@@ -1403,7 +1403,7 @@ spec:
                                       is not allowed.
                                     type: string
                                 required:
-                                - topologyKey
+                                  - topologyKey
                                 type: object
                               weight:
                                 description: weight associated with matching the corresponding
@@ -1411,8 +1411,8 @@ spec:
                                 format: int32
                                 type: integer
                             required:
-                            - podAffinityTerm
-                            - weight
+                              - podAffinityTerm
+                              - weight
                             type: object
                           type: array
                         requiredDuringSchedulingIgnoredDuringExecution:
@@ -1467,8 +1467,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                   matchLabels:
@@ -1499,7 +1499,7 @@ spec:
                                   is running. Empty topologyKey is not allowed.
                                 type: string
                             required:
-                            - topologyKey
+                              - topologyKey
                             type: object
                           type: array
                       type: object
@@ -1566,8 +1566,8 @@ spec:
                                                 type: string
                                               type: array
                                           required:
-                                          - key
-                                          - operator
+                                            - key
+                                            - operator
                                           type: object
                                         type: array
                                       matchLabels:
@@ -1599,7 +1599,7 @@ spec:
                                       is not allowed.
                                     type: string
                                 required:
-                                - topologyKey
+                                  - topologyKey
                                 type: object
                               weight:
                                 description: weight associated with matching the corresponding
@@ -1607,8 +1607,8 @@ spec:
                                 format: int32
                                 type: integer
                             required:
-                            - podAffinityTerm
-                            - weight
+                              - podAffinityTerm
+                              - weight
                             type: object
                           type: array
                         requiredDuringSchedulingIgnoredDuringExecution:
@@ -1663,8 +1663,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                   matchLabels:
@@ -1695,7 +1695,7 @@ spec:
                                   is running. Empty topologyKey is not allowed.
                                 type: string
                             required:
-                            - topologyKey
+                              - topologyKey
                             type: object
                           type: array
                       type: object
@@ -1748,7 +1748,7 @@ spec:
                                   key must be defined
                                 type: boolean
                             required:
-                            - key
+                              - key
                             type: object
                           fieldRef:
                             description: 'Selects a field of the pod: supports metadata.name,
@@ -1765,7 +1765,7 @@ spec:
                                   API version.
                                 type: string
                             required:
-                            - fieldPath
+                              - fieldPath
                             type: object
                           resourceFieldRef:
                             description: 'Selects a resource of the container: only
@@ -1779,8 +1779,8 @@ spec:
                                 type: string
                               divisor:
                                 anyOf:
-                                - type: integer
-                                - type: string
+                                  - type: integer
+                                  - type: string
                                 description: Specifies the output format of the exposed
                                   resources, defaults to "1"
                                 pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
@@ -1789,7 +1789,7 @@ spec:
                                 description: 'Required: resource to select'
                                 type: string
                             required:
-                            - resource
+                              - resource
                             type: object
                           secretKeyRef:
                             description: Selects a key of a secret in the pod's namespace
@@ -1808,11 +1808,11 @@ spec:
                                   must be defined
                                 type: boolean
                             required:
-                            - key
+                              - key
                             type: object
                         type: object
                     required:
-                    - name
+                      - name
                     type: object
                   type: array
                 labels:
@@ -1919,8 +1919,8 @@ spec:
                             description: Value of a property to set
                             type: string
                         required:
-                        - name
-                        - value
+                          - name
+                          - value
                         type: object
                       type: array
                     windowsOptions:
@@ -2040,8 +2040,8 @@ spec:
                     limits:
                       additionalProperties:
                         anyOf:
-                        - type: integer
-                        - type: string
+                          - type: integer
+                          - type: string
                         pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                         x-kubernetes-int-or-string: true
                       description: 'Limits describes the maximum amount of compute
@@ -2050,8 +2050,8 @@ spec:
                     requests:
                       additionalProperties:
                         anyOf:
-                        - type: integer
-                        - type: string
+                          - type: integer
+                          - type: string
                         pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                         x-kubernetes-int-or-string: true
                       description: 'Requests describes the minimum amount of compute
@@ -2126,7 +2126,7 @@ spec:
                   pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                   type: string
               required:
-              - name
+                - name
               type: object
             telemetry:
               description: ConfluentTelemetry defines the confluent telemetry reporter
@@ -2170,7 +2170,7 @@ spec:
                       pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                       type: string
                   required:
-                  - secretRef
+                    - secretRef
                   type: object
                 secretRef:
                   description: SecretRef defines the secret name referenced for certificates
@@ -2182,8 +2182,8 @@ spec:
                   type: string
               type: object
           required:
-          - image
-          - replicas
+            - image
+            - replicas
           type: object
         status:
           description: SchemaRegistryStatus defines the observed state of SchemaRegistry
@@ -2318,13 +2318,13 @@ spec:
               type: object
           type: object
       required:
-      - spec
+        - spec
       type: object
   version: v1beta1
   versions:
-  - name: v1beta1
-    served: true
-    storage: true
+    - name: v1beta1
+      served: true
+      storage: true
 status:
   acceptedNames:
     kind: ""

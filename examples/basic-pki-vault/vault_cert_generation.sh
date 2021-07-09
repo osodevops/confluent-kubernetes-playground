@@ -1,4 +1,5 @@
 #!/bin/bash
+kubectl create ns sandbox
 kubectl config set-context --current --namespace=sandbox
 helm repo add hashicorp https://helm.releases.hashicorp.com
 helm repo update

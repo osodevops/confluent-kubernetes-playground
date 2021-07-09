@@ -1,6 +1,5 @@
 resources:
-#  - cert-manager
-#  - cert-manager-sandbox
+  - namespace.yaml
   - confluent
   - operator
-#  - topics
+

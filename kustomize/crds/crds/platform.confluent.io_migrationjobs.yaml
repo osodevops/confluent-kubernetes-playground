@@ -11,15 +11,15 @@ spec:
   group: platform.confluent.io
   names:
     categories:
-    - all
-    - confluent-platform
-    - confluent
+      - all
+      - confluent-platform
+      - confluent
     kind: MigrationJob
     listKind: MigrationJobList
     plural: migrationjobs
     shortNames:
-    - migrationjob
-    - migration
+      - migrationjob
+      - migration
     singular: migrationjob
   preserveUnknownFields: false
   scope: Namespaced
@@ -111,7 +111,7 @@ spec:
                   minLength: 1
                   type: string
               required:
-              - enabled
+                - enabled
               type: object
             controlcenter:
               description: ControlCenterMigrationJobSpec defines the desired state
@@ -178,7 +178,7 @@ spec:
                   minLength: 1
                   type: string
               required:
-              - enabled
+                - enabled
               type: object
             initContainerImage:
               minLength: 1
@@ -248,7 +248,7 @@ spec:
                   minLength: 1
                   type: string
               required:
-              - enabled
+                - enabled
               type: object
             ksqldb:
               description: KsqlDBMigrationJobSpec defines the desired state of KsqlDB
@@ -315,7 +315,7 @@ spec:
                   minLength: 1
                   type: string
               required:
-              - enabled
+                - enabled
               type: object
             pullSecretRef:
               items:
@@ -386,7 +386,7 @@ spec:
                   minLength: 1
                   type: string
               required:
-              - enabled
+                - enabled
               type: object
             schemaRegistry:
               description: SchemaRegistryMigrationJobSpec defines the desired state
@@ -453,7 +453,7 @@ spec:
                   minLength: 1
                   type: string
               required:
-              - enabled
+                - enabled
               type: object
             skipCleanup:
               type: boolean
@@ -524,10 +524,10 @@ spec:
                   minLength: 1
                   type: string
               required:
-              - enabled
+                - enabled
               type: object
           required:
-          - initContainerImage
+            - initContainerImage
           type: object
         status:
           description: MigrationJobStatus defines the observed state of MigrationJob
@@ -573,8 +573,8 @@ spec:
                 phase:
                   type: string
               required:
-              - message
-              - phase
+                - message
+                - phase
               type: object
             controlcenter:
               description: CommonMigrationStatus defines spec common to different
@@ -585,8 +585,8 @@ spec:
                 phase:
                   type: string
               required:
-              - message
-              - phase
+                - message
+                - phase
               type: object
             kafka:
               description: CommonMigrationStatus defines spec common to different
@@ -597,8 +597,8 @@ spec:
                 phase:
                   type: string
               required:
-              - message
-              - phase
+                - message
+                - phase
               type: object
             ksqldb:
               description: CommonMigrationStatus defines spec common to different
@@ -609,8 +609,8 @@ spec:
                 phase:
                   type: string
               required:
-              - message
-              - phase
+                - message
+                - phase
               type: object
             phase:
               type: string
@@ -623,8 +623,8 @@ spec:
                 phase:
                   type: string
               required:
-              - message
-              - phase
+                - message
+                - phase
               type: object
             schemaRegistry:
               description: CommonMigrationStatus defines spec common to different
@@ -635,8 +635,8 @@ spec:
                 phase:
                   type: string
               required:
-              - message
-              - phase
+                - message
+                - phase
               type: object
             zookeeper:
               description: CommonMigrationStatus defines spec common to different
@@ -647,20 +647,20 @@ spec:
                 phase:
                   type: string
               required:
-              - message
-              - phase
+                - message
+                - phase
               type: object
           required:
-          - phase
+            - phase
           type: object
       required:
-      - spec
+        - spec
       type: object
   version: v1beta1
   versions:
-  - name: v1beta1
-    served: true
-    storage: true
+    - name: v1beta1
+      served: true
+      storage: true
 status:
   acceptedNames:
     kind: ""

@@ -1,4 +1,0 @@
-namespace: sandbox
-resources:
-  - sandbox-issuer.yaml
-  - service-account-controlcenter.yml

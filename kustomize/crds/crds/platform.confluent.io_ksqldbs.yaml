@@ -6,37 +6,38 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: connects.platform.confluent.io
+  name: ksqldbs.platform.confluent.io
 spec:
   additionalPrinterColumns:
-  - JSONPath: .status.replicas
-    name: Replicas
-    type: string
-  - JSONPath: .status.readyReplicas
-    name: Ready
-    type: string
-  - JSONPath: .status.phase
-    name: Status
-    type: string
-  - JSONPath: .metadata.creationTimestamp
-    name: Age
-    type: date
-  - JSONPath: .status.kafka.bootstrapEndpoint
-    name: Kafka
-    priority: 1
-    type: string
+    - JSONPath: .status.replicas
+      name: Replicas
+      type: string
+    - JSONPath: .status.readyReplicas
+      name: Ready
+      type: string
+    - JSONPath: .status.phase
+      name: Status
+      type: string
+    - JSONPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - JSONPath: .status.kafka.bootstrapEndpoint
+      name: Kafka
+      priority: 1
+      type: string
   group: platform.confluent.io
   names:
     categories:
-    - all
-    - confluent-platform
-    - confluent
-    kind: Connect
-    listKind: ConnectList
-    plural: connects
+      - all
+      - confluent-platform
+      - confluent
+    kind: KsqlDB
+    listKind: KsqlDBList
+    plural: ksqldbs
     shortNames:
-    - connect
-    singular: connect
+      - ksqldb
+      - ksql
+    singular: ksqldb
   preserveUnknownFields: false
   scope: Namespaced
   subresources:
@@ -46,7 +47,7 @@ spec:
     status: {}
   validation:
     openAPIV3Schema:
-      description: Connect is the Schema for the Connects API
+      description: KsqlDB is the Schema for the ksql API
       properties:
         apiVersion:
           description: 'APIVersion defines the versioned schema of this representation
@@ -61,10 +62,12 @@ spec:
         metadata:
           type: object
         spec:
-          description: ConnectSpec defines the desired state of Connect
+          description: KafkaSpec defines the desired state of CP component, Kafka
+            Server
           properties:
             authentication:
-              description: Rest server security fields
+              description: Authentication specifies whether auth is needed when accessing
+                the ksqlDB rest server.
               properties:
                 basic:
                   description: Basic defines basic authentication
@@ -100,14 +103,14 @@ spec:
                   description: Type defines supported authentication scheme for Rest
                     Server
                   enum:
-                  - basic
-                  - mtls
+                    - basic
+                    - mtls
                   type: string
               required:
-              - type
+                - type
               type: object
             authorization:
-              description: Authorization
+              description: Authorization configuration defines RBAC configuration
               properties:
                 kafkaRestClassRef:
                   description: KafkaRestClassRef defines the reference for KafkaRestClass
@@ -121,14 +124,14 @@ spec:
                       description: Namespace defines the namespace of the KafkaRestClass
                       type: string
                   required:
-                  - name
+                    - name
                   type: object
                 type:
                   enum:
-                  - rbac
+                    - rbac
                   type: string
               required:
-              - type
+                - type
               type: object
             configOverrides:
               description: ConfigurationOverrides defines capability to override server/jvm/log4j
@@ -154,269 +157,20 @@ spec:
                     type: string
                   type: array
               type: object
-            connectorOverridePolicy:
-              description: ConnectorOverridePolicy allows policy to permit per-connector
-                override configuration for producer/consumer/admin prefix. More information
-                can be found here, https://docs.confluent.io/platform/current/connect/security.html#separate-principals
-              enum:
-              - All
-              - Principal
-              type: string
+            dataVolumeCapacity:
+              anyOf:
+                - type: integer
+                - type: string
+              description: Data volume
+              pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+              x-kubernetes-int-or-string: true
             dependencies:
-              description: ConnectDependencies holds dependencies a connect requires
-                or can enable
+              description: Dependencies defines dependencies Kafka, interceptor, schemaregistry,
+                mds dependencies
               properties:
-                admin:
-                  description: configure admin client If bootstrapEndpoint is not
-                    configured, the security is configured based on the kafka dependencies
-                    configuration. Configure if different bootstrapEndpoint is required
-                    for admin client
-                  properties:
-                    authentication:
-                      description: Authentication defines the authentication for the
-                        kafka cluster
-                      properties:
-                        jaasConfig:
-                          description: JaaS defines opinionated CP component's JaaS
-                            configuration.
-                          properties:
-                            secretRef:
-                              description: SecretRef defines secret reference to pass
-                                required credentials
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          required:
-                          - secretRef
-                          type: object
-                        jaasConfigPassThrough:
-                          description: JaaSPassThrough user provided complete JaaS
-                            configuration.
-                          properties:
-                            directoryPathInContainer:
-                              minLength: 1
-                              type: string
-                            secretRef:
-                              description: SecretRef defines the secret name referenced
-                                for authentication
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          type: object
-                        type:
-                          enum:
-                          - plain
-                          - oauthbearer
-                          - scram
-                          - digest
-                          - kerberos
-                          - mtls
-                          type: string
-                      required:
-                      - type
-                      type: object
-                    bootstrapEndpoint:
-                      description: BootstrapEndpoint defines the kafka bootstrap endpoint
-                      minLength: 1
-                      pattern: .+:[0-9]+
-                      type: string
-                    discovery:
-                      description: Discovery defines the discovery capability to discover
-                        kafka cluster
-                      properties:
-                        name:
-                          description: Name is the name of the CP component
-                          type: string
-                        namespace:
-                          description: Namespace defines where CP component is running
-                            Uses the same namespace where Operator is running if not
-                            configured
-                          type: string
-                        secretRef:
-                          description: SecretRef defines the name of the secret reference
-                          maxLength: 30
-                          minLength: 1
-                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                          type: string
-                      required:
-                      - name
-                      type: object
-                    tls:
-                      description: TLSDependencyConfig defines the client side TLS
-                        setting for kafka cluster
-                      properties:
-                        directoryPathInContainer:
-                          description: DirectoryPathInContainer contains the directory
-                            path in container where keystore/truststore.jks/jksPassword.txt
-                            keys are mounted. CP will not configure truststore.jks
-                            can be ignored with IgnoreTrustStoreConfig field
-                          minLength: 1
-                          type: string
-                        enabled:
-                          description: Enabled enables the TLS configuration for CP
-                            component
-                          type: boolean
-                        ignoreTrustStoreConfig:
-                          description: IgnoreTrustStoreConfig when configure ignores
-                            the truststore configuration for CP component
-                          type: boolean
-                        jksPassword:
-                          description: JksPassword defines the secret name referenced
-                            for jks password
-                          properties:
-                            secretRef:
-                              description: SecretRef defines the secret name referenced
-                                for jks password More information about jks password
-                                key/value format can be found in Confluent Operator
-                                document
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          required:
-                          - secretRef
-                          type: object
-                        secretRef:
-                          description: SecretRef defines the secret name referenced
-                            for certificates More information about certificates key/value
-                            format can be found in Confluent Operator document
-                          maxLength: 30
-                          minLength: 1
-                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                          type: string
-                      required:
-                      - enabled
-                      type: object
-                  type: object
-                consumer:
-                  description: Consumer security configuration to connect to Kafka
-                    Cluster pointed by bootstrapEndpoint, used for sink connectors.
-                    If bootstrapEndpoint is not configured, the security is configured
-                    based on the kafka dependencies configuration. Configure if different
-                    bootstrapEndpoint is required for consumer
-                  properties:
-                    authentication:
-                      description: Authentication defines the authentication for the
-                        kafka cluster
-                      properties:
-                        jaasConfig:
-                          description: JaaS defines opinionated CP component's JaaS
-                            configuration.
-                          properties:
-                            secretRef:
-                              description: SecretRef defines secret reference to pass
-                                required credentials
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          required:
-                          - secretRef
-                          type: object
-                        jaasConfigPassThrough:
-                          description: JaaSPassThrough user provided complete JaaS
-                            configuration.
-                          properties:
-                            directoryPathInContainer:
-                              minLength: 1
-                              type: string
-                            secretRef:
-                              description: SecretRef defines the secret name referenced
-                                for authentication
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          type: object
-                        type:
-                          enum:
-                          - plain
-                          - oauthbearer
-                          - scram
-                          - digest
-                          - kerberos
-                          - mtls
-                          type: string
-                      required:
-                      - type
-                      type: object
-                    bootstrapEndpoint:
-                      description: BootstrapEndpoint defines the kafka bootstrap endpoint
-                      minLength: 1
-                      pattern: .+:[0-9]+
-                      type: string
-                    discovery:
-                      description: Discovery defines the discovery capability to discover
-                        kafka cluster
-                      properties:
-                        name:
-                          description: Name is the name of the CP component
-                          type: string
-                        namespace:
-                          description: Namespace defines where CP component is running
-                            Uses the same namespace where Operator is running if not
-                            configured
-                          type: string
-                        secretRef:
-                          description: SecretRef defines the name of the secret reference
-                          maxLength: 30
-                          minLength: 1
-                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                          type: string
-                      required:
-                      - name
-                      type: object
-                    tls:
-                      description: TLSDependencyConfig defines the client side TLS
-                        setting for kafka cluster
-                      properties:
-                        directoryPathInContainer:
-                          description: DirectoryPathInContainer contains the directory
-                            path in container where keystore/truststore.jks/jksPassword.txt
-                            keys are mounted. CP will not configure truststore.jks
-                            can be ignored with IgnoreTrustStoreConfig field
-                          minLength: 1
-                          type: string
-                        enabled:
-                          description: Enabled enables the TLS configuration for CP
-                            component
-                          type: boolean
-                        ignoreTrustStoreConfig:
-                          description: IgnoreTrustStoreConfig when configure ignores
-                            the truststore configuration for CP component
-                          type: boolean
-                        jksPassword:
-                          description: JksPassword defines the secret name referenced
-                            for jks password
-                          properties:
-                            secretRef:
-                              description: SecretRef defines the secret name referenced
-                                for jks password More information about jks password
-                                key/value format can be found in Confluent Operator
-                                document
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          required:
-                          - secretRef
-                          type: object
-                        secretRef:
-                          description: SecretRef defines the secret name referenced
-                            for certificates More information about certificates key/value
-                            format can be found in Confluent Operator document
-                          maxLength: 30
-                          minLength: 1
-                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                          type: string
-                      required:
-                      - enabled
-                      type: object
-                  type: object
                 interceptor:
-                  description: configure confluent monitoring interceptor
+                  description: InterceptorDependency defines interceptor settings
+                    for CP component
                   properties:
                     configs:
                       description: Configs defines configs for the CP interceptor
@@ -445,7 +199,7 @@ spec:
                                   pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                                   type: string
                               required:
-                              - secretRef
+                                - secretRef
                               type: object
                             jaasConfigPassThrough:
                               description: JaaSPassThrough user provided complete
@@ -464,15 +218,15 @@ spec:
                               type: object
                             type:
                               enum:
-                              - plain
-                              - oauthbearer
-                              - scram
-                              - digest
-                              - kerberos
-                              - mtls
+                                - plain
+                                - oauthbearer
+                                - scram
+                                - digest
+                                - kerberos
+                                - mtls
                               type: string
                           required:
-                          - type
+                            - type
                           type: object
                         bootstrapEndpoint:
                           description: BootstrapEndpoint defines the kafka bootstrap
@@ -500,7 +254,7 @@ spec:
                               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                               type: string
                           required:
-                          - name
+                            - name
                           type: object
                         tls:
                           description: TLSDependencyConfig defines the client side
@@ -535,7 +289,7 @@ spec:
                                   pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                                   type: string
                               required:
-                              - secretRef
+                                - secretRef
                               type: object
                             secretRef:
                               description: SecretRef defines the secret name referenced
@@ -547,7 +301,7 @@ spec:
                               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                               type: string
                           required:
-                          - enabled
+                            - enabled
                           type: object
                       type: object
                     enabled:
@@ -574,7 +328,7 @@ spec:
                                   pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                                   type: string
                               required:
-                              - secretRef
+                                - secretRef
                               type: object
                             jaasConfigPassThrough:
                               description: JaaSPassThrough user provided complete
@@ -593,15 +347,15 @@ spec:
                               type: object
                             type:
                               enum:
-                              - plain
-                              - oauthbearer
-                              - scram
-                              - digest
-                              - kerberos
-                              - mtls
+                                - plain
+                                - oauthbearer
+                                - scram
+                                - digest
+                                - kerberos
+                                - mtls
                               type: string
                           required:
-                          - type
+                            - type
                           type: object
                         bootstrapEndpoint:
                           description: BootstrapEndpoint defines the kafka bootstrap
@@ -629,7 +383,7 @@ spec:
                               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                               type: string
                           required:
-                          - name
+                            - name
                           type: object
                         tls:
                           description: TLSDependencyConfig defines the client side
@@ -664,7 +418,7 @@ spec:
                                   pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                                   type: string
                               required:
-                              - secretRef
+                                - secretRef
                               type: object
                             secretRef:
                               description: SecretRef defines the secret name referenced
@@ -676,17 +430,17 @@ spec:
                               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                               type: string
                           required:
-                          - enabled
+                            - enabled
                           type: object
                       type: object
                     publishMs:
                       type: integer
                   required:
-                  - enabled
+                    - enabled
                   type: object
                 kafka:
-                  description: Connect dependency for connecting to kafka. Uses discovery
-                    if that specified
+                  description: KafkaClientDependency allows configuring CP component
+                    dependency to configure kafka settings
                   properties:
                     authentication:
                       description: Authentication defines the authentication for the
@@ -704,7 +458,7 @@ spec:
                               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                               type: string
                           required:
-                          - secretRef
+                            - secretRef
                           type: object
                         jaasConfigPassThrough:
                           description: JaaSPassThrough user provided complete JaaS
@@ -723,15 +477,15 @@ spec:
                           type: object
                         type:
                           enum:
-                          - plain
-                          - oauthbearer
-                          - scram
-                          - digest
-                          - kerberos
-                          - mtls
+                            - plain
+                            - oauthbearer
+                            - scram
+                            - digest
+                            - kerberos
+                            - mtls
                           type: string
                       required:
-                      - type
+                        - type
                       type: object
                     bootstrapEndpoint:
                       description: BootstrapEndpoint defines the kafka bootstrap endpoint
@@ -757,7 +511,7 @@ spec:
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
                       required:
-                      - name
+                        - name
                       type: object
                     tls:
                       description: TLSDependencyConfig defines the client side TLS
@@ -792,7 +546,7 @@ spec:
                               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                               type: string
                           required:
-                          - secretRef
+                            - secretRef
                           type: object
                         secretRef:
                           description: SecretRef defines the secret name referenced
@@ -803,11 +557,12 @@ spec:
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
                       required:
-                      - enabled
+                        - enabled
                       type: object
                   type: object
                 mds:
-                  description: Mds configurations for when RBAC is enabled
+                  description: MDSDependencies defines MDS configure when CP RBAC
+                    is enabled
                   properties:
                     authentication:
                       description: Authentication defines MDS authentication configuration
@@ -829,11 +584,11 @@ spec:
                           description: Type defines the authentication type support
                             for MDS
                           enum:
-                          - bearer
+                            - bearer
                           type: string
                       required:
-                      - bearer
-                      - type
+                        - bearer
+                        - type
                       type: object
                     endpoint:
                       description: Endpoint defines the mds endpoint
@@ -873,7 +628,7 @@ spec:
                               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                               type: string
                           required:
-                          - secretRef
+                            - secretRef
                           type: object
                         secretRef:
                           description: SecretRef defines the secret name referenced
@@ -884,7 +639,7 @@ spec:
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
                       required:
-                      - enabled
+                        - enabled
                       type: object
                     tokenKeyPair:
                       description: TokenKeyPair defines the token keypair to configure
@@ -901,137 +656,13 @@ spec:
                           type: string
                       type: object
                   required:
-                  - authentication
-                  - endpoint
-                  - tokenKeyPair
-                  type: object
-                producer:
-                  description: Producer security configuration to connect to Kafka
-                    Cluster pointed by bootstrapEndpoint, used for source connectors.
-                    If bootstrapEndpoint is not configured, the security is configured
-                    based on the kafka dependencies configuration. Configure if different
-                    bootstrapEndpoint/security is required for producer
-                  properties:
-                    authentication:
-                      description: Authentication defines the authentication for the
-                        kafka cluster
-                      properties:
-                        jaasConfig:
-                          description: JaaS defines opinionated CP component's JaaS
-                            configuration.
-                          properties:
-                            secretRef:
-                              description: SecretRef defines secret reference to pass
-                                required credentials
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          required:
-                          - secretRef
-                          type: object
-                        jaasConfigPassThrough:
-                          description: JaaSPassThrough user provided complete JaaS
-                            configuration.
-                          properties:
-                            directoryPathInContainer:
-                              minLength: 1
-                              type: string
-                            secretRef:
-                              description: SecretRef defines the secret name referenced
-                                for authentication
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          type: object
-                        type:
-                          enum:
-                          - plain
-                          - oauthbearer
-                          - scram
-                          - digest
-                          - kerberos
-                          - mtls
-                          type: string
-                      required:
-                      - type
-                      type: object
-                    bootstrapEndpoint:
-                      description: BootstrapEndpoint defines the kafka bootstrap endpoint
-                      minLength: 1
-                      pattern: .+:[0-9]+
-                      type: string
-                    discovery:
-                      description: Discovery defines the discovery capability to discover
-                        kafka cluster
-                      properties:
-                        name:
-                          description: Name is the name of the CP component
-                          type: string
-                        namespace:
-                          description: Namespace defines where CP component is running
-                            Uses the same namespace where Operator is running if not
-                            configured
-                          type: string
-                        secretRef:
-                          description: SecretRef defines the name of the secret reference
-                          maxLength: 30
-                          minLength: 1
-                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                          type: string
-                      required:
-                      - name
-                      type: object
-                    tls:
-                      description: TLSDependencyConfig defines the client side TLS
-                        setting for kafka cluster
-                      properties:
-                        directoryPathInContainer:
-                          description: DirectoryPathInContainer contains the directory
-                            path in container where keystore/truststore.jks/jksPassword.txt
-                            keys are mounted. CP will not configure truststore.jks
-                            can be ignored with IgnoreTrustStoreConfig field
-                          minLength: 1
-                          type: string
-                        enabled:
-                          description: Enabled enables the TLS configuration for CP
-                            component
-                          type: boolean
-                        ignoreTrustStoreConfig:
-                          description: IgnoreTrustStoreConfig when configure ignores
-                            the truststore configuration for CP component
-                          type: boolean
-                        jksPassword:
-                          description: JksPassword defines the secret name referenced
-                            for jks password
-                          properties:
-                            secretRef:
-                              description: SecretRef defines the secret name referenced
-                                for jks password More information about jks password
-                                key/value format can be found in Confluent Operator
-                                document
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          required:
-                          - secretRef
-                          type: object
-                        secretRef:
-                          description: SecretRef defines the secret name referenced
-                            for certificates More information about certificates key/value
-                            format can be found in Confluent Operator document
-                          maxLength: 30
-                          minLength: 1
-                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                          type: string
-                      required:
-                      - enabled
-                      type: object
+                    - authentication
+                    - endpoint
+                    - tokenKeyPair
                   type: object
                 schemaRegistry:
-                  description: configure connect dependency for schemaregistry
+                  description: SchemaRegistryClientDependency allows configuring CP
+                    component dependency to configure schemaRegistry settings
                   properties:
                     authentication:
                       description: Authentication defines the authentication for the
@@ -1072,11 +703,11 @@ spec:
                           description: Type defines supported authentication scheme
                             for Rest client
                           enum:
-                          - basic
-                          - mtls
+                            - basic
+                            - mtls
                           type: string
                       required:
-                      - type
+                        - type
                       type: object
                     tls:
                       description: TLSDependencyConfig defines the client side TLS
@@ -1111,7 +742,7 @@ spec:
                               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                               type: string
                           required:
-                          - secretRef
+                            - secretRef
                           type: object
                         secretRef:
                           description: SecretRef defines the secret name referenced
@@ -1122,7 +753,7 @@ spec:
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
                       required:
-                      - enabled
+                        - enabled
                       type: object
                     url:
                       description: URL defines the URL endpoint
@@ -1130,15 +761,12 @@ spec:
                       pattern: ^https?://.*
                       type: string
                   required:
-                  - url
+                    - url
                   type: object
               type: object
-            enableSchemas:
-              description: EnableSchemas defines whether to enable scheme or not
-              type: boolean
             externalAccess:
-              description: CPExternalAccess holds all external access policies for
-                non-kafka components
+              description: Provides configuring endpoints and services to make ksqlDB
+                accessible from outside the cluster
               properties:
                 ingress:
                   description: Ingress allows to create a ingress service Not implemented
@@ -1182,16 +810,16 @@ spec:
                                     referenced
                                   type: string
                               required:
-                              - kind
-                              - name
+                                - kind
+                                - name
                               type: object
                             serviceName:
                               description: Specifies the name of the referenced service.
                               type: string
                             servicePort:
                               anyOf:
-                              - type: integer
-                              - type: string
+                                - type: integer
+                                - type: string
                               description: Specifies the port of the referenced service.
                               x-kubernetes-int-or-string: true
                           type: object
@@ -1297,8 +925,8 @@ spec:
                                                     resource being referenced
                                                   type: string
                                               required:
-                                              - kind
-                                              - name
+                                                - kind
+                                                - name
                                               type: object
                                             serviceName:
                                               description: Specifies the name of the
@@ -1306,8 +934,8 @@ spec:
                                               type: string
                                             servicePort:
                                               anyOf:
-                                              - type: integer
-                                              - type: string
+                                                - type: integer
+                                                - type: string
                                               description: Specifies the port of the
                                                 referenced service.
                                               x-kubernetes-int-or-string: true
@@ -1347,11 +975,11 @@ spec:
                                             ImplementationSpecific.'
                                           type: string
                                       required:
-                                      - backend
+                                        - backend
                                       type: object
                                     type: array
                                 required:
-                                - paths
+                                  - paths
                                 type: object
                             type: object
                           type: array
@@ -1388,7 +1016,7 @@ spec:
                           type: array
                       type: object
                   required:
-                  - spec
+                    - spec
                   type: object
                 loadBalancer:
                   description: LoadBalancer allows to create a kubernetes load balancer
@@ -1409,8 +1037,8 @@ spec:
                       description: ExternalTrafficPolicy allows to configure Service
                         External Traffic Policy
                       enum:
-                      - Local
-                      - Cluster
+                        - Local
+                        - Cluster
                       type: string
                     loadBalancerSourceRanges:
                       description: LoadBalancerSourceRanges allows configuring source
@@ -1475,8 +1103,8 @@ spec:
                             type: string
                           targetPort:
                             anyOf:
-                            - type: integer
-                            - type: string
+                              - type: integer
+                              - type: string
                             description: 'Number or name of the port to access on
                               the pods targeted by the service. Number must be in
                               the range 1 to 65535. Name must be an IANA_SVC_NAME.
@@ -1488,11 +1116,11 @@ spec:
                               to the ''port'' field. More info: https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service'
                             x-kubernetes-int-or-string: true
                         required:
-                        - port
+                          - port
                         type: object
                       type: array
                   required:
-                  - domain
+                    - domain
                   type: object
                 nodePort:
                   description: NodePort allows to create a kubernetes node port service
@@ -1507,8 +1135,8 @@ spec:
                       description: ExternalTrafficPolicy allows to configure Service
                         External Traffic Policy
                       enum:
-                      - Local
-                      - Cluster
+                        - Local
+                        - Cluster
                       type: string
                     host:
                       minLength: 1
@@ -1565,8 +1193,8 @@ spec:
                             type: string
                           targetPort:
                             anyOf:
-                            - type: integer
-                            - type: string
+                              - type: integer
+                              - type: string
                             description: 'Number or name of the port to access on
                               the pods targeted by the service. Number must be in
                               the range 1 to 65535. Name must be an IANA_SVC_NAME.
@@ -1578,12 +1206,12 @@ spec:
                               to the ''port'' field. More info: https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service'
                             x-kubernetes-int-or-string: true
                         required:
-                        - port
+                          - port
                         type: object
                       type: array
                   required:
-                  - host
-                  - nodePortOffset
+                    - host
+                    - nodePortOffset
                   type: object
                 route:
                   description: Route allows to create a route service for OpenShift
@@ -1610,22 +1238,22 @@ spec:
                       description: WildcardPolicy allows wild card polices. It defaults
                         to None if not configured
                       enum:
-                      - Subdomain
-                      - None
+                        - Subdomain
+                        - None
                       type: string
                   required:
-                  - domain
+                    - domain
                   type: object
                 type:
                   description: Type defines supported kubernetes external services
                   enum:
-                  - loadBalancer
-                  - nodePort
-                  - route
+                    - loadBalancer
+                    - nodePort
+                    - route
                   minLength: 1
                   type: string
               required:
-              - type
+                - type
               type: object
             image:
               description: Image defines application and init docker image configuration.
@@ -1649,8 +1277,8 @@ spec:
                     type: string
                   type: array
               required:
-              - application
-              - init
+                - application
+                - init
               type: object
             injectAnnotations:
               additionalProperties:
@@ -1667,20 +1295,13 @@ spec:
                 to override. For pod labels, use podTemplate.labels
               type: object
             internalTopicReplicationFactor:
-              description: ' InternalTopicReplicationFactor defines internal topic
-                replication factor  If not configured, it will be configured as 3'
+              description: Replication factor for internal topics
               format: int32
               type: integer
             k8sClusterDomain:
               description: K8SClusterDomain defines configuring kubernetes cluster
                 domain if required. If this setting is not configured it will default
                 to cluster.local domain.
-              type: string
-            keyConverterType:
-              description: KeyConverter defines the supported converters package for
-                CP platform Supported converter types here,  https://docs.confluent.io/current/connect/concepts.html#connect-converters
-                By default, it is configured as org.apache.kafka.connect.json.JsonConverter
-              minLength: 1
               type: string
             license:
               description: License defines license  configuration for Confluent platform
@@ -1714,10 +1335,10 @@ spec:
                   properties:
                     type:
                       enum:
-                      - mtls
+                        - mtls
                       type: string
                   required:
-                  - type
+                    - type
                   type: object
                 prometheus:
                   description: Override for jmx-prometheus exporter configs
@@ -1796,7 +1417,7 @@ spec:
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
                       required:
-                      - secretRef
+                        - secretRef
                       type: object
                     secretRef:
                       description: SecretRef defines the secret name referenced for
@@ -1807,7 +1428,7 @@ spec:
                       pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                       type: string
                   required:
-                  - enabled
+                    - enabled
                   type: object
               type: object
             mountedSecrets:
@@ -1843,8 +1464,8 @@ spec:
                             element '..'. May not start with the string '..'.
                           type: string
                       required:
-                      - key
-                      - path
+                        - key
+                        - path
                       type: object
                     type: array
                   secretRef:
@@ -1854,7 +1475,7 @@ spec:
                     pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                     type: string
                 required:
-                - secretRef
+                  - secretRef
                 type: object
               type: array
             oneReplicaPerNode:
@@ -1927,8 +1548,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                   matchFields:
@@ -1963,8 +1584,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                 type: object
@@ -1974,8 +1595,8 @@ spec:
                                 format: int32
                                 type: integer
                             required:
-                            - preference
-                            - weight
+                              - preference
+                              - weight
                             type: object
                           type: array
                         requiredDuringSchedulingIgnoredDuringExecution:
@@ -2028,8 +1649,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                   matchFields:
@@ -2064,14 +1685,14 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                 type: object
                               type: array
                           required:
-                          - nodeSelectorTerms
+                            - nodeSelectorTerms
                           type: object
                       type: object
                     podAffinity:
@@ -2135,8 +1756,8 @@ spec:
                                                 type: string
                                               type: array
                                           required:
-                                          - key
-                                          - operator
+                                            - key
+                                            - operator
                                           type: object
                                         type: array
                                       matchLabels:
@@ -2168,7 +1789,7 @@ spec:
                                       is not allowed.
                                     type: string
                                 required:
-                                - topologyKey
+                                  - topologyKey
                                 type: object
                               weight:
                                 description: weight associated with matching the corresponding
@@ -2176,8 +1797,8 @@ spec:
                                 format: int32
                                 type: integer
                             required:
-                            - podAffinityTerm
-                            - weight
+                              - podAffinityTerm
+                              - weight
                             type: object
                           type: array
                         requiredDuringSchedulingIgnoredDuringExecution:
@@ -2232,8 +1853,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                   matchLabels:
@@ -2264,7 +1885,7 @@ spec:
                                   is running. Empty topologyKey is not allowed.
                                 type: string
                             required:
-                            - topologyKey
+                              - topologyKey
                             type: object
                           type: array
                       type: object
@@ -2331,8 +1952,8 @@ spec:
                                                 type: string
                                               type: array
                                           required:
-                                          - key
-                                          - operator
+                                            - key
+                                            - operator
                                           type: object
                                         type: array
                                       matchLabels:
@@ -2364,7 +1985,7 @@ spec:
                                       is not allowed.
                                     type: string
                                 required:
-                                - topologyKey
+                                  - topologyKey
                                 type: object
                               weight:
                                 description: weight associated with matching the corresponding
@@ -2372,8 +1993,8 @@ spec:
                                 format: int32
                                 type: integer
                             required:
-                            - podAffinityTerm
-                            - weight
+                              - podAffinityTerm
+                              - weight
                             type: object
                           type: array
                         requiredDuringSchedulingIgnoredDuringExecution:
@@ -2428,8 +2049,8 @@ spec:
                                             type: string
                                           type: array
                                       required:
-                                      - key
-                                      - operator
+                                        - key
+                                        - operator
                                       type: object
                                     type: array
                                   matchLabels:
@@ -2460,7 +2081,7 @@ spec:
                                   is running. Empty topologyKey is not allowed.
                                 type: string
                             required:
-                            - topologyKey
+                              - topologyKey
                             type: object
                           type: array
                       type: object
@@ -2513,7 +2134,7 @@ spec:
                                   key must be defined
                                 type: boolean
                             required:
-                            - key
+                              - key
                             type: object
                           fieldRef:
                             description: 'Selects a field of the pod: supports metadata.name,
@@ -2530,7 +2151,7 @@ spec:
                                   API version.
                                 type: string
                             required:
-                            - fieldPath
+                              - fieldPath
                             type: object
                           resourceFieldRef:
                             description: 'Selects a resource of the container: only
@@ -2544,8 +2165,8 @@ spec:
                                 type: string
                               divisor:
                                 anyOf:
-                                - type: integer
-                                - type: string
+                                  - type: integer
+                                  - type: string
                                 description: Specifies the output format of the exposed
                                   resources, defaults to "1"
                                 pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
@@ -2554,7 +2175,7 @@ spec:
                                 description: 'Required: resource to select'
                                 type: string
                             required:
-                            - resource
+                              - resource
                             type: object
                           secretKeyRef:
                             description: Selects a key of a secret in the pod's namespace
@@ -2573,11 +2194,11 @@ spec:
                                   must be defined
                                 type: boolean
                             required:
-                            - key
+                              - key
                             type: object
                         type: object
                     required:
-                    - name
+                      - name
                     type: object
                   type: array
                 labels:
@@ -2684,8 +2305,8 @@ spec:
                             description: Value of a property to set
                             type: string
                         required:
-                        - name
-                        - value
+                          - name
+                          - value
                         type: object
                       type: array
                     windowsOptions:
@@ -2805,8 +2426,8 @@ spec:
                     limits:
                       additionalProperties:
                         anyOf:
-                        - type: integer
-                        - type: string
+                          - type: integer
+                          - type: string
                         pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                         x-kubernetes-int-or-string: true
                       description: 'Limits describes the maximum amount of compute
@@ -2815,8 +2436,8 @@ spec:
                     requests:
                       additionalProperties:
                         anyOf:
-                        - type: integer
-                        - type: string
+                          - type: integer
+                          - type: string
                         pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                         x-kubernetes-int-or-string: true
                       description: 'Requests describes the minimum amount of compute
@@ -2883,7 +2504,7 @@ spec:
               format: int32
               type: integer
             storageClass:
-              description: Storage class used for creating pvc's of created connect
+              description: Storage class used for creating pvc's of created ksqlDB
                 pods
               properties:
                 name:
@@ -2892,7 +2513,7 @@ spec:
                   pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                   type: string
               required:
-              - name
+                - name
               type: object
             telemetry:
               description: ConfluentTelemetry defines the confluent telemetry reporter
@@ -2906,7 +2527,7 @@ spec:
                   type: boolean
               type: object
             tls:
-              description: TLS  allows configuring CP Component's server configuration
+              description: Specifies TLS configurations for the ksqlDB rest server.
               properties:
                 autoGeneratedCerts:
                   description: AutoGenerated if configures generates the certificates
@@ -2936,7 +2557,7 @@ spec:
                       pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                       type: string
                   required:
-                  - secretRef
+                    - secretRef
                   type: object
                 secretRef:
                   description: SecretRef defines the secret name referenced for certificates
@@ -2947,18 +2568,13 @@ spec:
                   pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                   type: string
               type: object
-            valueConverterType:
-              description: ValueConverter defines the supported converters package
-                for CP platform Supported converter types here, https://docs.confluent.io/current/connect/concepts.html#connect-converters
-                By default, it is configured as org.apache.kafka.connect.json.JsonConverter
-              minLength: 1
-              type: string
           required:
-          - image
-          - replicas
+            - dataVolumeCapacity
+            - image
+            - replicas
           type: object
         status:
-          description: ConnectStatus defines the observed state of Connect
+          description: KsqlDBStatus defines the observed state of KSQLServer
           properties:
             authorizationType:
               type: string
@@ -3005,8 +2621,6 @@ spec:
               description: CurrentReplicas defines current running replicas
               format: int32
               type: integer
-            groupId:
-              type: string
             internalSecrets:
               description: InternalSecrets defines the list of internal secrets created
                 by Operator for each CP component.
@@ -3086,15 +2700,17 @@ spec:
                   description: TLS defines whether tls is configured by a listener
                   type: boolean
               type: object
+            serviceId:
+              type: string
           type: object
       required:
-      - spec
+        - spec
       type: object
   version: v1beta1
   versions:
-  - name: v1beta1
-    served: true
-    storage: true
+    - name: v1beta1
+      served: true
+      storage: true
 status:
   acceptedNames:
     kind: ""

@@ -4,9 +4,12 @@ resources:
 - ../../../kustomize/base/confluent
 - ../../../kustomize/base/secrets-user
 - ./mds-public.yaml
+- ./rest-class.yaml
 - ./tls-group1.yaml
 - ./ca-pair-sslcerts.yaml
-- ./replicator.yaml
+- ./schemaregistry-base.yaml
+#- ./replicator.yaml
 patchesStrategicMerge:
   - zookeeper.yaml
   - kafka.yaml
+  - schema-registry.yaml

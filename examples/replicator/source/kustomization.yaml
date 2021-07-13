@@ -7,6 +7,6 @@ resources:
 patchesStrategicMerge:
   - zookeeper.yaml
   - kafka.yaml
-  - rest-class.yaml
+#  - rest-class.yaml
 #  - control-centre.yaml
 #  - schema-registry.yaml

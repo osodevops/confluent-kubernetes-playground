@@ -2,5 +2,4 @@ resources:
   - source
   - destination
   - operator
-  - rolebindings
-  - topics
+#  - topics

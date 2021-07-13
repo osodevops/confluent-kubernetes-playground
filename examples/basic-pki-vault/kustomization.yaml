@@ -1,5 +1,5 @@
-namespace: sandbox
 resources:
   - namespace.yaml
   - confluent
   - operator
+

@@ -41,6 +41,7 @@ spec:
         {{- with secret "oso-confluent/client/kafka-jaas" -}}
         {{ .Data.data.jaas }}
         {{- end }}
+
   configOverrides:
     server:
       - confluent.schema.registry.url=https://schemaregistry.sandbox.svc.cluster.local:8081

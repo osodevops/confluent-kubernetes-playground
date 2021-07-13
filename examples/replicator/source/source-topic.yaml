@@ -12,7 +12,7 @@ spec:
     authentication:
       type: bearer
       bearer:
-        secretRef: mds-client-c3
+        secretRef: rest-credential
     endpoint: https://kafka.sandbox.svc.cluster.local:8090
   configs:
     cleanup.policy: "delete"

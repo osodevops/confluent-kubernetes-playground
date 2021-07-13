@@ -6,10 +6,12 @@ resources:
 - ./mds-public.yaml
 - ./tls-group1.yaml
 - ./ca-pair-sslcerts.yaml
+- ./replicator.yaml
 - ./schemaregistry-base.yaml
-#- ./replicator.yaml
+- ./controlcenter-testadmin-rolebindings.yaml
 patchesStrategicMerge:
   - ./rest-class.yaml
   - zookeeper.yaml
   - kafka.yaml
   - schema-registry.yaml
+  - control-centre.yaml

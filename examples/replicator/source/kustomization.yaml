@@ -4,9 +4,9 @@ resources:
 - ../../../kustomize/base/confluent
 - ../../../kustomize/base/secrets-tls
 - ../../../kustomize/base/secrets-user
+- ./source-topic.yaml
+#- ./rbac-producer-app.yaml
 patchesStrategicMerge:
+  - ./rest-class.yaml
   - zookeeper.yaml
   - kafka.yaml
-#  - rest-class.yaml
-#  - control-centre.yaml
-#  - schema-registry.yaml

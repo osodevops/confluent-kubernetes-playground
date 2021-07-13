@@ -2,4 +2,3 @@ resources:
   - source
   - destination
   - operator
-#  - topics

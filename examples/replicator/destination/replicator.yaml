@@ -4,6 +4,8 @@ kind: Connect
 metadata:
   name: replicator
 spec:
+  mountedSecrets:
+    - secretRef: kafka-pkcs12
   replicas: 1
   # Configure to have TLS encryption, and use auto-generated server certs
   tls:
@@ -32,6 +34,7 @@ spec:
     # Replicator monitoring extension to communicate with other Connect nodes in the cluster.
     # `/mnt/sslcerts/truststore.jks` is the truststore location when auto-genarated certs are used.
     jvm:
+      - -Djavax.net.debug=all
       - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.p12
       - -Djavax.net.ssl.trustStorePassword=mystorepassword
     server:
@@ -56,5 +59,7 @@ spec:
         type: bearer
         bearer:
           secretRef: mds-client-connect
+      tls:
+        enabled: true
     interceptor:
       enabled: true

@@ -1,0 +1,11 @@
+namespace: sandbox
+resources:
+- ./namespace.yaml
+- ../../../kustomize/base/confluent
+- ../../../kustomize/base/secrets-tls
+patchesStrategicMerge:
+  - custom-kafka-connect.yaml
+  - zookeeper.yaml
+  - kafka.yaml
+  - control-centre.yaml
+  - schema-registry.yaml

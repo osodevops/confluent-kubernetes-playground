@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: adventure-works-sql-server
+  namespace: sandbox
+  labels:
+    role: sql-server
+    app: sql-server
+spec:
+  containers:
+    - name: adventure-works-sql-server
+#      args:
+#      - --copy-service
+#      - --loglevel=debug
+      image:  chriseaton/adventureworks:light
+      ports:
+        - name: sql
+          containerPort: 1433
+#      livenessProbe:
+#        tcpSocket:
+#          port: 389
+#        initialDelaySeconds: 15
+#        periodSeconds: 20
+      env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: SA_PASSWORD
+          value: "nbBg8G4DkR83Xs"
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sql-server
+  labels:
+    app: sql-server
+  namespace: sandbox
+spec:
+  ports:
+    - port: 1433
+      name: sql
+  clusterIP: None
+  selector:
+    app: sql-server
+
+
+

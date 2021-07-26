@@ -5,6 +5,7 @@ metadata:
 spec:
   configOverrides:
     server:
+      - auto.create.topics.enable = true
       - confluent.schema.registry.url=https://schemaregistry.sandbox.svc.cluster.local:8081
 #      - ssl.endpoint.identification.algorithm=
 

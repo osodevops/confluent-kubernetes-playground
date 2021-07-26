@@ -1,31 +1,25 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: adventure-works-sql-server
+  name: sql-server
   namespace: sandbox
   labels:
     role: sql-server
     app: sql-server
 spec:
   containers:
-    - name: adventure-works-sql-server
-#      args:
-#      - --copy-service
-#      - --loglevel=debug
-      image:  chriseaton/adventureworks:light
+    - name: sql-server
+      image:  boysherman/sqlserver-adventureworks:latest
       ports:
         - name: sql
           containerPort: 1433
-#      livenessProbe:
-#        tcpSocket:
-#          port: 389
-#        initialDelaySeconds: 15
-#        periodSeconds: 20
       env:
         - name: ACCEPT_EULA
           value: "Y"
         - name: SA_PASSWORD
           value: "nbBg8G4DkR83Xs"
+        - name: MSSQL_AGENT_ENABLED
+          value: "true"
   restartPolicy: Always
 ---
 apiVersion: v1

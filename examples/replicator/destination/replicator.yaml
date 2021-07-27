@@ -34,14 +34,18 @@ spec:
     # Replicator monitoring extension to communicate with other Connect nodes in the cluster.
     # `/mnt/sslcerts/truststore.jks` is the truststore location when auto-genarated certs are used.
     jvm:
-      - -Djavax.net.debug=all
-      - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.p12
-      - -Djavax.net.ssl.trustStorePassword=mystorepassword
+#      - -Djavax.net.debug=all
+#      - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.p12
+#      - -Djavax.net.ssl.trustStorePassword=mystorepassword
     server:
+      - connector.class=io.confluent.connect.replicator.ReplicatorSourceConnector
       # To activate the monitoring extension, configure this property
       - rest.extension.classes=io.confluent.connect.replicator.monitoring.ReplicatorMonitoringExtension,io.confluent.connect.security.ConnectSecurityExtension
-      # This specifies that Replicator is the Connector configured
-      - connector.class=io.confluent.connect.replicator.ReplicatorSourceConnector
+      - admin.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required metadataServerUrls="https://kafka.destination.svc.cluster.local:8090" username="connect" password="connect-secret";
+      - consumer.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required metadataServerUrls="https://kafka.destination.svc.cluster.local:8090" username="connect" password="connect-secret";
+      - producer.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required metadataServerUrls="https://kafka.destination.svc.cluster.local:8090" username="connect" password="connect-secret";
+      - sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required metadataServerUrls="https://kafka.destination.svc.cluster.local:8090" username="connect" password="connect-secret";
+      - confluent.metadata.basic.auth.user.info=connect:connect-secret
   dependencies:
     kafka:
       bootstrapEndpoint: kafka.destination.svc.cluster.local:9071
@@ -61,5 +65,5 @@ spec:
           secretRef: mds-client-connect
       tls:
         enabled: true
-    interceptor:
-      enabled: true
+#    interceptor:
+#      enabled: true

@@ -1,6 +1,5 @@
 namespace: sandbox
 resources:
-- ./namespace.yaml
 - ../../../kustomize/base/confluent
 - ../../../kustomize/base/secrets-tls
 - ../../../kustomize/base/secrets-user

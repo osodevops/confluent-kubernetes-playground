@@ -1,4 +1,4 @@
-1. Exception
+1. Exception while setting up monitoring for replicator.
 ```shell
 [ERROR] 2021-07-27 14:33:27,583 [main] org.apache.kafka.connect.cli.ConnectDistributed startConnect - Failed to start Connect                                                                                                                │
 │ org.apache.kafka.connect.errors.ConnectException: Failed to find any class that implements interface org.apache.kafka.connect.rest.ConnectRestExtension and which name matches io.confluent.connect.replicator.monitoring.ReplicatorMonitori │

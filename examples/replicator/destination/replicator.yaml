@@ -35,8 +35,8 @@ spec:
     # `/mnt/sslcerts/truststore.jks` is the truststore location when auto-genarated certs are used.
     jvm:
 #      - -Djavax.net.debug=all
-#      - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.p12
-#      - -Djavax.net.ssl.trustStorePassword=mystorepassword
+      - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.p12
+      - -Djavax.net.ssl.trustStorePassword=mystorepassword
     server:
       - connector.class=io.confluent.connect.replicator.ReplicatorSourceConnector
       # To activate the monitoring extension, configure this property
@@ -65,5 +65,5 @@ spec:
           secretRef: mds-client-connect
       tls:
         enabled: true
-#    interceptor:
-#      enabled: true
+    interceptor:
+      enabled: true

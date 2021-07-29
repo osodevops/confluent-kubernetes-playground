@@ -1,7 +1,7 @@
 apiVersion: platform.confluent.io/v1beta1
 kind: Connect
 metadata:
-  name: connect
+  name: gcsconnect
 spec:
   replicas: 1
   image:

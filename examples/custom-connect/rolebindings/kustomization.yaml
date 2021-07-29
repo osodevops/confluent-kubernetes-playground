@@ -1,4 +1,4 @@
 namespace: sandbox
 resources:
   - connect
-  - ../destination/controlcenter-testadmin-rolebindings.yaml
+  - ./controlcenter-testadmin-rolebindings.yaml

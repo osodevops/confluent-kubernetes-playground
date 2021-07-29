@@ -25,6 +25,9 @@ kubectl apply -k .
  kubectl create secret generic gcs-service-account --from-file=./service-account.json -n sandbox
 ```
 
+7. Exec ontop pod using `kubectl exec -n sandbox -it gcsconnect-0 -- bash` and run
+
+```shell
 cat <<EOF > gcs-sink.json
 {
 "name": "gcs-sink",
@@ -45,5 +48,7 @@ cat <<EOF > gcs-sink.json
 }
 }
 EOF
+```
 
+8. start connector using this curl command
 curl -XPOST -H "Content-Type: application/json" --data @gcs-sink.json -u connect:connect-secret https://localhost:8083/connectors -kv

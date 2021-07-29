@@ -1,0 +1,5 @@
+namespace: sandbox
+resources:
+- ../../../kustomize/base/operator
+patchesStrategicMerge:
+  - deployment.yaml

@@ -1,0 +1,42 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connect
+metadata:
+  name: connect
+spec:
+  replicas: 1
+  image:
+    application: connect-gcs:latest
+    init: confluentinc/cp-init-container-operator:6.1.2.0
+  tls:
+    secretRef: tls-group1
+  authorization:
+    type: rbac
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka.sandbox.svc.cluster.local:9071
+      tls:
+        enabled: true
+    mds:
+      endpoint: https://kafka.sandbox.svc.cluster.local:8090
+      tokenKeyPair:
+        secretRef: mds-public
+      authentication:
+        type: bearer
+        bearer:
+          secretRef: mds-client-connect
+      tls:
+        enabled: true
+  configOverrides:
+    server:
+      - group.id=gcs-cluster
+      - offset.storage.replication.factor=1
+      - config.storage.replication.factor=1
+      - status.storage.replication.factor=1
+      - config.storage.topic=_confluent-connect-configs
+      - offset.storage.topic=_confluent-connect-offsets
+      - status.storage.topic=_confluent-connect-status
+      - confluent.topic.security.protocol=SASL_SSL
+      - confluent.topic.sasl.mechanism=OAUTHBEARER
+      - confluent.topic.sasl.login.callback.handler.class=io.confluent.kafka.clients.plugins.auth.token.TokenUserLoginCallbackHandler
+      - confluent.topic.ssl.truststore.location=/mnt/sslcerts/truststore.jks
+      - confluent.topic.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}

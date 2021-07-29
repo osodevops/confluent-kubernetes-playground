@@ -1,0 +1,26 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: connect-topics
+  namespace: confluent
+spec:
+  principal:
+    name: connect
+    type: user
+  resourcePatterns:
+    - name: _confluent-connect-secrets
+      patternType: LITERAL
+      resourceType: Topic
+    - name: _confluent-connect-status
+      patternType: LITERAL
+      resourceType: Topic
+    - name: _confluent-connect-offsets
+      patternType: LITERAL
+      resourceType: Topic
+    - name: _confluent-connect-configs
+      patternType: LITERAL
+      resourceType: Topic
+    - name: confluent.connect-
+      patternType: PREFIXED
+      resourceType: Topic
+  role: ResourceOwner

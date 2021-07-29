@@ -2,5 +2,6 @@ namespace: sandbox
 resources:
   - ../../../../kustomize/base/rolebindings/connect
   - ./connect-topics.yaml
+  - ./gcs-connect-rb.yaml
 patchesStrategicMerge:
   - connect-base.yaml

@@ -28,10 +28,11 @@ spec:
         enabled: true
   configOverrides:
     server:
-      - group.id=gcs-cluster
-      - offset.storage.replication.factor=1
-      - config.storage.replication.factor=1
-      - status.storage.replication.factor=1
+      - group.id=gcsconnect-cluster
+      - connect.replication.factor=3
+      - offset.storage.replication.factor=3
+      - config.storage.replication.factor=3
+      - status.storage.replication.factor=3
       - config.storage.topic=_confluent-connect-configs
       - offset.storage.topic=_confluent-connect-offsets
       - status.storage.topic=_confluent-connect-status

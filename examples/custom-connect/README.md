@@ -46,4 +46,4 @@ cat <<EOF > gcs-sink.json
 }
 EOF
 
-curl -XPOST -H "Content-Type: application/json" --data @gcs-sink.json -u testadmin:testadmin https://localhost:8083/connectors -kv
+curl -XPOST -H "Content-Type: application/json" --data @gcs-sink.json -u connect:connect-secret https://localhost:8083/connectors -kv

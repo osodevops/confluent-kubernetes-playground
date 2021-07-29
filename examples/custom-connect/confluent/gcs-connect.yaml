@@ -3,6 +3,8 @@ kind: Connect
 metadata:
   name: gcsconnect
 spec:
+  mountedSecrets:
+    - secretRef: gcs-service-account
   replicas: 1
   image:
     application: connect-gcs:latest

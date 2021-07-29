@@ -25,7 +25,7 @@ kubectl apply -k .
  kubectl create secret generic gcs-service-account --from-file=./service-account.json -n sandbox
 ```
 
-7. Exec ontop pod using `kubectl exec -n sandbox -it gcsconnect-0 -- bash` and run
+7. Exec on top pod using `kubectl exec -n sandbox -it gcsconnect-0 -- bash` and run
 
 ```shell
 cat <<EOF > gcs-sink.json
@@ -52,3 +52,9 @@ EOF
 
 8. start connector using this curl command
 curl -XPOST -H "Content-Type: application/json" --data @gcs-sink.json -u connect:connect-secret https://localhost:8083/connectors -kv
+   
+if successfully:
+```shell
+* Connection #0 to host localhost left intact
+{"name":"gcs1-sink","config":{"connector.class":"io.confluent.connect.gcs.GcsSinkConnector","tasks.max":"1","topics":"foobar","gcs.bucket.name":"lloyds-kafka-example","gcs.part.size":"5242880","flush.size":"1","gcs.credentials.path":"/mnt/secrets/gcs-service-account/service-account.json","storage.class":"io.confluent.connect.gcs.storage.GcsStorage","format.class":"io.confluent.connect.gcs.format.avro.AvroFormat","partitioner.class":"io.confluent.connect.storage.partitioner.DefaultPartitioner","schema.compatibility":"NONE","confluent.topic.bootstrap.servers":"kafka.sandbox.svc.cluster.local:9071","confluent.topic.replication.factor":"1","name":"gcs1-sink"},"tasks":[],"type":"sink"}
+```

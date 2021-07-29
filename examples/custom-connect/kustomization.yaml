@@ -3,4 +3,4 @@ resources:
   - confluent
   - operator
   - rolebindings
-#  - topics
+  - topics

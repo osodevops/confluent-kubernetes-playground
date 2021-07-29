@@ -1,34 +1,34 @@
-#---
-## rolebinding `testadmin-rb` allows `testadmin` to see kafkaCluster
-#apiVersion: platform.confluent.io/v1beta1
-#kind: ConfluentRolebinding
-#metadata:
-#  name: testadmin-rb
-#spec:
-#  principal:
-#    type: user
-#    name: testadmin
-#  role: ClusterAdmin
-#  ## if use other kafkaRestClass except for default, need to configure accordingly
-#  #kafkaRestClassRef:
-#  # name: default
-#---
-## rolebinding `testadmin-rb-sr` allows `testadmin` to see schemaregistry information
-## `schemaRegistryCllusterId` pattern: `id_<schemaregistry.name>_<namespace>`
-#apiVersion: platform.confluent.io/v1beta1
-#kind: ConfluentRolebinding
-#metadata:
-#  name: testadmin-rb-sr
-#spec:
-#  principal:
-#    type: user
-#    name: testadmin
-#  clustersScopeByIds:
-#    schemaRegistryClusterId: id_schemaregistry_destination
-#  role: SystemAdmin
-#  ## if use other kafkaRestClass except for default, need to configure accordingly
-#  #kafkaRestClassRef:
-#  # name: default
+---
+# rolebinding `testadmin-rb` allows `testadmin` to see kafkaCluster
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: testadmin-rb
+spec:
+  principal:
+    type: user
+    name: testadmin
+  role: ClusterAdmin
+  ## if use other kafkaRestClass except for default, need to configure accordingly
+  #kafkaRestClassRef:
+  # name: default
+---
+# rolebinding `testadmin-rb-sr` allows `testadmin` to see schemaregistry information
+# `schemaRegistryCllusterId` pattern: `id_<schemaregistry.name>_<namespace>`
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: testadmin-rb-sr
+spec:
+  principal:
+    type: user
+    name: testadmin
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_schemaregistry_destination
+  role: SystemAdmin
+  ## if use other kafkaRestClass except for default, need to configure accordingly
+  #kafkaRestClassRef:
+  # name: default
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding

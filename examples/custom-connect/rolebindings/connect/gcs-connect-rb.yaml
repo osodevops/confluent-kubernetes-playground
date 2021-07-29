@@ -49,7 +49,19 @@ spec:
     name: connect
     type: user
   resourcePatterns:
+    - name: _confluent-license
+      patternType: LITERAL
+      resourceType: Topic
     - name: _confluent-gcsconnect-secrets
+      patternType: LITERAL
+      resourceType: Topic
+    - name: _confluent-connect-offsets
+      patternType: LITERAL
+      resourceType: Topic
+    - name: _confluent-connect-configs
+      patternType: LITERAL
+      resourceType: Topic
+    - name: _confluent-connect-status
       patternType: LITERAL
       resourceType: Topic
     - name: _confluent-gcsconnect-status

@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - ldap.yaml
+  - kafkacat.yaml
   - crds

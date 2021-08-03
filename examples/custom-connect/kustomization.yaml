@@ -4,3 +4,4 @@ resources:
   - operator
   - rolebindings
   - topics
+  - ../../kustomize/base/tools/

@@ -43,8 +43,11 @@ cat <<EOF > gcs-sink.json
 "format.class": "io.confluent.connect.gcs.format.avro.AvroFormat",
 "partitioner.class": "io.confluent.connect.storage.partitioner.DefaultPartitioner",
 "schema.compatibility": "NONE",
-"confluent.topic.bootstrap.servers": "kafka.sandbox.svc.cluster.local:9071",
+"confluent.topic.bootstrap.servers": "kafka.sandbox.svc.cluster.local:9073",
 "confluent.topic.replication.factor": "1"
+"confluent.topic.ssl.truststore.location" : "/mnt/sslcerts/truststore.p12",
+"confluent.topic.ssl.truststore.password" : "mystorepassword",
+"confluent.topic.ssl.truststore.type" : "PKCS12"
 }
 }
 EOF
@@ -58,3 +61,23 @@ if successfully:
 * Connection #0 to host localhost left intact
 {"name":"gcs1-sink","config":{"connector.class":"io.confluent.connect.gcs.GcsSinkConnector","tasks.max":"1","topics":"foobar","gcs.bucket.name":"lloyds-kafka-example","gcs.part.size":"5242880","flush.size":"1","gcs.credentials.path":"/mnt/secrets/gcs-service-account/service-account.json","storage.class":"io.confluent.connect.gcs.storage.GcsStorage","format.class":"io.confluent.connect.gcs.format.avro.AvroFormat","partitioner.class":"io.confluent.connect.storage.partitioner.DefaultPartitioner","schema.compatibility":"NONE","confluent.topic.bootstrap.servers":"kafka.sandbox.svc.cluster.local:9071","confluent.topic.replication.factor":"1","name":"gcs1-sink"},"tasks":[],"type":"sink"}
 ```
+
+## Notes
+`curl -X DELETE -u connect:connect-secret  http://localhost:8083/connectors/gcs-sink`
+
+```shell
+"confluent.topic.ssl.truststore.location" : "/mnt/sslcerts/truststore.p12",
+"confluent.topic.ssl.truststore.password" : "mystorepassword",
+"confluent.topic.ssl.truststore.type" : "PKCS12"
+```
+
+
+kafkacat -b kafka.sandbox.svc.cluster.local:9071 \
+    -X security.protocol=sasl_ssl \
+    -X sasl.mechanisms=PLAIN \
+    -X sasl.username=connect \
+    -X sasl.password=connect-secret \
+    -X ssl.key.location=/mnt/secrets/privkey.pem \
+    -X ssl.certificate.location=/mnt/secrets/fullchain.pem \
+    -X ssl.ca.location=/mnt/secrets/cacerts.pem \
+    -L

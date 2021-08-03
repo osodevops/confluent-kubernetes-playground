@@ -41,30 +41,30 @@ spec:
     type: user
     name: testadmin
   clustersScopeByIds:
-    connectClusterId: sandbox.connect
+    connectClusterId: sandbox.gcsconnect
   role: SystemAdmin
   ## if use other kafkaRestClass except for default, need to configure accordingly
   #kafkaRestClassRef:
   # name: default
 ---
-# rolebinding `testadmin-rb-ksql` allows `testadmin` to see ksqldb cluster
-# `ksqlClusterId` pattern: `<namespace>.<ksqldb.name>`
-apiVersion: platform.confluent.io/v1beta1
-kind: ConfluentRolebinding
-metadata:
-  name: testadmin-rb-ksql
-spec:
-  principal:
-    type: user
-    name: testadmin
-  clustersScopeByIds:
-    ksqlClusterId: sandbox.ksqldb_
-  role: ResourceOwner
-  resourcePatterns:
-    - name: ksql-cluster
-      patternType: LITERAL
-      resourceType: KsqlCluster
-  ## if use other kafkaRestClass except for default, need to configure accordingly
-  #kafkaRestClassRef:
-  # name: default
----
+## rolebinding `testadmin-rb-ksql` allows `testadmin` to see ksqldb cluster
+## `ksqlClusterId` pattern: `<namespace>.<ksqldb.name>`
+#apiVersion: platform.confluent.io/v1beta1
+#kind: ConfluentRolebinding
+#metadata:
+#  name: testadmin-rb-ksql
+#spec:
+#  principal:
+#    type: user
+#    name: testadmin
+#  clustersScopeByIds:
+#    ksqlClusterId: sandbox.ksqldb_
+#  role: ResourceOwner
+#  resourcePatterns:
+#    - name: ksql-cluster
+#      patternType: LITERAL
+#      resourceType: KsqlCluster
+#  ## if use other kafkaRestClass except for default, need to configure accordingly
+#  #kafkaRestClassRef:
+#  # name: default
+#---

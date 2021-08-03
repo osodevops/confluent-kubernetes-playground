@@ -10,5 +10,5 @@ spec:
     authentication:
       type: bearer
       bearer:
-        secretRef: mds-client-c3
+        secretRef: mds-client-connect
     endpoint: https://kafka.sandbox.svc.cluster.local:8090

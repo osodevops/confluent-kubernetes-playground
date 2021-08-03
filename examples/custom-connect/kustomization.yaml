@@ -1,8 +1,6 @@
 namespace: sandbox
 resources:
-  - namespace.yaml
   - confluent
   - operator
   - rolebindings
-#  - topics
-  - vault
+  - ../../kustomize/base/tools/

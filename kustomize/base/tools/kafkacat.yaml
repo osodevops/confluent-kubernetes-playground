@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kafkacat
+  labels:
+    role: kafkacat
+spec:
+  containers:
+    - name: kafkacat
+      image: confluentinc/cp-kafkacat
+      command:
+        - sh
+        - -c
+        - "tail -f /dev/null"
+      volumeMounts:
+        - name: truststore
+          mountPath: "/mnt/secrets/"
+          readOnly: true
+  volumes:
+    - name: truststore
+      secret:
+        secretName: kafka-pkcs12

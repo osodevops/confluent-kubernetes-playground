@@ -1,0 +1,45 @@
+
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: connect-cluster-base
+spec:
+  clustersScopeByIds:
+    connectClusterId: sandbox.replicator
+  principal:
+    name: connect
+    type: user
+  role: SecurityAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: connect-resources-base
+spec:
+  principal:
+    name: connect
+    type: user
+  resourcePatterns:
+    - name: sandbox.replicator
+      patternType: LITERAL
+      resourceType: Group
+    - name: sandbox.replicator-
+      patternType: PREFIXED
+      resourceType: Topic
+  role: ResourceOwner
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: connect-monitoring-base
+spec:
+  principal:
+    name: connect
+    type: user
+  resourcePatterns:
+    - name: _confluent-monitoring
+      patternType: PREFIXED
+      resourceType: Topic
+  role: DeveloperWrite
+
+

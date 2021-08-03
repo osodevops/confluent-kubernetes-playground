@@ -1,0 +1,5 @@
+resources:
+  - source
+  - destination
+  - operator
+  - producer

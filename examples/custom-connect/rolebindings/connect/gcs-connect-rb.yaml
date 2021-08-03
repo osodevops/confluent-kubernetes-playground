@@ -47,6 +47,9 @@ spec:
     - name: gcsconnect-cluster
       patternType: LITERAL
       resourceType: Group
+    - name: connect-gcs-sink
+      patternType: LITERAL
+      resourceType: Group
   role: ResourceOwner
 ---
 apiVersion: platform.confluent.io/v1beta1
@@ -59,6 +62,9 @@ spec:
     name: connect
     type: user
   resourcePatterns:
+    - name: topic-in-source
+      patternType: LITERAL
+      resourceType: Topic
     - name: _confluent-license
       patternType: LITERAL
       resourceType: Topic

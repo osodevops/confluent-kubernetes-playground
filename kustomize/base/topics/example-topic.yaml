@@ -3,5 +3,5 @@ kind: KafkaTopic
 metadata:
   name: foobar
 spec:
-  replicas: 1
+  replicas: 3
   partitionCount: 6

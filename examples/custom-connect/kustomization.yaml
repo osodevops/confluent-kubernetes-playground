@@ -3,5 +3,4 @@ resources:
   - confluent
   - operator
   - rolebindings
-  - topics
   - ../../kustomize/base/tools/

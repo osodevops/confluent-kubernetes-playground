@@ -10,5 +10,3 @@ spec:
             - --debug=false
             - --namespaces=sandbox
           name: confluent-operator
-
-

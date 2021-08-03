@@ -2,11 +2,10 @@ namespace: sandbox
 resources:
 - ../../../kustomize/base/confluent
 - ../../../kustomize/base/secrets-tls
-- ../../../kustomize/base/secrets-user
+- service-account-controlcenter.yml
 patchesStrategicMerge:
   - zookeeper.yaml
   - kafka.yaml
-  - rest-class.yaml
   - control-centre.yaml
   - kafka-connect.yaml
   - ksqldb.yaml

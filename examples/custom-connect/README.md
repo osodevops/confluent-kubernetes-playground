@@ -7,7 +7,7 @@ minikube start --cpus=6 --memory=16384
 
 3. apply confluent crds 
 ```shell
-kubectl apply -k ../../kustomize/infrastructure
+kubectl apply -k ../../kustomize/crds
 ```
 
 4. run docker build for connect image into minikube

@@ -5,7 +5,7 @@ metadata:
   name: replicator
 spec:
   mountedSecrets:
-    - secretRef: kafka-pkcs12
+    - secretRef: kafka-source-pkcs12
   replicas: 1
   # Configure to have TLS encryption, and use auto-generated server certs
   tls:
@@ -35,8 +35,8 @@ spec:
     # `/mnt/sslcerts/truststore.jks` is the truststore location when auto-genarated certs are used.
     jvm:
 #      - -Djavax.net.debug=all
-      - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.p12
-      - -Djavax.net.ssl.trustStorePassword=mystorepassword
+#      - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.p12
+#      - -Djavax.net.ssl.trustStorePassword=mystorepassword
     server:
       - connector.class=io.confluent.connect.replicator.ReplicatorSourceConnector
       # To activate the monitoring extension, configure this property

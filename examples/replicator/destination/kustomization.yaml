@@ -9,6 +9,7 @@ resources:
 - ./replicator.yaml
 - ./schemaregistry-base.yaml
 - ./controlcenter-testadmin-rolebindings.yaml
+- ./source-truststore.yaml
 patchesStrategicMerge:
   - ./rest-class.yaml
   - zookeeper.yaml

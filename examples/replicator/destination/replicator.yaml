@@ -4,8 +4,6 @@ kind: Connect
 metadata:
   name: replicator
 spec:
-  mountedSecrets:
-    - secretRef: kafka-pkcs12
   replicas: 1
   # Configure to have TLS encryption, and use auto-generated server certs
   tls:

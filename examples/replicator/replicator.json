@@ -1,0 +1,22 @@
+ {
+ "name": "replicator",
+ "config": {
+     "connector.class": "io.confluent.connect.replicator.ReplicatorSourceConnector",
+     "confluent.license": "",
+     "confluent.topic.replication.factor": "3",
+     "tasks.max": "4",
+     "topic.whitelist": "topic-in-source",
+     "topic.rename.format": "${topic}_replica",
+     "key.converter": "io.confluent.connect.replicator.util.ByteArrayConverter",
+     "value.converter": "io.confluent.connect.replicator.util.ByteArrayConverter",
+     "src.kafka.bootstrap.servers": "kafka.sandbox.svc.cluster.local:9092",
+     "src.kafka.sasl.mechanism": "PLAIN",
+     "src.kafka.sasl.jaas.config": "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kafka\" password=\"kafka-secret\";",
+     "src.kafka.security.protocol": "SASL_SSL",
+     "dest.kafka.bootstrap.servers": "kafka.destination.svc.cluster.local:9092",
+     "dest.kafka.security.protocol": "SASL_SSL",
+     "dest.kafka.sasl.mechanism": "PLAIN",
+     "dest.kafka.sasl.jaas.config": "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kafka\" password=\"kafka-secret\";",
+     "src.consumer.group.id": "replicator"
+   }
+ }

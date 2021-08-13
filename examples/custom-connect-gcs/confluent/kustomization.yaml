@@ -1,14 +1,12 @@
 namespace: sandbox
 resources:
-- ldap.yaml
+- ./namespace.yaml
 - ../../../kustomize/base/confluent
 - ../../../kustomize/base/secrets-tls
 - ../../../kustomize/base/secrets-user
+- ./source-topic.yaml
+- ./gcs-connect.yaml
 patchesStrategicMerge:
   - zookeeper.yaml
   - kafka.yaml
-  - rest-class.yaml
-  - control-centre.yaml
-  - kafka-connect.yaml
-  - ksqldb.yaml
-  - schema-registry.yaml
+  - ./rest-class.yaml

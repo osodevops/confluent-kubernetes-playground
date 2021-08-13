@@ -1,9 +1,8 @@
 #!/bin/bash
-SERVER_DOMAINS=${1-base-server-domain.json}
 cfssl gencert -initca base-ca-csr.json | cfssljson -bare ./sensitive-ca -
 # Verify with this:
 #openssl x509 -in sensitive-ca.pem -text -noout
-cfssl gencert -ca=./sensitive-ca.pem -ca-key=./sensitive-ca-key.pem -config=./base-ca-config.json -profile=server $SERVER_DOMAINS | cfssljson -bare sensitive-server
+cfssl gencert -ca=./sensitive-ca.pem -ca-key=./sensitive-ca-key.pem -config=./base-ca-config.json -profile=server base-server-domain.json | cfssljson -bare sensitive-server
 # Verify with this:
 #openssl x509 -in sensitive-server.pem -text -noout
 

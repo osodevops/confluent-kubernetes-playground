@@ -4,5 +4,4 @@ resources:
   - confluent
   - operator
   - rolebindings
-#  - topics
   - vault

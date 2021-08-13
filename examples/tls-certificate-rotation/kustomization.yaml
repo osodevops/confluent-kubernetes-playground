@@ -1,4 +1,0 @@
-namespace: example
-resources:
-- namespace.yaml
-- ../../kustomize/base

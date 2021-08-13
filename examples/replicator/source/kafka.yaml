@@ -47,7 +47,7 @@ spec:
       provider:
         type: ldap
         ldap:
-          address: ldap://ldap.tools.svc.cluster.local:389
+          address: ldap://ldap.sandbox.svc.cluster.local:389
           authentication:
             type: simple
             simple:

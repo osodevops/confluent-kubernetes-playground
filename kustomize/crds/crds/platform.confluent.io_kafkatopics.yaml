@@ -9,33 +9,33 @@ metadata:
   name: kafkatopics.platform.confluent.io
 spec:
   additionalPrinterColumns:
-    - JSONPath: .status.replicas
-      name: Replicas
-      type: string
-    - JSONPath: .status.partitionCount
-      name: Partition
-      type: string
-    - JSONPath: .status.state
-      name: Status
-      type: string
-    - JSONPath: .status.kafkaClusterId
-      name: ClusterId
-      type: string
-    - JSONPath: .metadata.creationTimestamp
-      name: Age
-      type: date
+  - JSONPath: .status.replicas
+    name: Replicas
+    type: string
+  - JSONPath: .status.partitionCount
+    name: Partition
+    type: string
+  - JSONPath: .status.state
+    name: Status
+    type: string
+  - JSONPath: .status.kafkaClusterId
+    name: ClusterId
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: Age
+    type: date
   group: platform.confluent.io
   names:
     categories:
-      - all
-      - confluent-platform
-      - confluent
+    - all
+    - confluent-platform
+    - confluent
     kind: KafkaTopic
     listKind: KafkaTopicList
     plural: kafkatopics
     shortNames:
-      - kt
-      - topic
+    - kt
+    - topic
     singular: kafkatopic
   preserveUnknownFields: false
   scope: Namespaced
@@ -79,7 +79,7 @@ spec:
                   minLength: 1
                   type: string
               required:
-                - name
+              - name
               type: object
             kafkaRest:
               description: KafkaRestRef defines the Kafka Rest API configuration
@@ -89,56 +89,37 @@ spec:
                     API
                   properties:
                     basic:
-                      description: BasicAuthentication defines basic authentication
+                      description: KafkaRestBasicAuthentication defines basic authentication
                       properties:
-                        directoryPathInContainer:
-                          description: DirectoryPathInContainer allows to pass basic
-                            credential through directory path in a container
-                          minLength: 1
-                          type: string
-                        restrictedRoles:
-                          description: RestrictedRoles defines restricted roles on
-                            the server side only. Changes will be only reflected in
-                            ControlCenter (C3). This configuration is ignored on the
-                            client side configuration
-                          items:
-                            type: string
-                          minItems: 1
-                          type: array
-                        roles:
-                          description: Role defines list of roles configuration on
-                            the server side only. This configuration is ignored on
-                            the client side configuration
-                          items:
-                            type: string
-                          type: array
                         secretRef:
                           description: Name of the secret reference
                           maxLength: 30
                           minLength: 1
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
+                      required:
+                      - secretRef
                       type: object
                     bearer:
-                      description: BearerAuthentication used by MDS clients
+                      description: KafkaRestBearerAuthentication defines bearer authentication,
+                        used by MDS clients when RBAC enabled
                       properties:
-                        directoryPathInContainer:
-                          minLength: 1
-                          type: string
                         secretRef:
                           description: Name of the secret reference
                           maxLength: 30
                           minLength: 1
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
+                      required:
+                      - secretRef
                       type: object
                     type:
                       enum:
-                        - basic
-                        - bearer
+                      - basic
+                      - bearer
                       type: string
                   required:
-                    - type
+                  - type
                   type: object
                 endpoint:
                   description: Endpoint defines where confluent Kafka Rest API is
@@ -177,7 +158,7 @@ spec:
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
                       required:
-                        - secretRef
+                      - secretRef
                       type: object
                     secretRef:
                       description: SecretRef defines the secret name referenced for
@@ -188,7 +169,7 @@ spec:
                       pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                       type: string
                   required:
-                    - enabled
+                  - enabled
                   type: object
               type: object
             kafkaRestClassRef:
@@ -203,7 +184,7 @@ spec:
                   description: Namespace defines the namespace of the KafkaRestClass
                   type: string
               required:
-                - name
+              - name
               type: object
             name:
               description: Name defines the topic name. If not configured uses the
@@ -275,9 +256,9 @@ spec:
       type: object
   version: v1beta1
   versions:
-    - name: v1beta1
-      served: true
-      storage: true
+  - name: v1beta1
+    served: true
+    storage: true
 status:
   acceptedNames:
     kind: ""

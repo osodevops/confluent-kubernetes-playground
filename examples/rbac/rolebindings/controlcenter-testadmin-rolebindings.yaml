@@ -25,7 +25,7 @@ spec:
     name: testadmin
   clustersScopeByIds:
     schemaRegistryClusterId: id_schemaregistry_sandbox
-  role: SystemAdmin
+  role: ClusterAdmin
   ## if use other kafkaRestClass except for default, need to configure accordingly
   #kafkaRestClassRef:
   # name: default

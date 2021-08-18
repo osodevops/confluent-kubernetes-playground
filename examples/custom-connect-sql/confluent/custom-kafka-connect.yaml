@@ -17,9 +17,9 @@ spec:
   configOverrides:
     server:
       - group.id=debezium-cluster
-      - offset.storage.replication.factor=1
-      - config.storage.replication.factor=1
-      - status.storage.replication.factor=1
+      - offset.storage.replication.factor=3
+      - config.storage.replication.factor=3
+      - status.storage.replication.factor=3
       - config.storage.topic=_confluent-connect-configs
       - offset.storage.topic=_confluent-connect-offsets
       - status.storage.topic=_confluent-connect-status

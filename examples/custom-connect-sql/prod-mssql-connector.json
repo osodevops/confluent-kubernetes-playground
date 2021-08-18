@@ -1,5 +1,5 @@
 {
-  "name": "prod-mssql-connector",  
+  "name": "prod-mssql-connector",
   "config": {
     "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector", 
 

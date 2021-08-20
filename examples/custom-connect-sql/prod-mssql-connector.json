@@ -1,6 +1,4 @@
 {
-  "name": "prod-mssql-connector",
-  "config": {
     "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector", 
 
     "database.hostname": "sql-server.sandbox.svc.cluster.local", 
@@ -40,8 +38,8 @@
 	"time.precision.mode": "connect",
 	"database.history.skip.unparseable.ddl": false,
 	"database.history.store.only.monitored.tables.ddl": false,
-	"table.include.list": ["person.person"],
+	"table.include.list": "person.Person",
 	"table.ignore.builtin": false,
 	"include.schema.changes": true
-  }
 }
+

@@ -1,6 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    meta.helm.sh/release-name: confluent-operator
+    meta.helm.sh/release-namespace: sandbox
   labels:
     app: confluent-for-kubernetes
     app.kubernetes.io/component: confluent-operator
@@ -16,7 +20,7 @@ spec:
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app.kubernetes.io/instance: operator
+      app.kubernetes.io/instance: confluent-operator
       app.kubernetes.io/name: confluent-operator
   strategy:
     rollingUpdate:
@@ -31,7 +35,7 @@ spec:
         prometheus.io/scrape: "true"
       labels:
         app: confluent-operator
-        app.kubernetes.io/instance: operator
+        app.kubernetes.io/instance: confluent-operator
         app.kubernetes.io/name: confluent-operator
         confluent-platform: "true"
         version: 0.174.21

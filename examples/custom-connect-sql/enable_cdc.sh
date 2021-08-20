@@ -1,9 +1,6 @@
 #!/bin/bash
-
-kubectl create ns sandbox
 kubectl config set-context --current --namespace=sandbox
-
-kubectl exec -it sql-server -- \
+kubectl exec -i sql-server -- \
 tee -a /tmp/person.sql > /dev/null <<EOT
 USE AdventureWorks;
 GO

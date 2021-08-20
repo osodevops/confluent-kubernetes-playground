@@ -1,65 +1,59 @@
-As the README describes, you can reuse the Docker daemon from Minikube with eval $(minikube docker-env).
+## Custom Connect Image / Debezium SQL Server
+In this example we go through the following process:
 
-So to use an image without uploading it, you can follow these steps:
+* Build a 'custom' kafka connect image with [Debezium](https://debezium.io/) plug-in, and make available to the internal (minikube) kubernetes cluster
+* Initiate a SQLServer stub populated with the traditional '[AdventureWorks](https://docs.microsoft.com/en-us/sql/samples/adventureworks-install-configure?view=sql-server-ver15&tabs=ssms)' database, and enable [CDC](https://en.wikipedia.org/wiki/Change_data_capture) on select tables
+* Deploy a connector via a cURL command
+* Observe how changes to CDC enabled tables will trigger events in Kafka
 
-Set the environment variables with eval $(minikube docker-env)
-Build the image with the Docker daemon of Minikube (eg docker build -t my-image .)
-Set the image in the pod spec like the build tag (eg my-image)
-Set the imagePullPolicy to Never, otherwise Kubernetes will try to download the image.
-Important note: You have to run eval $(minikube docker-env) on each terminal you want to use, since it only sets the environment variables for the current shell session
+NOTE: For ease of readability, we will simply reference the scripts that perform the actions of the following stages.  For better understanding of what is actually being done, please review the scripts themselves which will have their own comments/notations.  **Assumptions are that you will be running all commands from the present directory**
 
+### Building the custom docker image
+The Dockerfile installs a custom plugin with the following line: `RUN confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:1.6.0`.  To build, run:
 
+```shell
+./build-inside.sh
+```
+### Deploy CRDs
+Deploy the CRDS using the standard way:
+```shell
+kubectl apply -k ../../kustomize/crds
+```
+### Deploy Confluent Operator and Confluent Services 
+Deploy the confluent operator and services:
+```shell
+kubectl apply -k .
+```
+### Enable CDC on 'person' table of AdventureWorks Database
+CDC needs to be enabled on a table by table basis.  This table is also referenced in the prod-mssql-connnector.json file. 
+```shell
+./enable_cdc.sh
+Context "minikube" modified.
+Changed database context to 'AdventureWorks'.
+Job 'cdc.AdventureWorks_capture' started successfully.
+Job 'cdc.AdventureWorks_cleanup' started successfully.
+```
+### Deploy Debezium Connector
+A curl request is sent to the 'connect pod' to install the connector.
+```shell
+./deploy_connector.sh
+```
 
+At this stage, if you log onto Control Center, you should see a running connector:
 
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "nbBg8G4DkR83Xs"
+![connector](./connect_image.png)
 
-select name from sys.databases
-go
+### Update CDC enabled 'Person' table
+Now we will send a SQL Command that will update all users in the person.Person table on the AdventureWorks database:
 
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "nbBg8G4DkR83Xs"
-USE AdventureWorks
-GO  
-EXEC sys.sp_cdc_enable_db  
-GO
+```shell
+./update_person.sh
+Context "minikube" modified.
+Changed database context to 'AdventureWorks'.
 
-Deploying a connector:
-
-curl -X POST -H "Content-Type: application/json" --data @config.json http://localhost:8083/connectors
-
-Connect REST API Docs:
-https://docs.confluent.io/platform/current/connect/references/restapi.html
-
-
-curl -X POST -H "Content-Type: application/json" https://localhost:8083/connectors
-
-
-https://debezium.io/documentation/reference/1.0/connectors/sqlserver.html
-
-
--- ====
--- Enable Database for CDC template
--- ====
-USE MyDB
-GO
-EXEC sys.sp_cdc_enable_db
-GO
-
--- =========
--- Enable a Table Specifying Filegroup Option Template
--- =========
-USE MyDB
-GO
-
-EXEC sys.sp_cdc_enable_table
-@source_schema = N'dbo',
-@source_name   = N'Person',
-@role_name     = N'MyRole',
-@filegroup_name = N'MyDB_CT',
-@supports_net_changes = 0
-GO
-
-sqlcmd -S myServer\instanceName -i C:\myScript.sql
+(19972 rows affected)
+```
+If you observe the automatically created topic `adventureworks-connect.Person.Person` you will see the update event messages streaming through
 
 
-
-
+![topic_update](./topic_update.png)

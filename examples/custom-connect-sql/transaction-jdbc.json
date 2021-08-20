@@ -1,0 +1,21 @@
+{
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:sqlserver://DB_HOST;databaseName=DB_NAME",
+    "connection.user": "DATABASE_USER",
+    "connection.password": "DATABASE_PASS",
+    "db.timezone": "Asia/Riyadh",
+    "mode": "incrementing",
+    "incrementing.column.name": "TRANS_ID",
+    "query": "SELECT * FROM T_PRT_TRANSACTION_V",
+    "topic.prefix": "transaction",
+
+    "principal.service.name": "CONNECT_USER",
+    "principal.service.password": "CONNECT_PASS",  
+
+    "transforms": "createKey,extractInt",
+    "transforms.createKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+    "transforms.createKey.fields": "JOURNAL_NUMBER",
+    "transforms.extractInt.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+    "transforms.extractInt.field": "JOURNAL_NUMBER"
+
+  }

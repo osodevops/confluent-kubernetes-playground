@@ -1,13 +1,17 @@
+---
+# Source: confluent-for-kubernetes/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: "confluent-for-kubernetes"
-    app.kubernetes.io/name: "confluent-for-kubernetes"
-    app.kubernetes.io/instance: "confluent"
-    app.kubernetes.io/managed-by: "Helm"
+    app: confluent-for-kubernetes
+    app.kubernetes.io/name: confluent-for-kubernetes
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "confluent-operator"
-  name: "confluent-operator"
+    helm.sh/chart: confluent-for-kubernetes-0.174.21
+  name: confluent-operator
+  namespace:  default
 spec:
   ports:
     - name: http-metric
@@ -18,4 +22,3 @@ spec:
     app: "confluent-operator"
     app.kubernetes.io/name: "confluent-operator"
   type: ClusterIP
-

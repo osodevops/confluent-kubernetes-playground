@@ -2,17 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: "confluent-for-kubernetes"
-    app.kubernetes.io/name: "confluent-for-kubernetes"
-    app.kubernetes.io/instance: "confluent"
-    app.kubernetes.io/managed-by: "Helm"
-    app.kubernetes.io/component: "confluent-operator"
+    app: confluent-for-kubernetes
+    app.kubernetes.io/component: confluent-operator
+    app.kubernetes.io/instance: operator
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: confluent-for-kubernetes
+    helm.sh/chart: confluent-for-kubernetes-0.174.21
+    version: 0.174.21
   name: confluent-operator
 spec:
+  progressDeadlineSeconds: 600
   replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app.kubernetes.io/instance: confluent
+      app.kubernetes.io/instance: operator
       app.kubernetes.io/name: confluent-operator
   strategy:
     rollingUpdate:
@@ -22,20 +26,20 @@ spec:
   template:
     metadata:
       annotations:
-        prometheus.io/path: "/metrics"
+        prometheus.io/path: /metrics
         prometheus.io/port: "7778"
         prometheus.io/scrape: "true"
       labels:
-        app: "confluent-operator"
-        app.kubernetes.io/name: "confluent-operator"
-        app.kubernetes.io/instance: "confluent"
+        app: confluent-operator
+        app.kubernetes.io/instance: operator
+        app.kubernetes.io/name: confluent-operator
         confluent-platform: "true"
-        version: "0.174.13"
+        version: 0.174.21
     spec:
       containers:
         - args:
             - --debug=false
-            - --namespaces=confluent
+            - --namespaces=sandbox
           env:
             - name: NAMESPACE
               valueFrom:
@@ -52,7 +56,7 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.uid
-          image: docker.io/confluentinc/confluent-operator:0.174.13
+          image: docker.io/confluentinc/confluent-operator:0.174.21
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3

@@ -4,9 +4,10 @@ metadata:
   labels:
     app: confluent-for-kubernetes
     app.kubernetes.io/component: confluent-operator
-    app.kubernetes.io/instance: confluent
+    app.kubernetes.io/instance: operator
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: confluent-for-kubernetes
+    helm.sh/chart: confluent-for-kubernetes-0.174.21
   name: confluent-operator
 rules:
   - apiGroups:
@@ -85,7 +86,6 @@ rules:
       - secrets
       - secrets/finalizers
       - pods
-      - pods/exec
       - services
     verbs:
       - get
@@ -108,3 +108,9 @@ rules:
       - update
       - patch
       - delete
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+    verbs:
+      - get

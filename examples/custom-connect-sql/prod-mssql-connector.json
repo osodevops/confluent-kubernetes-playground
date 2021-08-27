@@ -1,0 +1,45 @@
+{
+    "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector", 
+
+    "database.hostname": "sql-server.sandbox.svc.cluster.local", 
+    "database.port": "1433", 
+    
+    "database.user": "sa", 
+    "database.password": "nbBg8G4DkR83Xs",
+
+    "database.dbname": "AdventureWorks", 
+    "database.server.name": "adventureworks-connect",
+    
+    "database.history.kafka.bootstrap.servers": "kafka.sandbox.svc.cluster.local:9071",
+    "database.history.kafka.topic": "adventureworks-connect-history",
+    "database.history.kafka.security.protocol": "SASL_SSL",
+    "database.history.kafka.ssl.truststore.location": "/mnt/sslcerts/truststore.jks",
+    "database.history.kafka.truststore.password": "mystorepassword",
+    "database.history.kafka.sasl.mechanism": "PLAIN",
+
+    "database.history.producer.bootstrap.servers": "kafka.sandbox.svc.cluster.local:9071",
+    "database.history.producer.security.protocol": "SSL",
+    "database.history.producer.ssl.keystore.location": "/mnt/sslcerts/keystore.jks",
+    "database.history.producer.ssl.keystore.password": "mystorepassword",
+    "database.history.producer.ssl.truststore.location": "/mnt/sslcerts/truststore.jks",
+    "database.history.producer.ssl.truststore.password": "mystorepassword",
+    "database.history.producer.sasl.jaas.config": "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"<kafka-user>\" password=\"<kafka-password>\";",
+    "database.history.producer.sasl.mechanism": "PLAIN",
+
+    "database.history.consumer.bootstrap.servers": "kafka.sandbox.svc.cluster.local:9071",
+    "database.history.consumer.security.protocol": "SSL",
+    "database.history.consumer.ssl.keystore.location": "/mnt/sslcerts/keystore.jks",
+    "database.history.consumer.ssl.keystore.password": "mystorepassword",
+    "database.history.consumer.ssl.truststore.location": "/mnt/sslcerts/truststore.jks",
+    "database.history.consumer.ssl.truststore.password": "mystorepassword",
+    "database.history.consumer.sasl.mechanism": "PLAIN",
+
+	"decimal.handling.mode": "double",
+	"time.precision.mode": "connect",
+	"database.history.skip.unparseable.ddl": false,
+	"database.history.store.only.monitored.tables.ddl": false,
+	"table.include.list": "person.Person",
+	"table.ignore.builtin": false,
+	"include.schema.changes": true
+}
+

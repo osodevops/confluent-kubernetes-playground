@@ -58,16 +58,19 @@ tools         ldap                                 1/1     Running   1          
 ```shell
 ./create_replication_job.sh
 ```
+
+** NOTE: It may take sometime for the replicator-0 pod to become 'healthy' when running on a local minikube.
+
 #### Check the status of the Replicator Connector instance
 ```
-curl -XGET -H "Content-Type: application/json" https://localhost:8083/connectors -k
-curl -XGET -H "Content-Type: application/json" https://localhost:8083/connectors/replicator/status -k
+curl -u testadmin:testadmin -XGET -H "Content-Type: application/json" https://localhost:8083/connectors -k
+curl -u testadmin:testadmin -XGET -H "Content-Type: application/json" https://localhost:8083/connectors/replicator/status -k
 ```
 
 #### To delete the connector:
 
 ```
-curl -XDELETE -H "Content-Type: application/json" https://localhost:8083/connectors/replicator -k
+curl -u testadmin:testadmin -XDELETE -H "Content-Type: application/json" https://localhost:8083/connectors/replicator -k
 ```
 
 ### View in Control Center

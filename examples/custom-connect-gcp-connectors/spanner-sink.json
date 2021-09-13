@@ -2,7 +2,7 @@
   "name": "spanner-sink-connector",
   "connector.class": "io.confluent.connect.gcp.spanner.SpannerSinkConnector",
   "tasks.max": "1",
-  "topics": "SBSKAFTEST",
+  "topics": "sbs-kafka-test",
   "gcp.spanner.credentials.path": "/mnt/secrets/gcs-service-account/service-account.json",
   "gcp.spanner.instance.id": "sbs-kaf-spanner",
   "gcp.spanner.database.id": "sbs-kaf-spanner-db",

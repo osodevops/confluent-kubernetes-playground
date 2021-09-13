@@ -15,24 +15,11 @@ metadata:
   namespace: confluent
 spec:
   clustersScopeByIds:
-    connectClusterId: gcsconnect-cluster
+    connectClusterId: sandbox.gcsconnect
   principal:
     name: connect
     type: user
   role: SecurityAdmin
----
-apiVersion: platform.confluent.io/v1beta1
-kind: ConfluentRolebinding
-metadata:
-  name: gcsconnect-cluster-base-sysadmin
-  namespace: confluent
-spec:
-  clustersScopeByIds:
-    connectClusterId: gcsconnect-cluster
-  principal:
-    name: connect
-    type: user
-  role: SystemAdmin
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding
@@ -65,6 +52,9 @@ spec:
     name: connect
     type: user
   resourcePatterns:
+    - name: sbs-kafka-test
+      patternType: LITERAL
+      resourceType: Topic
     - name: topic-in-source
       patternType: LITERAL
       resourceType: Topic

@@ -16,3 +16,22 @@ spec:
     endpoint: https://kafka.sandbox.svc.cluster.local:8090
   configs:
     cleanup.policy: "delete"
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: sbs-kafka-test
+spec:
+  replicas: 3
+  partitionCount: 4
+  kafkaClusterRef:
+    name: kafka
+    namespace: sandbox
+  kafkaRest:
+    authentication:
+      type: bearer
+      bearer:
+        secretRef: rest-credential
+    endpoint: https://kafka.sandbox.svc.cluster.local:8090
+  configs:
+    cleanup.policy: "delete"

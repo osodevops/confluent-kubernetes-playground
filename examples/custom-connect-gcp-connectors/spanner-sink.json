@@ -1,0 +1,19 @@
+{
+  "name": "spanner-sink-connector",
+  "connector.class": "io.confluent.connect.gcp.spanner.SpannerSinkConnector",
+  "tasks.max": "1",
+  "topics": "SBSKAFTEST",
+  "gcp.spanner.credentials.path": "/mnt/secrets/gcs-service-account/service-account.json",
+  "gcp.spanner.instance.id": "sbs-kaf-spanner",
+  "gcp.spanner.database.id": "sbs-kaf-spanner-db",
+  "table.name.format": "SBSKAFTEST",
+  "confluent.topic.bootstrap.servers": "kafka.ns-kcl-sbs-kaf-kafka-operator.svc.cluster.local:9073",
+  "confluent.topic.replication.factor": "3",
+  "src.kafka.sasl.mechanism": "PLAIN",
+  "src.kafka.ssl.truststore.location": "/mnt/sslcerts/truststore.p12",
+  "src.kafka.ssl.truststore.password": "mystorepassword",
+  "src.kafka.ssl.keystore.location": "/mnt/sslcerts/keystore.p12",
+  "src.kafka.ssl.keystore.password": "mystorepassword",
+  "src.kafka.security.protocol": "SASL_SSL",
+  "src.kafka.consumer.group.id": "spanner"
+}

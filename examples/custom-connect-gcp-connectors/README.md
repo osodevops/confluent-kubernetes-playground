@@ -30,10 +30,15 @@ kubectl apply -k .
 kubectl port-forward -n sandbox gcsconnect-0 8083:8083
 ```
 
-8. Create connector using sample JSON
+8. Create connectors using sample JSON
 ```shell
+# GCS example connector
 curl -XPUT -H "Content-Type: application/json" --data @gcs-sink.json -u connect:connect-secret https://localhost:8083/connectors/gcs-sink/config -kv
+
+# Spanner Sink connector
+curl -XPUT -H "Content-Type: application/json" --data @spanner-sink.json -u connect:connect-secret https://localhost:8083/connectors/spanner-sink-connector/config -kv
 ```
+
 
 if successfully:
 ```shell

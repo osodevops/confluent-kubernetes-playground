@@ -1,6 +1,7 @@
 namespace: sandbox
 resources:
 - ./namespace.yaml
+- ./ldap.yaml
 - ../../../kustomize/base/confluent
 - ../../../kustomize/base/secrets-tls
 - ../../../kustomize/base/secrets-user

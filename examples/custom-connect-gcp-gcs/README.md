@@ -15,14 +15,14 @@ kubectl apply -k ../../kustomize/crds
 ./build-inside.sh
 ```   
 
-5. create google service account secret which is used in the connect config
-```shell
- kubectl create secret generic gcs-service-account --from-file=./service-account.json -n sandbox
-```
-
-6. deploy confluent platform and connector
+5. deploy confluent platform and connector
 ```shell
 kubectl apply -k .
+```
+
+6. create google service account secret which is used in the connect config
+```shell
+ kubectl create secret generic gcs-service-account --from-file=./service-account.json -n sandbox
 ```
 
 7. Port forward the connect cluster to create connect task:

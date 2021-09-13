@@ -7,13 +7,14 @@
   "gcp.spanner.instance.id": "sbs-kaf-spanner",
   "gcp.spanner.database.id": "sbs-kaf-spanner-db",
   "table.name.format": "SBSKAFTEST",
-  "confluent.topic.bootstrap.servers": "kafka.ns-kcl-sbs-kaf-kafka-operator.svc.cluster.local:9073",
-  "confluent.topic.replication.factor": "3",
-  "src.kafka.sasl.mechanism": "PLAIN",
-  "src.kafka.ssl.truststore.location": "/mnt/sslcerts/truststore.p12",
-  "src.kafka.ssl.truststore.password": "mystorepassword",
-  "src.kafka.ssl.keystore.location": "/mnt/sslcerts/keystore.p12",
-  "src.kafka.ssl.keystore.password": "mystorepassword",
-  "src.kafka.security.protocol": "SASL_SSL",
-  "src.kafka.consumer.group.id": "spanner"
+  "confluent.topic.bootstrap.servers": "kafka.sandbox.svc.cluster.local:9071",
+  "confluent.topic.replication.factor": "1",
+  "confluent.topic.ssl.truststore.type": "PKCS12",
+  "confluent.topic.sasl.jaas.config": "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"connect\" password=\"connect-secret\";",
+  "confluent.topic.ssl.truststore.location": "/mnt/sslcerts/truststore.p12",
+  "confluent.topic.ssl.truststore.password": "mystorepassword",
+  "confluent.topic.ssl.truststore.type": "PKCS12",
+  "confluent.topic.security.protocol": "SASL_SSL",
+  "confluent.topic.sasl.mechanism": "PLAIN",
+  "confluent.topic.sasl.jaas.config": "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"connect\" password=\"connect-secret\";"
 }

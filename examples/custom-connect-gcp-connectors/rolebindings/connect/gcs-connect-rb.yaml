@@ -50,6 +50,9 @@ spec:
     - name: connect-gcs-sink
       patternType: LITERAL
       resourceType: Group
+    - name: connect-spanner-sink-connector
+      patternType: LITERAL
+      resourceType: Group
   role: ResourceOwner
 ---
 apiVersion: platform.confluent.io/v1beta1

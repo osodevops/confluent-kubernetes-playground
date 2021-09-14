@@ -4,7 +4,7 @@ metadata:
   name: registry-base
 spec:
   clustersScopeByIds:
-    schemaRegistryClusterId: id_registry_destination
+    schemaRegistryClusterId: id_schemaregistry_destination # id_<sr-name>.<namespace>
   principal:
     name: sr
     type: user

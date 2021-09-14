@@ -4,7 +4,7 @@ metadata:
   name: registry-base
 spec:
   clustersScopeByIds:
-    schemaRegistryClusterId: id_registry_sandbox
+    schemaRegistryClusterId: id_schemaregistry_sandbox # id_<sr-name>.<namespace>
   principal:
     name: registry
     type: user
@@ -22,10 +22,10 @@ spec:
     - name: _confluent-license
       patternType: LITERAL
       resourceType: Topic
-    - name: _schemas_schemaregistry_confluent
+    - name: _schemas_schemaregistry_sandbox
       patternType: LITERAL
       resourceType: Topic
-    - name: id_schemaregistry_confluent
+    - name: id_schemaregistry_sandbox
       patternType: LITERAL
       resourceType: Group
   role: ResourceOwner

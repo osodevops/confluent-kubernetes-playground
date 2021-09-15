@@ -4393,9 +4393,9 @@ data:
                   {
                       "allValue": ".+",
                       "current": {
-                          "selected": false,
-                          "text": "All",
-                          "value": "$__all"
+                          "selected": true,
+                          "text": "sandbox",
+                          "value": "sandbox"
                       },
                       "datasource": "prometheus",
                       "definition": "label_values(kubernetes_namespace)",
@@ -4439,36 +4439,6 @@ data:
                       "options": [],
                       "query": {
                           "query": "label_values(platform_confluent_io_type)",
-                          "refId": "StandardVariableQuery"
-                      },
-                      "refresh": 1,
-                      "regex": "",
-                      "skipUrlSync": false,
-                      "sort": 1,
-                      "tagValuesQuery": "",
-                      "tagsQuery": "",
-                      "type": "query",
-                      "useTags": false
-                  },
-                  {
-                      "allValue": null,
-                      "current": {
-                          "selected": false,
-                          "text": "All",
-                          "value": "$__all"
-                      },
-                      "datasource": "prometheus",
-                      "definition": "label_values(kube_pod_labels{label_confluent_platform=\"true\",label_platform_confluent_io_type=\"$controller_type\"}, label_app)",
-                      "description": null,
-                      "error": null,
-                      "hide": 0,
-                      "includeAll": true,
-                      "label": "Component",
-                      "multi": false,
-                      "name": "component_name",
-                      "options": [],
-                      "query": {
-                          "query": "label_values(kube_pod_labels{label_confluent_platform=\"true\",label_platform_confluent_io_type=\"$controller_type\"}, label_app)",
                           "refId": "StandardVariableQuery"
                       },
                       "refresh": 1,

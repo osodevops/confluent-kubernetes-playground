@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "confluent-operator"
-    helm.sh/chart: confluent-for-kubernetes-0.174.21
-    version: 0.174.21
+    helm.sh/chart: confluent-for-kubernetes-0.174.13
+    version: 0.174.13
   name: confluent-operator
   namespace:  default
 spec:
@@ -35,7 +35,7 @@ spec:
         app.kubernetes.io/name: "confluent-operator"
         app.kubernetes.io/instance: RELEASE-NAME
         confluent-platform: "true"
-        version: 0.174.21
+        version: 0.174.13
     spec:
       securityContext:
         fsGroup: 1001
@@ -46,7 +46,7 @@ spec:
         - --debug=false
         - --namespaces=default
         name: confluent-operator
-        image: docker.io/confluentinc/confluent-operator:0.174.21
+        image: docker.io/confluentinc/confluent-operator:0.174.13
         imagePullPolicy: IfNotPresent
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File

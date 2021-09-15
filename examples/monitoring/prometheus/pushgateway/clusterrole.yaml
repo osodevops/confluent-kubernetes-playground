@@ -1,0 +1,14 @@
+---
+# Source: prometheus/templates/pushgateway/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    component: "pushgateway"
+    app: prometheus
+    release: oso
+    chart: prometheus-14.6.0
+    heritage: Helm
+  name: oso-prometheus-pushgateway
+rules:
+  []

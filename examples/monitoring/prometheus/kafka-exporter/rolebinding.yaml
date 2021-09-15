@@ -1,0 +1,18 @@
+---
+# Source: prometheus-kafka-exporter/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: oso-prometheus-kafka-exporter
+  labels:
+    app: prometheus-kafka-exporter
+    chart: prometheus-kafka-exporter-1.4.0
+    heritage: Helm
+    release: oso
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: oso-prometheus-kafka-exporter
+subjects:
+- kind: ServiceAccount
+  name: oso-prometheus-kafka-exporter

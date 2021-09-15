@@ -1,0 +1,11 @@
+namespace: sandbox
+resources:
+- configmap.yaml
+- datasources.yaml
+- dashboards.yaml
+- dashboard-config.yaml
+- deployment.yaml
+- pvc.yaml
+- secret.yaml
+- service.yaml
+- serviceaccount.yaml

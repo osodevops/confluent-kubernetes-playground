@@ -1724,7 +1724,7 @@ data:
                   "pluginVersion": "8.1.2",
                   "targets": [
                       {
-                          "expr": "avg({__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_quorumsize\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                          "expr": "avg({__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_quorumsize\", platform_confluent_io_type=~\"zookeeper\",kubernetes_namespace=~\"$namespace\"})",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "refId": "A"
@@ -1802,7 +1802,7 @@ data:
                   "pluginVersion": "8.1.2",
                   "targets": [
                       {
-                          "expr": "sum({__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_numaliveconnections\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                          "expr": "sum({__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_numaliveconnections\", platform_confluent_io_type=~\"zookeeper\",kubernetes_namespace=~\"$namespace\"})",
                           "format": "time_series",
                           "hide": false,
                           "instant": false,
@@ -1895,7 +1895,7 @@ data:
                   "steppedLine": false,
                   "targets": [
                       {
-                          "expr": "{__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_outstandingrequests\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}  ",
+                          "expr": "{__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_outstandingrequests\", platform_confluent_io_type=~\"zookeeper\",kubernetes_namespace=~\"$namespace\"}  ",
                           "format": "time_series",
                           "instant": false,
                           "interval": "",
@@ -2022,7 +2022,7 @@ data:
                   "pluginVersion": "8.1.2",
                   "targets": [
                       {
-                          "expr": "avg({__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_nodecount\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                          "expr": "avg({__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_nodecount\", platform_confluent_io_type=~\"zookeeper\",kubernetes_namespace=~\"$namespace\"})",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "refId": "A"
@@ -2100,7 +2100,7 @@ data:
                   "pluginVersion": "8.1.2",
                   "targets": [
                       {
-                          "expr": "sum({__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_watchcount\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                          "expr": "sum({__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_watchcount\", platform_confluent_io_type=~\"zookeeper\",kubernetes_namespace=~\"$namespace\"})",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "refId": "A"
@@ -2153,7 +2153,7 @@ data:
                   "steppedLine": false,
                   "targets": [
                       {
-                          "expr": "{__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_minrequestlatency\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}",
+                          "expr": "{__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_minrequestlatency\", platform_confluent_io_type=~\"zookeeper\",kubernetes_namespace=~\"$namespace\"}",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "legendFormat": "{{kubernetes_pod_name}}",
@@ -2372,7 +2372,7 @@ data:
                   "steppedLine": false,
                   "targets": [
                       {
-                          "expr": "{__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_maxrequestlatency\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}",
+                          "expr": "{__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_maxrequestlatency\", platform_confluent_io_type=~\"zookeeper\",kubernetes_namespace=~\"$namespace\"}",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "legendFormat": "{{kubernetes_pod_name}}",
@@ -2506,7 +2506,7 @@ data:
                   "steppedLine": false,
                   "targets": [
                       {
-                          "expr": "{__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_avgrequestlatency\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}",
+                          "expr": "{__name__=~\"org_apache_zookeeperservice_replicatedserver_.*_avgrequestlatency\", platform_confluent_io_type=~\"zookeeper\",kubernetes_namespace=~\"$namespace\"}",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "legendFormat": "{{kubernetes_pod_name}}",
@@ -2649,7 +2649,7 @@ data:
                   "pluginVersion": "8.1.2",
                   "targets": [
                       {
-                          "expr": "sum(kafka_connect_connect_worker_metrics_connector_count{ platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                          "expr": "sum(kafka_connect_connect_worker_metrics_connector_count{ platform_confluent_io_type=~\"zookeeper\",kubernetes_namespace=~\"$namespace\"})",
                           "format": "time_series",
                           "instant": false,
                           "intervalFactor": 1,
@@ -2728,7 +2728,7 @@ data:
                   "pluginVersion": "8.1.2",
                   "targets": [
                       {
-                          "expr": "sum(kafka_connect_connect_worker_metrics_connector_startup_success_total{ platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                          "expr": "sum(kafka_connect_connect_worker_metrics_connector_startup_success_total{ platform_confluent_io_type=~\"connect\",kubernetes_namespace=~\"$namespace\"})",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "refId": "A"
@@ -2806,7 +2806,7 @@ data:
                   "pluginVersion": "8.1.2",
                   "targets": [
                       {
-                          "expr": "sum(kafka_connect_connect_worker_metrics_connector_startup_failure_total{ platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                          "expr": "sum(kafka_connect_connect_worker_metrics_connector_startup_failure_total{ platform_confluent_io_type=~\"connect\",kubernetes_namespace=~\"$namespace\"})",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "refId": "A"
@@ -2882,7 +2882,7 @@ data:
                   "pluginVersion": "8.1.2",
                   "targets": [
                       {
-                          "expr": "sum(kafka_connect_connect_worker_metrics_task_count{ platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                          "expr": "sum(kafka_connect_connect_worker_metrics_task_count{ platform_confluent_io_type=~\"connect\",kubernetes_namespace=~\"$namespace\"})",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "refId": "A"
@@ -2959,7 +2959,7 @@ data:
                   "pluginVersion": "8.1.2",
                   "targets": [
                       {
-                          "expr": "sum(kafka_connect_connect_worker_metrics_task_startup_success_total{ platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                          "expr": "sum(kafka_connect_connect_worker_metrics_task_startup_success_total{ platform_confluent_io_type=~\"connect\",kubernetes_namespace=~\"$namespace\"})",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "refId": "A"
@@ -3037,7 +3037,7 @@ data:
                   "pluginVersion": "8.1.2",
                   "targets": [
                       {
-                          "expr": "sum(kafka_connect_connect_worker_metrics_task_startup_failure_total{ platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                          "expr": "sum(kafka_connect_connect_worker_metrics_task_startup_failure_total{ platform_confluent_io_type=~\"connect\",kubernetes_namespace=~\"$namespace\"})",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "refId": "A"
@@ -3089,7 +3089,7 @@ data:
                   "steppedLine": false,
                   "targets": [
                       {
-                          "expr": "kafka_connect_connect_metrics_io_ratio{ platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}",
+                          "expr": "kafka_connect_connect_metrics_io_ratio{ platform_confluent_io_type=~\"connect\",kubernetes_namespace=~\"$namespace\"}",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "legendFormat": "{{ kubernetes_pod_name }}",
@@ -3180,7 +3180,7 @@ data:
                   "steppedLine": false,
                   "targets": [
                       {
-                          "expr": "kafka_connect_connect_metrics_incoming_byte_rate{ platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}",
+                          "expr": "kafka_connect_connect_metrics_incoming_byte_rate{ platform_confluent_io_type=~\"connect\",kubernetes_namespace=~\"$namespace\"}",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "legendFormat": "{{kubernetes_pod_name}}",
@@ -3271,7 +3271,7 @@ data:
                   "steppedLine": false,
                   "targets": [
                       {
-                          "expr": "kafka_connect_connect_metrics_network_io_rate{ platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}",
+                          "expr": "kafka_connect_connect_metrics_network_io_rate{ platform_confluent_io_type=~\"connect\",kubernetes_namespace=~\"$namespace\"}",
                           "format": "time_series",
                           "intervalFactor": 1,
                           "legendFormat": "{{kubernetes_pod_name}}",
@@ -3385,7 +3385,7 @@ data:
                           "targets": [
                               {
                                   "exemplar": true,
-                                  "expr": "{__name__=~\"io_confluent_ksql_metrics_confluent_ksql_engine_query_stats_bytes_consumed_total\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}",
+                                  "expr": "{__name__=~\"io_confluent_ksql_metrics_confluent_ksql_engine_query_stats_bytes_consumed_total\", platform_confluent_io_type=~\"ksqldb\",kubernetes_namespace=~\"$namespace\"}",
                                   "format": "time_series",
                                   "hide": false,
                                   "interval": "",
@@ -3484,7 +3484,7 @@ data:
                           "targets": [
                               {
                                   "exemplar": true,
-                                  "expr": "{__name__=~\"io_confluent_ksql_metrics_confluent_ksql_engine_query_stats_messages_consumed_per_sec\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}",
+                                  "expr": "{__name__=~\"io_confluent_ksql_metrics_confluent_ksql_engine_query_stats_messages_consumed_per_sec\", platform_confluent_io_type=~\"ksqldb\",kubernetes_namespace=~\"$namespace\"}",
                                   "format": "time_series",
                                   "interval": "",
                                   "intervalFactor": 1,
@@ -3582,7 +3582,7 @@ data:
                           "targets": [
                               {
                                   "exemplar": true,
-                                  "expr": "{__name__=~\"io_confluent_ksql_metrics_confluent_ksql_engine_query_stats_messages_produced_per_sec\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}",
+                                  "expr": "{__name__=~\"io_confluent_ksql_metrics_confluent_ksql_engine_query_stats_messages_produced_per_sec\", platform_confluent_io_type=~\"ksqldb\",kubernetes_namespace=~\"$namespace\"}",
                                   "format": "time_series",
                                   "interval": "",
                                   "intervalFactor": 1,
@@ -3680,7 +3680,7 @@ data:
                           "targets": [
                               {
                                   "exemplar": true,
-                                  "expr": "{__name__=~\"io_confluent_ksql_metrics_confluent_ksql_engine_query_stats_num_active_queries\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}",
+                                  "expr": "{__name__=~\"io_confluent_ksql_metrics_confluent_ksql_engine_query_stats_num_active_queries\", platform_confluent_io_type=~\"ksqldb\",kubernetes_namespace=~\"$namespace\"}",
                                   "format": "time_series",
                                   "interval": "",
                                   "intervalFactor": 1,
@@ -3778,7 +3778,7 @@ data:
                           "targets": [
                               {
                                   "exemplar": true,
-                                  "expr": "{__name__=~\"io_confluent_ksql_metrics_confluent_ksql_engine_query_stats_num_idle_queries\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}",
+                                  "expr": "{__name__=~\"io_confluent_ksql_metrics_confluent_ksql_engine_query_stats_num_idle_queries\", platform_confluent_io_type=~\"ksqldb\",kubernetes_namespace=~\"$namespace\"}",
                                   "format": "time_series",
                                   "interval": "",
                                   "intervalFactor": 1,
@@ -3876,7 +3876,7 @@ data:
                           "targets": [
                               {
                                   "exemplar": true,
-                                  "expr": "{__name__=~\"io_confluent_ksql_metrics_confluent_ksql_engine_query_stats_num_persistent_queries\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"}",
+                                  "expr": "{__name__=~\"io_confluent_ksql_metrics_confluent_ksql_engine_query_stats_num_persistent_queries\", platform_confluent_io_type=~\"ksqldb\",kubernetes_namespace=~\"$namespace\"}",
                                   "format": "time_series",
                                   "interval": "",
                                   "intervalFactor": 1,
@@ -4014,7 +4014,7 @@ data:
                           "targets": [
                               {
                                   "exemplar": true,
-                                  "expr": "count({__name__=~\"schemaregistry_.*_jetty_metrics_connections_active\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                                  "expr": "count({__name__=~\"schemaregistry_.*_jetty_metrics_connections_active\", platform_confluent_io_type=~\"schemaregistry\",kubernetes_namespace=~\"$namespace\"})",
                                   "format": "time_series",
                                   "interval": "",
                                   "intervalFactor": 1,
@@ -4094,7 +4094,7 @@ data:
                           "pluginVersion": "8.1.2",
                           "targets": [
                               {
-                                  "expr": "sum({__name__=~\"schemaregistry_.*_jetty_metrics_connections_active\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                                  "expr": "sum({__name__=~\"schemaregistry_.*_jetty_metrics_connections_active\", platform_confluent_io_type=~\"schemaregistry\",kubernetes_namespace=~\"$namespace\"})",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "refId": "A"
@@ -4172,7 +4172,7 @@ data:
                           "pluginVersion": "8.1.2",
                           "targets": [
                               {
-                                  "expr": "avg({__name__=~\"schemaregistry_.*_jetty_metrics_connections_opened_rate\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                                  "expr": "avg({__name__=~\"schemaregistry_.*_jetty_metrics_connections_opened_rate\", platform_confluent_io_type=~\"schemaregistry\",kubernetes_namespace=~\"$namespace\"})",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "refId": "A"
@@ -4250,7 +4250,7 @@ data:
                           "pluginVersion": "8.1.2",
                           "targets": [
                               {
-                                  "expr": "avg({__name__=~\"schemaregistry_.*_jetty_metrics_connections_closed_rate\", platform_confluent_io_type=~\"$controller_type\",kubernetes_namespace=~\"$namespace\"})",
+                                  "expr": "avg({__name__=~\"schemaregistry_.*_jetty_metrics_connections_closed_rate\", platform_confluent_io_type=~\"schemaregistry\",kubernetes_namespace=~\"$namespace\"})",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "refId": "A"
@@ -4325,7 +4325,7 @@ data:
                           "targets": [
                               {
                                   "exemplar": true,
-                                  "expr": "confluent_controlcenter_healthcheck_streams_status{kubernetes_namespace=~\"$namespace\",platform_confluent_io_type=~\"$controller_type\"}",
+                                  "expr": "confluent_controlcenter_healthcheck_streams_status{kubernetes_namespace=~\"$namespace\",platform_confluent_io_type=~\"controlcenter\"}",
                                   "format": "time_series",
                                   "instant": false,
                                   "interval": "",

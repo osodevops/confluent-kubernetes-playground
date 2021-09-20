@@ -42,5 +42,18 @@ This dashboard will display various metrics/alerts for the various Confluent ser
 
 
 
+```
+curl -X POST "http://localhost:5601/api/index_patterns/index_pattern" -H "Content-Type:application/json" -H 'kbn-xsrf:true' -d'{"index_pattern": {"title": "hello"}}'
 
 
+curl -X POST "http://localhost:5601/api/index_patterns/default" -H "Content-Type:application/json" -H 'kbn-xsrf:true' -d'{"index_pattern_id": "logstash*","force": true}'
+
+
+curl -X GET "http://localhost:5601/api/index_patterns/1" -H "Content-Type:application/json" -H 'kbn-xsrf:true'
+
+curl -X GET "http://localhost:5601/api/index_patterns/log*" -H "Content-Type:application/json" -H 'kbn-xsrf:true'
+curl -X GET "http://localhost:5601/api/index_patterns/log" -H "Content-Type:application/json" -H 'kbn-xsrf:true'
+
+
+curl -X GET "http://localhost:5601/api/index_patterns" -H "Content-Type:application/json" -H 'kbn-xsrf:true'
+```

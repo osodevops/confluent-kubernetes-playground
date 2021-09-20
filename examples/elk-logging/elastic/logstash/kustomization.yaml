@@ -1,5 +1,6 @@
 namespace: sandbox
 resources:
+  - cm.yaml
   - poddisruptionbudget.yaml
   - service-headless.yaml
   - statefulset.yaml

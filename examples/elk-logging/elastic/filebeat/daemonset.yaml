@@ -104,6 +104,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        - name: LOGSTASH_URL
+          value: oso-logstash-headless:9600
         envFrom: 
           []
         securityContext: 

@@ -21,7 +21,6 @@ data:
           matchers:
           - logs_path:
               logs_path: "/var/log/containers/"
-    
-    output.elasticsearch:
-      host: '${NODE_NAME}'
-      hosts: '${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}'
+
+    output.logstash:
+      hosts: ["oso-logstash-headless:5044"]

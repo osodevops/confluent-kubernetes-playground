@@ -1,0 +1,22 @@
+---
+# Source: prometheus/templates/server/cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    component: "server"
+    app: grafna
+    release: oso
+  name: oso-grafana-server-datasources
+data:
+  prometheus.yml: |
+    apiVersion: 1
+    datasources:
+    -  access: 'proxy'
+       editable: true
+       is_default: true
+       name: 'prometheus'
+       org_id: 1
+       type: 'prometheus'
+       url: 'http://oso-prometheus-server.sandbox.svc.cluster.local:80'
+       version: 1

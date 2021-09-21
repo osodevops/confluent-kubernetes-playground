@@ -1,0 +1,8 @@
+namespace: sandbox
+resources:
+- deployment.yaml
+- podsecuritypolicy.yaml
+- role.yaml
+- rolebinding.yaml
+- service.yaml
+- serviceaccount.yaml

@@ -1,0 +1,5 @@
+namespace: sandbox
+resources:
+  - ../../../../kustomize/base/rolebindings/connect
+patchesStrategicMerge:
+  - connect-base.yaml

@@ -12,7 +12,6 @@ metadata:
     helm.sh/chart: confluent-for-kubernetes-0.174.13
     version: 0.174.13
   name: confluent-operator
-  namespace:  default
 spec:
   replicas: 1
   selector:

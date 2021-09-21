@@ -1,0 +1,12 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: tenant-a
+spec:
+  replicas: 3
+  partitionCount: 6
+  kafkaClusterRef:
+    name: kafka
+    namespace: sandbox
+  configs:
+    confluent.key.schema.validation: "true"

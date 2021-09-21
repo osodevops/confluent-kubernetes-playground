@@ -1,0 +1,79 @@
+---
+# Source: opa/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opa
+  labels:
+    app: opa
+    chart: "opa-2.0.0"
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opa
+  template:
+    metadata:
+      annotations:
+        checksum/certs: 8b0af3ffc1e4a45847580d3650728057e5aba2869d5bf9f51780777916e801f7
+      labels:
+        app: opa
+      name: opa
+    spec:
+      containers:
+        - name: opa
+          ports:
+          - name: https
+            containerPort: 443
+          image: openpolicyagent/opa:0.32.0
+          imagePullPolicy: IfNotPresent
+          resources:
+            {}
+          args:
+            - "run"
+            - "--server"
+            - "--tls-cert-file=/certs/tls.crt"
+            - "--tls-private-key-file=/certs/tls.key"
+            - "--addr=0.0.0.0:443"
+            - "--log-level=info"
+            - "--log-format=json"
+          volumeMounts:
+            - name: certs
+              readOnly: true
+              mountPath: /certs
+          readinessProbe:
+            httpGet:
+              path: /health
+              scheme: HTTPS
+              port: 443
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              scheme: HTTPS
+              port: 443
+            initialDelaySeconds: 10
+            periodSeconds: 15
+        - name: sarproxy
+          image: lachlanevenson/k8s-kubectl:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            {}
+          command:
+            - kubectl
+            - proxy
+            - --accept-paths=^/apis/authorization.k8s.io/v1/subjectaccessreviews$
+      serviceAccountName: opa
+      volumes:
+        - name: certs
+          secret:
+            secretName: opa-cert
+      affinity:
+        {}
+      nodeSelector:
+        {}
+      tolerations:
+        []

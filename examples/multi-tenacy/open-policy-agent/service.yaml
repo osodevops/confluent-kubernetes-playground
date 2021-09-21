@@ -1,0 +1,19 @@
+---
+# Source: opa/templates/service.yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: opa
+  labels:
+    app: opa
+    chart: "opa-2.0.0"
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  selector:
+    app: opa
+  ports:
+  - name: https
+    protocol: TCP
+    port: 443
+    targetPort: 443

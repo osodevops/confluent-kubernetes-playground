@@ -9,3 +9,13 @@ resources:
   - service.yaml
   - webhookconfiguration.yaml
   - deployment.yaml
+
+configMapGenerator:
+- name: opa-default-system-main
+  files:
+    - policies/main.rego
+
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    openpolicyagent.org/policy: rego

@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: confluent-operator
+spec:
+  template:
+    spec:
+      containers:
+        - args:
+            - --debug=false
+            - --namespaces=sandbox,tenant-a,tenant-b
+          name: confluent-operator

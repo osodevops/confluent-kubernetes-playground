@@ -12,3 +12,14 @@ Deploy the confluent operator and services:
 ```shell
 kubectl apply -k .
 ```
+
+
+#### Notes
+currently working through thsese example: 
+
+- https://medium.com/@hiroyuki.osaki/illustration-open-policy-agent-aaf05bb0de8f
+- https://elastisys.com/enforcing-policy-as-code-using-opa-and-gatekeeper-in-kubernetes/
+- https://github.com/digiwhite1980/flux/tree/master/bases/open-policy-agent
+- https://www.openpolicyagent.org/docs/latest/kubernetes-tutorial/
+
+

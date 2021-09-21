@@ -7,7 +7,7 @@ metadata:
     app: opa
     chart: opa-2.0.0
     heritage: Helm
-    release: RELEASE-NAME
+    release: opa
     component: sar
   name: opa-sar
 roleRef:

@@ -4,3 +4,4 @@ resources:
 - alertmanager
 - node-exporter
 - kafka-exporter
+- kafka-lag-exporter

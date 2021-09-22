@@ -6,43 +6,33 @@ metadata:
 spec:
   configOverrides:
     server:
-      - confluent.schema.registry.url=https://schemaregistry.sandbox.svc.cluster.local:8081
+      - confluent.schema.registry.url=http://schemaregistry.sandbox.svc.cluster.local:8081
       - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-  tls:
-    secretRef: tls-group1
   metricReporter:
     enabled: true
     authentication:
       type: plain
       jaasConfigPassThrough:
         secretRef: broker-credential
-    tls:
-      enabled: true
   listeners:
     internal:
       authentication:
         type: plain
         jaasConfigPassThrough:
           secretRef: broker-credential
-      tls:
-        enabled: true
     external:
       authentication:
         type: plain
         jaasConfigPassThrough:
           secretRef: broker-credential
-      tls:
-        enabled: true
   authorization:
     type: rbac
     superUsers:
       - User:kafka
   services:
     mds:
-      tls:
-        enabled: true
       tokenKeyPair:
         secretRef: broker-credential
       provider:
@@ -53,8 +43,6 @@ spec:
             type: simple
             simple:
               secretRef: broker-credential
-          tls:
-            enabled: true
           configurations:
             groupNameAttribute: cn
             groupObjectClass: groupOfNames
@@ -72,10 +60,9 @@ spec:
         bearer:
           secretRef: broker-credential
     zookeeper:
-      endpoint: zookeeper.sandbox.svc.cluster.local:2182
+      endpoint: zookeeper.sandbox.svc.cluster.local:2181
       authentication:
         type: digest
         jaasConfig:
           secretRef: broker-credential
-      tls:
-        enabled: true
+

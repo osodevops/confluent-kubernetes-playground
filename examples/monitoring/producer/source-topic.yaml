@@ -14,7 +14,7 @@ spec:
       type: bearer
       bearer:
         secretRef: mds-client-c3
-    endpoint: https://kafka.sandbox.svc.cluster.local:8090
+    endpoint: http://kafka.sandbox.svc.cluster.local:8090
   configs:
     cleanup.policy: "delete"
 ---
@@ -33,7 +33,7 @@ spec:
       type: bearer
       bearer:
         secretRef: mds-client-c3
-    endpoint: https://kafka.sandbox.svc.cluster.local:8090
+    endpoint: http://kafka.sandbox.svc.cluster.local:8090
   configs:
     cleanup.policy: "delete"
 ---
@@ -52,7 +52,7 @@ spec:
       type: bearer
       bearer:
         secretRef: mds-client-c3
-    endpoint: https://kafka.sandbox.svc.cluster.local:8090
+    endpoint: http://kafka.sandbox.svc.cluster.local:8090
   configs:
     cleanup.policy: "delete"
 ---
@@ -71,7 +71,7 @@ spec:
       type: bearer
       bearer:
         secretRef: mds-client-c3
-    endpoint: https://kafka.sandbox.svc.cluster.local:8090
+    endpoint: http://kafka.sandbox.svc.cluster.local:8090
   configs:
     cleanup.policy: "delete"
 ---
@@ -90,7 +90,7 @@ spec:
       type: bearer
       bearer:
         secretRef: mds-client-c3
-    endpoint: https://kafka.sandbox.svc.cluster.local:8090
+    endpoint: http://kafka.sandbox.svc.cluster.local:8090
   configs:
     cleanup.policy: "delete"
 ---
@@ -109,7 +109,7 @@ spec:
       type: bearer
       bearer:
         secretRef: mds-client-c3
-    endpoint: https://kafka.sandbox.svc.cluster.local:8090
+    endpoint: http://kafka.sandbox.svc.cluster.local:8090
   configs:
     cleanup.policy: "delete"
 ---
@@ -128,7 +128,7 @@ spec:
       type: bearer
       bearer:
         secretRef: mds-client-c3
-    endpoint: https://kafka.sandbox.svc.cluster.local:8090
+    endpoint: http://kafka.sandbox.svc.cluster.local:8090
   configs:
     cleanup.policy: "delete"
 ---
@@ -147,6 +147,6 @@ spec:
       type: bearer
       bearer:
         secretRef: mds-client-c3
-    endpoint: https://kafka.sandbox.svc.cluster.local:8090
+    endpoint: http://kafka.sandbox.svc.cluster.local:8090
   configs:
     cleanup.policy: "delete"

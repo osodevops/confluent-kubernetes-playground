@@ -3,4 +3,4 @@ resources:
 - server
 - alertmanager
 - node-exporter
-#- kafka-exporter
+- kafka-exporter

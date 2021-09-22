@@ -33,6 +33,9 @@ data:
     - job_name: "kafka-exporter"
       static_configs:
         - targets: ["oso-prometheus-kafka-exporter:9308"]
+    - job_name: "kafka-lag-exporter"
+      static_configs:
+        - targets: ["oso-kafka-lag-exporter-service:8000"]
     - job_name: "node-exporter"
       static_configs:
         - targets: ["oso-prometheus-node-exporter:9100"]

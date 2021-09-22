@@ -24,18 +24,12 @@ data:
           consumer-properties = {
             sasl.jaas.config = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kafka\" password=\"kafka-secret\";"
             sasl.mechanism = "PLAIN"
-            security.protocol = "SASL_SSL"
-            ssl.trustore.password = "mystorepassword"
-            ssl.truststore.location = "/mnt/sslcerts/truststore.p12"
-            ssl.truststore.type = "PKCS12"
+            security.protocol = "SASL_PLAINTEXT"
           }
           admin-client-properties = {
             sasl.jaas.config = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kafka\" password=\"kafka-secret\";"
             sasl.mechanism = "PLAIN"
-            security.protocol = "SASL_SSL"
-            ssl.truststore.password = "mystorepassword"
-            ssl.truststore.location = "/mnt/sslcerts/truststore.p12"
-            ssl.truststore.type = "PKCS12"
+            security.protocol = "SASL_PLAINTEXT"
           }
           labels = {
             location = "london"

@@ -19,7 +19,7 @@ data:
       kafka-client-timeout = 10 seconds
       clusters = [
         {
-          name = "S2zzWyMMS3qLUnAOppkP_A"
+          name = "sandbox"
           bootstrap-brokers = "kafka.sandbox.svc.cluster.local:9092"
           consumer-properties = {
             sasl.jaas.config = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kafka\" password=\"kafka-secret\";"

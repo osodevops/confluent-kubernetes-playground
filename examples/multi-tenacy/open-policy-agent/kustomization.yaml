@@ -3,11 +3,9 @@ kind: Kustomization
 namespace: opa
 resources:
   - namespace.yaml
-  - sar-clusterrole.yaml
-  - sar-clusterrolebinding.yaml
-  - serviceaccount.yaml
+  - clusterrolebinding.yaml
+  - opa-server.yaml
   - service.yaml
-  - webhookconfiguration.yaml
   - deployment.yaml
 
 configMapGenerator:

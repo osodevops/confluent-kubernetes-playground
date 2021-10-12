@@ -44,7 +44,6 @@ spec:
       containers:
       - args:
         - --debug=false
-        - --namespaces=default
         name: confluent-operator
         image: docker.io/confluentinc/confluent-operator:0.174.25
         imagePullPolicy: IfNotPresent

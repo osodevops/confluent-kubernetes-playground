@@ -73,48 +73,29 @@ spec:
                     API
                   properties:
                     basic:
-                      description: BasicAuthentication defines basic authentication
+                      description: KafkaRestBasicAuthentication defines basic authentication
                       properties:
-                        directoryPathInContainer:
-                          description: DirectoryPathInContainer allows to pass basic
-                            credential through directory path in a container
-                          minLength: 1
-                          type: string
-                        restrictedRoles:
-                          description: RestrictedRoles defines restricted roles on
-                            the server side only. Changes will be only reflected in
-                            ControlCenter (C3). This configuration is ignored on the
-                            client side configuration
-                          items:
-                            type: string
-                          minItems: 1
-                          type: array
-                        roles:
-                          description: Role defines list of roles configuration on
-                            the server side only. This configuration is ignored on
-                            the client side configuration
-                          items:
-                            type: string
-                          type: array
                         secretRef:
                           description: Name of the secret reference
                           maxLength: 30
                           minLength: 1
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
+                      required:
+                      - secretRef
                       type: object
                     bearer:
-                      description: BearerAuthentication used by MDS clients
+                      description: KafkaRestBearerAuthentication defines bearer authentication,
+                        used by MDS clients when RBAC enabled
                       properties:
-                        directoryPathInContainer:
-                          minLength: 1
-                          type: string
                         secretRef:
                           description: Name of the secret reference
                           maxLength: 30
                           minLength: 1
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
+                      required:
+                      - secretRef
                       type: object
                     type:
                       enum:
@@ -200,48 +181,29 @@ spec:
                     API
                   properties:
                     basic:
-                      description: BasicAuthentication defines basic authentication
+                      description: KafkaRestBasicAuthentication defines basic authentication
                       properties:
-                        directoryPathInContainer:
-                          description: DirectoryPathInContainer allows to pass basic
-                            credential through directory path in a container
-                          minLength: 1
-                          type: string
-                        restrictedRoles:
-                          description: RestrictedRoles defines restricted roles on
-                            the server side only. Changes will be only reflected in
-                            ControlCenter (C3). This configuration is ignored on the
-                            client side configuration
-                          items:
-                            type: string
-                          minItems: 1
-                          type: array
-                        roles:
-                          description: Role defines list of roles configuration on
-                            the server side only. This configuration is ignored on
-                            the client side configuration
-                          items:
-                            type: string
-                          type: array
                         secretRef:
                           description: Name of the secret reference
                           maxLength: 30
                           minLength: 1
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
+                      required:
+                      - secretRef
                       type: object
                     bearer:
-                      description: BearerAuthentication used by MDS clients
+                      description: KafkaRestBearerAuthentication defines bearer authentication,
+                        used by MDS clients when RBAC enabled
                       properties:
-                        directoryPathInContainer:
-                          minLength: 1
-                          type: string
                         secretRef:
                           description: Name of the secret reference
                           maxLength: 30
                           minLength: 1
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
+                      required:
+                      - secretRef
                       type: object
                     type:
                       enum:

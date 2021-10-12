@@ -1,3 +1,5 @@
+---
+# Source: confluent-for-kubernetes/templates/clusterrolebinding.yaml
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -7,12 +9,12 @@ metadata:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "confluent-operator"
-    helm.sh/chart: confluent-for-kubernetes-0.174.13
+    helm.sh/chart: confluent-for-kubernetes-0.174.25
   name: confluent-operator
 subjects:
 - kind: ServiceAccount
   name: confluent-for-kubernetes
-  namespace: sandbox
+  namespace: default
 roleRef:
   kind: ClusterRole
   name: confluent-operator

@@ -9,8 +9,9 @@ metadata:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "confluent-operator"
-    helm.sh/chart: confluent-for-kubernetes-0.174.13
+    helm.sh/chart: confluent-for-kubernetes-0.174.25
   name: confluent-operator
+  namespace:  default
 spec:
   ports:
     - name: http-metric

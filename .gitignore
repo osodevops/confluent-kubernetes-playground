@@ -10,4 +10,13 @@
 .build-harness
 build-harness
 
-test.log
+sensitive-*
+identity
+identity.pub
+known_hosts
+ca.pem
+intermediate.cert.pem
+pki_intermediate.csr
+pki-ca-root.json
+cert_key_list
+nohup.out

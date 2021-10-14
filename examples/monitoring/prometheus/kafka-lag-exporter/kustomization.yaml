@@ -1,0 +1,6 @@
+namespace: sandbox
+resources:
+- serviceaccount.yaml
+- configmap.yaml
+- deployment.yaml
+- service.yaml

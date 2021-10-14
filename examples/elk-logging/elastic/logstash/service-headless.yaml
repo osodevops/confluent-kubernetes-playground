@@ -1,0 +1,18 @@
+---
+# Source: logstash/templates/service-headless.yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: "oso-logstash-headless"
+  labels:
+    app: "oso-logstash"
+    chart: "logstash"
+    heritage: "Helm"
+    release: "oso"
+spec:
+  clusterIP: None
+  selector:
+    app: "oso-logstash"
+  ports:
+    - name: http
+      port: 9600

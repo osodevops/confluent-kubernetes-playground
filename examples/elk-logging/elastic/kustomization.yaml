@@ -1,0 +1,6 @@
+namespace: sandbox
+resources:
+  - logstash
+  - elasticsearch
+  - filebeat
+  - kibana

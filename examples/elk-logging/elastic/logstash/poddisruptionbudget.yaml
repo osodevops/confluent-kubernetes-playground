@@ -1,0 +1,16 @@
+---
+# Source: logstash/templates/poddisruptionbudget.yaml
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: "oso-logstash-pdb"
+  labels:
+    app: "oso-logstash"
+    chart: "logstash"
+    heritage: "Helm"
+    release: "oso"
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: "oso-logstash"

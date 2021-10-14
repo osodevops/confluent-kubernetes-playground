@@ -1,0 +1,26 @@
+---
+# Source: filebeat/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oso-filebeat-daemonset-config
+  labels:
+    app: "oso-filebeat"
+    chart: "filebeat-7.14.0"
+    heritage: "Helm"
+    release: "oso"
+data:
+  filebeat.yml: |
+    filebeat.inputs:
+    - type: container
+      paths:
+        - /var/log/containers/*.log
+      processors:
+      - add_kubernetes_metadata:
+          host: ${NODE_NAME}
+          matchers:
+          - logs_path:
+              logs_path: "/var/log/containers/"
+
+    output.logstash:
+      hosts: ["oso-logstash-headless:5044"]

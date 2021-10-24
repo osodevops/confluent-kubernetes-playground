@@ -5,8 +5,6 @@ metadata:
 spec:
   authorization:
     type: rbac
-  tls:
-    secretRef: tls-group1
   dependencies:
     kafka:
       bootstrapEndpoint: kafka.sandbox.svc.cluster.local:9071
@@ -14,15 +12,11 @@ spec:
         type: plain
         jaasConfig:
           secretRef: mds-client-sr
-      tls:
-        enabled: true
     mds:
-      endpoint: https://kafka.sandbox.svc.cluster.local:8090
+      endpoint: http://kafka.sandbox.svc.cluster.local:8090
       tokenKeyPair:
         secretRef: mds-public
       authentication:
         type: bearer
         bearer:
           secretRef: mds-client-sr
-      tls:
-        enabled: true

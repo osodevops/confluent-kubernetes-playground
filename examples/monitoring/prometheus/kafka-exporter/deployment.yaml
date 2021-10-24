@@ -27,7 +27,11 @@ spec:
       containers:
         - args:
             - '--log.level=info'
-            - '--kafka.server=kafka-server:9092'
+            - '--kafka.server=kafka:9071'
+            - '--sasl.enabled'
+            - '--sasl.username=kafka'
+            - '--sasl.password=kafka-secret'
+            - '--sasl.mechanism=plain'
           env:
             []
           name: prometheus-kafka-exporter

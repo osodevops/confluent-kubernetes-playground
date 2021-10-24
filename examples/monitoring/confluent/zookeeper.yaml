@@ -7,5 +7,3 @@ spec:
     type: digest
     jaasConfig:
       secretRef: zk-credential
-  tls:
-    secretRef: tls-group1

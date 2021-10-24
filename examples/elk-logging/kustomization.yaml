@@ -1,0 +1,7 @@
+namespace: sandbox
+resources:
+  - confluent
+  - operator
+  - rolebindings
+#  - producer
+  - elastic

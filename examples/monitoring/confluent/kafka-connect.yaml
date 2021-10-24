@@ -4,8 +4,6 @@ kind: Connect
 metadata:
   name: connect
 spec:
-  tls:
-    secretRef: tls-group1
   authorization:
     type: rbac
   dependencies:
@@ -15,10 +13,8 @@ spec:
         type: plain
         jaasConfig:
           secretRef: mds-client-connect
-      tls:
-        enabled: true
     mds:
-      endpoint: https://kafka.sandbox.svc.cluster.local:8090
+      endpoint: http://kafka.sandbox.svc.cluster.local:8090
       tokenKeyPair:
         secretRef: mds-public
       authentication:

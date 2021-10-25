@@ -1,0 +1,56 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: "Confluent for Kubernetes Playground"
+
+# Short description of this project
+description: |-
+  This repository contains Scenario workflows to deploy and manage Confluent on Kubernetes for various use cases.
+
+  This GitHub repository accompanies the official [Confluent for Kubernetes documentation](https://docs.confluent.io/operator/current/overview.html).
+
+# Canonical GitHub repo
+github_repo: osodevops/confluent-kubernetes-playground
+
+# How to use this project
+usage: |-
+  ### Overview
+  The examples found in this repository have been tested against a local minikube.
+
+  ### Prerequisites
+  You will need a Kubernetes cluster version 1.16 or newer and kubectl version 1.18 running locally.
+    * kubectl
+    * [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+
+# Example usage
+examples: |-
+  Before you can deploy any of the deployment examples found in `./examples`, we must first deploy the Confluent-specific CRDs.  To deploy, from the root of this repository, run:
+  ```shell
+    $ kubectl apply --kustomize ./kustomize/crds
+  ```
+
+  ### CFK Deployments
+    * [Vault PKI integration with dynamic SSL](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/basic-pki-vault)
+    * [Basic CFK install with auto generated certificates](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/basic)
+    * [Kafka Connect GCP Spanner in CFK](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/custom-connect-gcp-connectors)
+    * [Kafka Connect SQL Server in CFK](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/custom-connect-sql)
+    * [Monitoring Kakfa CFK with JMX Prometheus and Grafana](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/elk-logging)
+    * [RBAC enabled CFK cluster wth OpenLDAP](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/rbac)
+    * [Cloud to Cloud replication using Confluent replicator in CFK](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/replicator)
+    * [User provided mTLS for Kafka in CFK](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/userprovided-mtls)
+    * [Vault enabled secrets store for Kafka](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/vault-key-value)
+
+related:
+  - name: "Kafka GitOps Example"
+    description: "A Kafka / Confluent GitOps workflow example for multi-env deployments with Flux, Kustomize, Helm and Confluent Operator"
+    url: "https://github.com/osodevops/kafka-gitops-examples"
+  - name: "Confluent Platform on Azure"
+    description: "Terraform Module for deploying best practice HA Confluent Platform on Azure"
+    url: "https://github.com/osodevops/terraform-azure-confluent-platform"
+  - name: "Run Confluent Platform locally with Vagrant"
+    description: "Vagrantfile to start a virtual machine running the confluent platform: Zookeeper, Kafka, Schema registry and Confluent control centre using cp-ansible"
+    url: "https://github.com/osodevops/vagrant-confluent-platform"

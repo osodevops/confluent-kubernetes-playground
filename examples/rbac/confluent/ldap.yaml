@@ -92,7 +92,6 @@ data:
     objectClass: groupOfNames
     description: A group of software developers and the apps they are responsible for
     cn: developers
-    member: cn=emmy,ou=users,dc=test,dc=com
     member: cn=alice,ou=users,dc=test,dc=com
   1_kafka.ldif: |-
     dn: cn=kafka,ou=users,dc=test,dc=com

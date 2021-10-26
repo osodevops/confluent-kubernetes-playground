@@ -11,6 +11,6 @@ spec:
         failureThreshold: 5
         timeoutSeconds: 500
   image:
-    application: confluentinc/cp-enterprise-control-center-operator:6.1.2.0
-    init: confluentinc/cp-init-container-operator:6.1.2.0
+    application: confluentinc/cp-enterprise-control-center:6.2.0
+    init: confluentinc/confluent-init-container:2.1.0
   dataVolumeCapacity: 10Gi

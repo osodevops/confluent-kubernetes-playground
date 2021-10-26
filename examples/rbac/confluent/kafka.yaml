@@ -10,6 +10,8 @@ spec:
       - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+    log4j:
+      - log4j.logger.io.confluent.security.auth.provider.ldap.LdapGroupManager=DEBUG
   tls:
     secretRef: tls-group1
   metricReporter:

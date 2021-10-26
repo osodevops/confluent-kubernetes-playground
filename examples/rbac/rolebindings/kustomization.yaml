@@ -4,3 +4,4 @@ resources:
   - ksqldb
   - schemaregistry
   - controlcenter-testadmin-rolebindings.yaml
+  - developers-groups.yaml

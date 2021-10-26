@@ -1,0 +1,84 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: test-1
+spec:
+  principal:
+    name: developers
+    type: group
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: admin-groups-kafka-cluster-connect
+spec:
+  clustersScopeByIds:
+    connectClusterId: connect-cluster
+  principal:
+    name: developers
+    type: group
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: admin-groups-kafka-cluster-sr
+spec:
+  clustersScopeByIds:
+    schemaRegistryClusterId: schema-registry
+  principal:
+    name: developers
+    type: group
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: admin-groups-kafka-cluster-ksql
+spec:
+  clustersScopeByIds:
+    ksqlClusterId: ksqldb-cluster
+  principal:
+    name: developers
+    type: group
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: admin-group-topics
+spec:
+  principal:
+    name: developers
+    type: group
+  resourcePatterns:
+    - name: "*"
+      resourceType: Topic
+  role: ResourceOwner
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: admin-group-groups
+spec:
+  principal:
+    name: developers
+    type: group
+  resourcePatterns:
+    - name: "*"
+      resourceType: Group
+  role: ResourceOwner
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: admin-group-transactionalid
+spec:
+  principal:
+    name: developers
+    type: group
+  resourcePatterns:
+    - name: "*"
+      resourceType: TransactionalId
+  role: ResourceOwner

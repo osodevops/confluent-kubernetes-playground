@@ -1,0 +1,6 @@
+namespace: sandbox
+resources:
+  - confluent
+  - operator
+  - topics
+  - proxy.yaml

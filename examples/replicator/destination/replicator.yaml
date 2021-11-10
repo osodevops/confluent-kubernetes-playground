@@ -25,7 +25,7 @@ spec:
       # You'll need to update the version string in replicate-test-extension-<version>.jar based on what
       # CP version you are using
       - name: CLASSPATH
-        value: /usr/share/java/kafka-connect-replicator/replicator-rest-extension-6.1.1.jar
+        value: /usr/share/java/kafka-connect-replicator/replicator-rest-extension-7.0.0.jar
   configOverrides:
     # When the Connect distributed cluster hosting Replicator has a REST endpoint with SSL encryption
     # enabled, you must configure security properties for the SSL keystore and truststore used by the

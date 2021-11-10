@@ -13,4 +13,4 @@
 Fixed with:
 
       - name: CLASSPATH
-        value: /usr/share/java/kafka-connect-replicator/replicator-rest-extension-6.1.1.jar
+        value: /usr/share/java/kafka-connect-replicator/replicator-rest-extension-7.0.0.jar

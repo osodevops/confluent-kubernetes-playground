@@ -11,3 +11,7 @@ resources:
   - platform.confluent.io_migrationjobs.yaml
   - platform.confluent.io_schemaregistries.yaml
   - platform.confluent.io_zookeepers.yaml
+  - platform.confluent.io_clusterlinks.yaml
+  - platform.confluent.io_connectors.yaml
+  - platform.confluent.io_kafkarestproxies.yaml
+  - platform.confluent.io_schemas.yaml

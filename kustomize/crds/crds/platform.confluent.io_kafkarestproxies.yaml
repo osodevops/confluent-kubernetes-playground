@@ -1,5 +1,5 @@
 ---
-# Source: confluent-for-kubernetes/crds/platform.confluent.io_schemaregistries.yaml
+# Source: confluent-for-kubernetes/crds/platform.confluent.io_kafkarestproxies.yaml
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -8,7 +8,7 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: schemaregistries.platform.confluent.io
+  name: kafkarestproxies.platform.confluent.io
 spec:
   group: platform.confluent.io
   names:
@@ -16,13 +16,13 @@ spec:
     - all
     - confluent-platform
     - confluent
-    kind: SchemaRegistry
-    listKind: SchemaRegistryList
-    plural: schemaregistries
+    kind: KafkaRestProxy
+    listKind: KafkaRestProxyList
+    plural: kafkarestproxies
     shortNames:
-    - schemaregistry
-    - sr
-    singular: schemaregistry
+    - kafkarestproxy
+    - krp
+    singular: kafkarestproxy
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -45,7 +45,7 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: SchemaRegistry is the Schema for the schemaregistries API
+        description: KafkaRestProxy is the Schema for the kafkarestproxies API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -60,10 +60,11 @@ spec:
           metadata:
             type: object
           spec:
-            description: SchemaRegistrySpec defines the desired state of SchemaRegistry
+            description: KafkaRestProxySpec defines the desired state of KafkaRestProxy
             properties:
               authentication:
-                description: Authentication defines the rest-endpoint configuration
+                description: RestServerAuthentication server authentication support
+                  to the CP Component
                 properties:
                   basic:
                     description: Basic defines basic authentication
@@ -110,7 +111,8 @@ spec:
                 - type
                 type: object
               authorization:
-                description: Authorization defines authorization configurations
+                description: ClientAuthorization define client side authorization
+                  configuration for CP component.
                 properties:
                   kafkaRestClassRef:
                     description: KafkaRestClassRef defines the reference for KafkaRestClass
@@ -158,10 +160,283 @@ spec:
                     type: array
                 type: object
               dependencies:
-                description: Dependencies defines all the dependencies service configuration
+                description: KafkaRestProxyDependencies defines the dependencies for
+                  KafkaRestProxy
                 properties:
+                  interceptor:
+                    description: InterceptorDependency defines interceptor settings
+                      for CP component
+                    properties:
+                      configs:
+                        description: Configs defines configs for the CP interceptor
+                          Config override feature can be used to pass config
+                        items:
+                          type: string
+                        type: array
+                      consumer:
+                        description: Consumer defines the consumer configuration for
+                          interceptor. If not configured it will use the kafka dependency
+                          configuration
+                        properties:
+                          authentication:
+                            description: Authentication defines the authentication
+                              for the kafka cluster
+                            properties:
+                              jaasConfig:
+                                description: JaaS defines opinionated CP component's
+                                  JaaS configuration.
+                                properties:
+                                  secretRef:
+                                    description: SecretRef defines secret reference
+                                      to pass required credentials
+                                    maxLength: 30
+                                    minLength: 1
+                                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                    type: string
+                                required:
+                                - secretRef
+                                type: object
+                              jaasConfigPassThrough:
+                                description: JaaSPassThrough user provided complete
+                                  JaaS configuration.
+                                properties:
+                                  directoryPathInContainer:
+                                    minLength: 1
+                                    type: string
+                                  secretRef:
+                                    description: SecretRef defines the secret name
+                                      referenced for authentication
+                                    maxLength: 30
+                                    minLength: 1
+                                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                    type: string
+                                type: object
+                              type:
+                                enum:
+                                - plain
+                                - oauthbearer
+                                - scram
+                                - digest
+                                - kerberos
+                                - mtls
+                                type: string
+                            required:
+                            - type
+                            type: object
+                          bootstrapEndpoint:
+                            description: BootstrapEndpoint defines the kafka bootstrap
+                              endpoint
+                            minLength: 1
+                            pattern: .+:[0-9]+
+                            type: string
+                          discovery:
+                            description: Discovery defines the discovery capability
+                              to discover kafka cluster
+                            properties:
+                              name:
+                                description: Name is the name of the CP component
+                                type: string
+                              namespace:
+                                description: Namespace defines where CP component
+                                  is running Uses the same namespace where Operator
+                                  is running if not configured
+                                type: string
+                              secretRef:
+                                description: SecretRef defines the name of the secret
+                                  reference
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - name
+                            type: object
+                          tls:
+                            description: TLSDependencyConfig defines the client side
+                              TLS setting for kafka cluster
+                            properties:
+                              directoryPathInContainer:
+                                description: DirectoryPathInContainer contains the
+                                  directory path in container where keystore/truststore.jks/jksPassword.txt
+                                  keys are mounted. CP will not configure truststore.jks
+                                  can be ignored with IgnoreTrustStoreConfig field
+                                minLength: 1
+                                type: string
+                              enabled:
+                                description: Enabled enables the TLS configuration
+                                  for CP component
+                                type: boolean
+                              ignoreTrustStoreConfig:
+                                description: IgnoreTrustStoreConfig when configure
+                                  ignores the truststore configuration for CP component
+                                type: boolean
+                              jksPassword:
+                                description: JksPassword defines the secret name referenced
+                                  for jks password
+                                properties:
+                                  secretRef:
+                                    description: SecretRef defines the secret name
+                                      referenced for jks password More information
+                                      about jks password key/value format can be found
+                                      in Confluent Operator document
+                                    maxLength: 30
+                                    minLength: 1
+                                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                    type: string
+                                required:
+                                - secretRef
+                                type: object
+                              secretRef:
+                                description: SecretRef defines the secret name referenced
+                                  for certificates More information about certificates
+                                  key/value format can be found in Confluent Operator
+                                  document
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - enabled
+                            type: object
+                        type: object
+                      enabled:
+                        description: Enabled defines to enable the CP interceptor
+                          configuration
+                        type: boolean
+                      producer:
+                        description: Producer defines the producer configuration for
+                          interceptor. If not configured it will use the kafka dependency
+                          configuration
+                        properties:
+                          authentication:
+                            description: Authentication defines the authentication
+                              for the kafka cluster
+                            properties:
+                              jaasConfig:
+                                description: JaaS defines opinionated CP component's
+                                  JaaS configuration.
+                                properties:
+                                  secretRef:
+                                    description: SecretRef defines secret reference
+                                      to pass required credentials
+                                    maxLength: 30
+                                    minLength: 1
+                                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                    type: string
+                                required:
+                                - secretRef
+                                type: object
+                              jaasConfigPassThrough:
+                                description: JaaSPassThrough user provided complete
+                                  JaaS configuration.
+                                properties:
+                                  directoryPathInContainer:
+                                    minLength: 1
+                                    type: string
+                                  secretRef:
+                                    description: SecretRef defines the secret name
+                                      referenced for authentication
+                                    maxLength: 30
+                                    minLength: 1
+                                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                    type: string
+                                type: object
+                              type:
+                                enum:
+                                - plain
+                                - oauthbearer
+                                - scram
+                                - digest
+                                - kerberos
+                                - mtls
+                                type: string
+                            required:
+                            - type
+                            type: object
+                          bootstrapEndpoint:
+                            description: BootstrapEndpoint defines the kafka bootstrap
+                              endpoint
+                            minLength: 1
+                            pattern: .+:[0-9]+
+                            type: string
+                          discovery:
+                            description: Discovery defines the discovery capability
+                              to discover kafka cluster
+                            properties:
+                              name:
+                                description: Name is the name of the CP component
+                                type: string
+                              namespace:
+                                description: Namespace defines where CP component
+                                  is running Uses the same namespace where Operator
+                                  is running if not configured
+                                type: string
+                              secretRef:
+                                description: SecretRef defines the name of the secret
+                                  reference
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - name
+                            type: object
+                          tls:
+                            description: TLSDependencyConfig defines the client side
+                              TLS setting for kafka cluster
+                            properties:
+                              directoryPathInContainer:
+                                description: DirectoryPathInContainer contains the
+                                  directory path in container where keystore/truststore.jks/jksPassword.txt
+                                  keys are mounted. CP will not configure truststore.jks
+                                  can be ignored with IgnoreTrustStoreConfig field
+                                minLength: 1
+                                type: string
+                              enabled:
+                                description: Enabled enables the TLS configuration
+                                  for CP component
+                                type: boolean
+                              ignoreTrustStoreConfig:
+                                description: IgnoreTrustStoreConfig when configure
+                                  ignores the truststore configuration for CP component
+                                type: boolean
+                              jksPassword:
+                                description: JksPassword defines the secret name referenced
+                                  for jks password
+                                properties:
+                                  secretRef:
+                                    description: SecretRef defines the secret name
+                                      referenced for jks password More information
+                                      about jks password key/value format can be found
+                                      in Confluent Operator document
+                                    maxLength: 30
+                                    minLength: 1
+                                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                    type: string
+                                required:
+                                - secretRef
+                                type: object
+                              secretRef:
+                                description: SecretRef defines the secret name referenced
+                                  for certificates More information about certificates
+                                  key/value format can be found in Confluent Operator
+                                  document
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - enabled
+                            type: object
+                        type: object
+                      publishMs:
+                        type: integer
+                    required:
+                    - enabled
+                    type: object
                   kafka:
-                    description: Kafka defines kafka dependencies configuration
+                    description: KafkaClientDependency allows configuring CP component
+                      dependency to configure kafka settings
                     properties:
                       authentication:
                         description: Authentication defines the authentication for
@@ -285,7 +560,8 @@ spec:
                         type: object
                     type: object
                   mds:
-                    description: MDSDependencies defines the RBAC dependencies configurations
+                    description: MDSDependencies defines MDS configure when CP RBAC
+                      is enabled
                     properties:
                       authentication:
                         description: Authentication defines MDS authentication configuration
@@ -384,9 +660,118 @@ spec:
                     - endpoint
                     - tokenKeyPair
                     type: object
+                  schemaRegistry:
+                    description: SchemaRegistryClientDependency allows configuring
+                      CP component dependency to configure schemaRegistry settings
+                    properties:
+                      authentication:
+                        description: Authentication defines the authentication for
+                          the schemaregistry cluster
+                        properties:
+                          basic:
+                            description: Basic defines basic authentication
+                            properties:
+                              debug:
+                                description: Debug enables basic auth debug logs if
+                                  true for JAAS configuration
+                                type: boolean
+                              directoryPathInContainer:
+                                description: DirectoryPathInContainer allows to pass
+                                  basic credential through directory path in a container
+                                minLength: 1
+                                type: string
+                              restrictedRoles:
+                                description: RestrictedRoles defines restricted roles
+                                  on the server side only. Changes will be only reflected
+                                  in ControlCenter (C3). This configuration is ignored
+                                  on the client side configuration
+                                items:
+                                  type: string
+                                minItems: 1
+                                type: array
+                              roles:
+                                description: Role defines list of roles configuration
+                                  on the server side only. This configuration is ignored
+                                  on the client side configuration
+                                items:
+                                  type: string
+                                type: array
+                              secretRef:
+                                description: Name of the secret reference
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            type: object
+                          type:
+                            description: Type defines supported authentication scheme
+                              for Rest client
+                            enum:
+                            - basic
+                            - mtls
+                            type: string
+                        required:
+                        - type
+                        type: object
+                      tls:
+                        description: TLSDependencyConfig defines the client side TLS
+                          setting for schemaregistry cluster
+                        properties:
+                          directoryPathInContainer:
+                            description: DirectoryPathInContainer contains the directory
+                              path in container where keystore/truststore.jks/jksPassword.txt
+                              keys are mounted. CP will not configure truststore.jks
+                              can be ignored with IgnoreTrustStoreConfig field
+                            minLength: 1
+                            type: string
+                          enabled:
+                            description: Enabled enables the TLS configuration for
+                              CP component
+                            type: boolean
+                          ignoreTrustStoreConfig:
+                            description: IgnoreTrustStoreConfig when configure ignores
+                              the truststore configuration for CP component
+                            type: boolean
+                          jksPassword:
+                            description: JksPassword defines the secret name referenced
+                              for jks password
+                            properties:
+                              secretRef:
+                                description: SecretRef defines the secret name referenced
+                                  for jks password More information about jks password
+                                  key/value format can be found in Confluent Operator
+                                  document
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - secretRef
+                            type: object
+                          secretRef:
+                            description: SecretRef defines the secret name referenced
+                              for certificates More information about certificates
+                              key/value format can be found in Confluent Operator
+                              document
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        required:
+                        - enabled
+                        type: object
+                      url:
+                        description: URL defines the URL endpoint
+                        minLength: 1
+                        pattern: ^https?://.*
+                        type: string
+                    required:
+                    - url
+                    type: object
                 type: object
               externalAccess:
-                description: ExternalAccess defines the external access configuration
+                description: CPExternalAccess holds all external access policies for
+                  non-kafka components
                 properties:
                   loadBalancer:
                     description: LoadBalancer allows to create a kubernetes load balancer
@@ -730,10 +1115,6 @@ spec:
                   resources created by Operator. All the internal labels is preserved
                   and forbidden to override. For pod labels, use podTemplate.labels
                 type: object
-              internalTopicReplicatorFactor:
-                format: int32
-                minimum: 1
-                type: integer
               k8sClusterDomain:
                 description: K8SClusterDomain defines configuring kubernetes cluster
                   domain if required. If this setting is not configured it will default
@@ -2075,8 +2456,8 @@ spec:
                 format: int32
                 type: integer
               telemetry:
-                description: ConfluentTelemetry defines the confluent telemetry reporter
-                  configuration
+                description: ConfluentTelemetry provides a way to disable global confluent
+                  telemetry setting configure as part of operator deployment.
                 properties:
                   global:
                     description: Global will allow disabling telemetry configuration.
@@ -2086,7 +2467,7 @@ spec:
                     type: boolean
                 type: object
               tls:
-                description: TLS defines tls configuration for rest-endpoint
+                description: TLS  allows configuring CP Component's server configuration
                 properties:
                   autoGeneratedCerts:
                     description: AutoGenerated if configures generates the certificates
@@ -2132,7 +2513,7 @@ spec:
             - replicas
             type: object
           status:
-            description: SchemaRegistryStatus defines the observed state of SchemaRegistry
+            description: KafkaRestProxyStatus defines the observed state of KafkaRestProxy
             properties:
               authorizationType:
                 type: string
@@ -2179,8 +2560,6 @@ spec:
                 description: CurrentReplicas defines current running replicas
                 format: int32
                 type: integer
-              groupId:
-                type: string
               internalSecrets:
                 description: InternalSecrets defines the list of internal secrets
                   created by Operator for each CP component.

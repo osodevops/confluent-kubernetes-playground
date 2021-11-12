@@ -5,5 +5,5 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: confluentinc/cp-server-connect:6.2.0
-    init: confluentinc/confluent-init-container:2.1.0
+    application: confluentinc/cp-server-connect:7.0.0
+    init: confluentinc/confluent-init-container:2.2.0

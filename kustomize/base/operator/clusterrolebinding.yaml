@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "confluent-operator"
-    helm.sh/chart: confluent-for-kubernetes-0.174.25
+    helm.sh/chart: confluent-for-kubernetes-0.304.2
   name: confluent-operator
 subjects:
 - kind: ServiceAccount

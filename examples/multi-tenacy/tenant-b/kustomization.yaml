@@ -3,4 +3,6 @@ kind: Kustomization
 namespace: tenant-b
 resources:
   - namespace.yaml
+  - tenant-b-rest-class.yaml
+  - rest-credential.yaml
   - ./tenant-b-topics.yaml

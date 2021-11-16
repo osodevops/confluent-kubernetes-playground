@@ -3,4 +3,6 @@ kind: Kustomization
 namespace: tenant-a
 resources:
   - namespace.yaml
+  - tenant-a-rest-class.yaml
+  - rest-credential.yaml
   - ./tenant-a-topics.yaml

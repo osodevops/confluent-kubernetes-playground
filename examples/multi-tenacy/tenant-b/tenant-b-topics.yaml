@@ -8,5 +8,7 @@ spec:
   kafkaClusterRef:
     name: kafka
     namespace: sandbox
+  kafkaRestClassRef:
+    name: tenant-b
   configs:
     confluent.key.schema.validation: "true"

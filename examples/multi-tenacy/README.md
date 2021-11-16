@@ -22,7 +22,7 @@ KafkaRestClass is an abstraction that contains information about address and cre
 - We can specify the endpoint if kafka cluster is in different namespace to Topic. Two options, directly inline in the Topic CRD or via secretRef which will contain credentials also
 
 #### Notes
-Currently working through these example: 
+Currently working through these example:
 
 - https://medium.com/@hiroyuki.osaki/illustration-open-policy-agent-aaf05bb0de8f
 - https://elastisys.com/enforcing-policy-as-code-using-opa-and-gatekeeper-in-kubernetes/

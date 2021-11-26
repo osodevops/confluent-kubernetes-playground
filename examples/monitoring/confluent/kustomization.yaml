@@ -5,6 +5,7 @@ resources:
 - secrets
 - ldap.yaml
 - namespace.yaml
+- rest-proxy.yaml
 - ../../../kustomize/base/confluent
 patchesStrategicMerge:
   - zookeeper.yaml

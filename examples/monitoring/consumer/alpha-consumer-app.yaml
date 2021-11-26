@@ -2,31 +2,31 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: charlie-console-producer
+  name: alpha-console-producer
   namespace: sandbox
 spec:
-  serviceName: charlie-console-producer
+  serviceName: alpha-console-producer
   podManagementPolicy: Parallel
   replicas: 1
   selector:
     matchLabels:
-      app: charlie-console-producer
+      app: alpha-console-producer
   template:
     metadata:
       labels:
-        app: charlie-console-producer
+        app: alpha-console-producer
     spec:
       containers:
-        - name: charlie-console-producer
+        - name: alpha-console-producer
           image: confluentinc/cp-kafka:latest
           command:
             - /bin/sh
             - -c
             - |
               kafka-producer-perf-test \
-                --topic charlie-topic  \
+                --topic alpha-topic  \
                 --record-size 1024 \
-                --throughput 5 \
+                --throughput 10 \
                 --producer.config /mnt/kafka.properties \
                 --num-records 100000
           volumeMounts:
@@ -44,7 +44,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: charlie-console-producer
+  name: alpha-console-producer
   namespace: sandbox
 spec:
   clusterIP: None

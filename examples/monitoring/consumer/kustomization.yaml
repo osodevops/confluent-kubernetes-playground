@@ -4,7 +4,7 @@ namespace: sandbox
 resources:
 #- source-topic.yaml
 - kafka-client-config.yaml
-- alpha-producer-app.yaml
+- alpha-consumer-app.yaml
 #- bravo-producer-app.yaml
 #- charlie-producer-app.yaml
 #- delta-producer-app.yaml

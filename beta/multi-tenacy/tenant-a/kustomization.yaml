@@ -5,4 +5,4 @@ resources:
   - namespace.yaml
   - tenant-a-rest-class.yaml
   - rest-credential.yaml
-  - ./tenant-a-topics.yaml
+  - tenant-a-topics.yaml

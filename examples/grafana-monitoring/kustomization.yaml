@@ -1,9 +1,0 @@
-namespace: sandbox
-resources:
-  - ../rbac
-  - consumer
-  - grafana
-  - ../../resources/producers/producer
-  - prometheus
-
-

@@ -6,15 +6,12 @@ metadata:
 spec:
   replicas: 2
   partitionCount: 2
-  kafkaClusterRef:
-    name: kafka
-    namespace: sandbox
   kafkaRest:
     authentication:
       type: bearer
       bearer:
         secretRef: credential
-    endpoint: http://kafka.sandbox.svc.cluster.local:8090
+    endpoint: https://kafka:8090
   configs:
     cleanup.policy: "delete"
 ---
@@ -25,15 +22,12 @@ metadata:
 spec:
   replicas: 2
   partitionCount: 3
-  kafkaClusterRef:
-    name: kafka
-    namespace: sandbox
   kafkaRest:
     authentication:
       type: bearer
       bearer:
         secretRef: credential
-    endpoint: http://kafka.sandbox.svc.cluster.local:8090
+    endpoint: https://kafka:8090
   configs:
     cleanup.policy: "delete"
 ---
@@ -42,17 +36,14 @@ kind: KafkaTopic
 metadata:
   name: charlie-topic
 spec:
-  replicas: 1
-  partitionCount: 5
-  kafkaClusterRef:
-    name: kafka
-    namespace: sandbox
+  replicas: 2
+  partitionCount: 4
   kafkaRest:
     authentication:
       type: bearer
       bearer:
         secretRef: credential
-    endpoint: http://kafka.sandbox.svc.cluster.local:8090
+    endpoint: https://kafka:8090
   configs:
     cleanup.policy: "delete"
 ---
@@ -63,14 +54,11 @@ metadata:
 spec:
   replicas: 2
   partitionCount: 7
-  kafkaClusterRef:
-    name: kafka
-    namespace: sandbox
   kafkaRest:
     authentication:
       type: bearer
       bearer:
         secretRef: credential
-    endpoint: http://kafka.sandbox.svc.cluster.local:8090
+    endpoint: https://kafka:8090
   configs:
     cleanup.policy: "delete"

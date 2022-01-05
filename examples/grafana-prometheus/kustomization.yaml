@@ -1,0 +1,8 @@
+namespace: sandbox
+resources:
+  - ../rbac
+  - ../../resources/producers/4-producers-tls
+  - grafana
+  - prometheus
+
+

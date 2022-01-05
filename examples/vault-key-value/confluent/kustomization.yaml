@@ -1,0 +1,10 @@
+namespace: sandbox
+resources:
+- ../vault/secret-for-bug.yaml
+- ../../../kustomize/base/operator
+- ../../../kustomize/base/confluent-rbac
+patchesStrategicMerge:
+  - zookeeper.yaml
+  - kafka.yaml
+  - rest-class.yaml
+  - control-centre.yaml

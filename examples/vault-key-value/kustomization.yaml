@@ -1,0 +1,9 @@
+namespace: sandbox
+resources:
+  - ../rbac
+  - vault
+patchesStrategicMerge:
+  - confluent/control-centre.yaml
+  - confluent/zookeeper.yaml
+  - confluent/kafka.yaml
+  - confluent/rest-class.yaml

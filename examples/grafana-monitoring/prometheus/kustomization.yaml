@@ -1,7 +1,0 @@
-namespace: sandbox
-resources:
-- server
-- node-exporter
-#- alertmanager
-#- kafka-exporter
-#- kafka-lag-exporter

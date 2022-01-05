@@ -2,7 +2,7 @@
 In this example, we deploy an RBAC enabled Confluent cluster with Prometheus/Grafana integration.
 
 ## Deploy Stack
-From within this present directory(./examples/monitoring), run the following command:
+From within this present directory(./examples/grafana-prometheus), run the following command:
 
 ```shell
 kubectl apply -k ../../kustomize/crds && sleep 1 && kubectl apply -k .
@@ -19,7 +19,7 @@ $(kubectl get pods -n sandbox -l app=prometheus -l component=server -o name) \
 ```
 
 If you navigate to `http://localhost:9090/targets` you should hopefully see a screen such as this which indicates that Prometheus is successfully scraping from the Confluent Services
-![](../../examples/grafana-prometheus/docs/prometheus_targets.png)0
+![](docs/prometheus_targets.png)0
 
 The configuration file for Prometheus can be found at `./examples/monitoring/prometheus/server/cm.yaml` 
 
@@ -34,10 +34,10 @@ $(kubectl get pods -n sandbox kubectl get pods -n sandbox -l app.kubernetes.io/c
 Navigate to http://localhost:3000
 
 You will need to login with the username 'admin' and the password 'password'.  At the home screen you will see a dashboard called 'Confluent Platform'.  Click on this
-![](../../examples/grafana-prometheus/docs/grafana-dashboard.png)
+![](docs/grafana-dashboard.png)
 
 This dashboard will display various metrics/alerts for the various Confluent services.  This dashboard has been captured in code, and can be edited at `./examples/grafana/dashboards.yaml`
-![](../../examples/grafana-prometheus/docs/grafana-dashboard2.png)
+![](docs/grafana-dashboard2.png)
 
 
 

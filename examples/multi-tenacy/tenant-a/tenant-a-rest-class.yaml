@@ -1,0 +1,11 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestClass
+metadata:
+  name: tenant-a
+spec:
+  kafkaRest:
+    authentication:
+      type: bearer
+      bearer:
+        secretRef: tenant-a-rest-credential
+    endpoint: https://kafka.sandbox.svc.cluster.local:8090

@@ -3,5 +3,4 @@ kind: Kustomization
 namespace: sandbox
 resources:
   - ../rbac
-  - ../../kustomize/base/confluent-rbac/connect
   - custom-connect

@@ -1,20 +1,20 @@
-apiVersion: platform.confluent-rbac.io/v1beta1
+apiVersion: platform.confluent.io/v1beta1
 kind: KsqlDB
 metadata:
   name: ksqldb
 spec:
   podTemplate:
-    serviceAccountName: oso-confluent-rbac-vault-account
+    serviceAccountName: oso-confluent-vault-account
     annotations:
       vault.hashicorp.com/agent-inject: "true"
-      vault.hashicorp.com/role: "oso-confluent-rbac-vault-role"
-      vault.hashicorp.com/agent-inject-secret-client.txt: "oso-confluent-rbac/client/mds-client-ksql"
+      vault.hashicorp.com/role: "oso-confluent-vault-role"
+      vault.hashicorp.com/agent-inject-secret-client.txt: "oso-confluent/client/mds-client-ksql"
       vault.hashicorp.com/agent-inject-template-client.txt: |
         {{- with secret "oso-confluent/client/mds-client-ksql" -}}
         username={{ .Data.data.username }}
         password={{ .Data.data.password }}
         {{- end }}
-      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent-rbac/client/mds-client-ksql"
+      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent/client/mds-client-ksql"
       vault.hashicorp.com/agent-inject-template-bearer.txt: |
         {{- with secret "oso-confluent/client/mds-client-ksql" -}}
         username={{ .Data.data.username }}

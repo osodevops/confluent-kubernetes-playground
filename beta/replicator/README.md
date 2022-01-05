@@ -43,7 +43,7 @@ kube-system   kube-controller-manager-minikube     1/1     Running   0          
 kube-system   kube-proxy-fnjt5                     1/1     Running   0          172m
 kube-system   kube-scheduler-minikube              1/1     Running   0          172m
 kube-system   storage-provisioner                  1/1     Running   1          172m
-sandbox       confluent-rbac-operator-d4bb8cbd6-qg4dq   1/1     Running   0          14m
+sandbox       confluent-operator-d4bb8cbd6-qg4dq   1/1     Running   0          14m
 sandbox       console-producer-0                   1/1     Running   1          14m
 sandbox       kafka-0                              1/1     Running   1          13m
 sandbox       kafka-1                              1/1     Running   0          13m

@@ -1,5 +1,5 @@
 ---
-apiVersion: platform.confluent-rbac.io/v1beta1
+apiVersion: platform.confluent.io/v1beta1
 kind: ControlCenter
 metadata:
   name: controlcenter

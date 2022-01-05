@@ -1,14 +1,14 @@
 ---
-apiVersion: platform.confluent-rbac.io/v1beta1
+apiVersion: platform.confluent.io/v1beta1
 kind: Kafka
 metadata:
   name: kafka
 spec:
   configOverrides:
     server:
-      - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent-rbac.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-      - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent-rbac.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-      - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent-rbac.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
   tls:
     secretRef: tls-group1
   metricReporter:

@@ -1,10 +1,10 @@
-apiVersion: platform.confluent-rbac.io/v1beta1
+apiVersion: platform.confluent.io/v1beta1
 kind: SchemaRegistry
 metadata:
   name: schemaregistry
 spec:
   podTemplate:
-    serviceAccountName: oso-confluent-rbac-vault-account
+    serviceAccountName: oso-confluent-vault-account
     annotations:
       vault.hashicorp.com/agent-inject: "true"
       vault.hashicorp.com/role: "oso-confluent-rbac-vault-role"

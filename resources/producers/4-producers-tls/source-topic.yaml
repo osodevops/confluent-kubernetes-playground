@@ -1,5 +1,5 @@
 ---
-apiVersion: platform.confluent-rbac.io/v1beta1
+apiVersion: platform.confluent.io/v1beta1
 kind: KafkaTopic
 metadata:
   name: alpha-topic
@@ -18,7 +18,7 @@ spec:
   configs:
     cleanup.policy: "delete"
 ---
-apiVersion: platform.confluent-rbac.io/v1beta1
+apiVersion: platform.confluent.io/v1beta1
 kind: KafkaTopic
 metadata:
   name: bravo-topic
@@ -37,7 +37,7 @@ spec:
   configs:
     cleanup.policy: "delete"
 ---
-apiVersion: platform.confluent-rbac.io/v1beta1
+apiVersion: platform.confluent.io/v1beta1
 kind: KafkaTopic
 metadata:
   name: charlie-topic
@@ -56,7 +56,7 @@ spec:
   configs:
     cleanup.policy: "delete"
 ---
-apiVersion: platform.confluent-rbac.io/v1beta1
+apiVersion: platform.confluent.io/v1beta1
 kind: KafkaTopic
 metadata:
   name: delta-topic

@@ -1,25 +1,25 @@
 ---
-apiVersion: platform.confluent-rbac.io/v1beta1
+apiVersion: platform.confluent.io/v1beta1
 kind: Kafka
 metadata:
   name: kafka
 spec:
   podTemplate:
-    serviceAccountName: oso-confluent-rbac-vault-account
+    serviceAccountName: oso-confluent-vault-account
     annotations:
       vault.hashicorp.com/agent-inject: "true"
-      vault.hashicorp.com/role: "oso-confluent-rbac-vault-role"
-      vault.hashicorp.com/agent-inject-secret-mdstokenkeypair.pem: "oso-confluent-rbac/client/mds-token"
+      vault.hashicorp.com/role: "oso-confluent-vault-role"
+      vault.hashicorp.com/agent-inject-secret-mdstokenkeypair.pem: "oso-confluent/client/mds-token"
       vault.hashicorp.com/agent-inject-template-mdstokenkeypair.pem: |
         {{- with secret "oso-confluent/client/mds-token" -}}
         {{ .Data.data.token }}
         {{- end }}
-      vault.hashicorp.com/agent-inject-secret-mdspublickey.pem: "oso-confluent-rbac/client/mds-key"
+      vault.hashicorp.com/agent-inject-secret-mdspublickey.pem: "oso-confluent/client/mds-key"
       vault.hashicorp.com/agent-inject-template-mdspublickey.pem: |
         {{- with secret "oso-confluent/client/mds-key" -}}
         {{ .Data.data.key }}
         {{- end }}
-      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent-rbac/client/bearer"
+      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent/client/bearer"
       vault.hashicorp.com/agent-inject-template-bearer.txt: |
         {{- with secret "oso-confluent/client/bearer" -}}
         username={{ .Data.data.username }}

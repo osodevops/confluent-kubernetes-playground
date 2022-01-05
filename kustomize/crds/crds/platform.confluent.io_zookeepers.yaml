@@ -1,5 +1,5 @@
 ---
-# Source: confluent-rbac-for-kubernetes/crds/platform.confluent-rbac.io_zookeepers.yaml
+# Source: confluent-for-kubernetes/crds/platform.confluent.io_zookeepers.yaml
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -8,14 +8,14 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: zookeepers.platform.confluent-rbac.io
+  name: zookeepers.platform.confluent.io
 spec:
-  group: platform.confluent-rbac.io
+  group: platform.confluent.io
   names:
     categories:
     - all
-    - confluent-rbac-platform
-    - confluent-rbac
+    - confluent-platform
+    - confluent
     kind: Zookeeper
     listKind: ZookeeperList
     plural: zookeepers

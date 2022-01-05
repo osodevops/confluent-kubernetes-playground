@@ -1,5 +1,5 @@
 ---
-# Source: confluent-rbac-for-kubernetes/templates/licensing.yaml
+# Source: confluent-for-kubernetes/templates/licensing.yaml
 apiVersion: v1
 kind: Secret
 metadata:

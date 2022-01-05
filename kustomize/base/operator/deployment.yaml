@@ -1,5 +1,5 @@
 ---
-# Source: confluent-rbac-for-kubernetes/templates/deployment.yaml
+# Source: confluent-for-kubernetes/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,7 +44,7 @@ spec:
       containers:
       - args:
         - --debug=false
-        name: confluent-rbac-operator
+        name: confluent-operator
         image: docker.io/confluentinc/confluent-operator:0.304.2
         imagePullPolicy: IfNotPresent
         terminationMessagePath: /dev/termination-log

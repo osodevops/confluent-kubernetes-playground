@@ -1,5 +1,5 @@
 ---
-# Source: confluent-rbac-for-kubernetes/templates/service.yaml
+# Source: confluent-for-kubernetes/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:

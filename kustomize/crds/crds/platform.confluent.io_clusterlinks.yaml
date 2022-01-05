@@ -1,5 +1,5 @@
 ---
-# Source: confluent-rbac-for-kubernetes/crds/platform.confluent-rbac.io_clusterlinks.yaml
+# Source: confluent-for-kubernetes/crds/platform.confluent.io_clusterlinks.yaml
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -8,14 +8,14 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: clusterlinks.platform.confluent-rbac.io
+  name: clusterlinks.platform.confluent.io
 spec:
-  group: platform.confluent-rbac.io
+  group: platform.confluent.io
   names:
     categories:
     - all
-    - confluent-rbac-platform
-    - confluent-rbac
+    - confluent-platform
+    - confluent
     kind: ClusterLink
     listKind: ClusterLinkList
     plural: clusterlinks
@@ -69,7 +69,7 @@ spec:
                 additionalProperties:
                   type: string
                 description: Configs defines any other configs for the Cluster Link.
-                  More information about Cluster Link configs available here https://docs.confluent-rbac.io/platform/current/multi-dc-deployments/cluster-linking/configs.html
+                  More information about Cluster Link configs available here https://docs.confluent.io/platform/current/multi-dc-deployments/cluster-linking/configs.html
                 type: object
               consumerGroupFilters:
                 description: ConsumerGroupFilters defines filters for consumer groups.

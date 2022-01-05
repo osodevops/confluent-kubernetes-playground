@@ -1,4 +1,4 @@
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: KafkaTopic
 metadata:
   name: adventureworks-connect
@@ -6,7 +6,7 @@ spec:
   replicas: 1
   partitionCount: 2
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: KafkaTopic
 metadata:
   name: adventureworks-connect.person.person
@@ -14,7 +14,7 @@ spec:
   replicas: 1
   partitionCount: 2
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: KafkaTopic
 metadata:
   name: adventureworks-connect-history

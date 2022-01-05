@@ -1,4 +1,4 @@
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: KafkaRestClass
 metadata:
   name: default
@@ -7,4 +7,4 @@ spec:
     authentication:
       type: bearer
       bearer:
-        secretRef: rest-credential
+        secretRef: credential

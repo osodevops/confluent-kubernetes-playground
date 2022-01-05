@@ -1,0 +1,8 @@
+apiVersion: platform.confluent-rbac.io/v1beta1
+kind: KafkaRestClass
+metadata:
+  name: mtls-rest
+spec:
+  kafkaRest:
+    authentication:
+      type: mtls

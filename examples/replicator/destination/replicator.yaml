@@ -1,4 +1,4 @@
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 # Confluent Replicator is built as a connector, and so will use the `Connect` CRD.
 kind: Connect
 metadata:
@@ -36,14 +36,14 @@ spec:
       - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.p12
       - -Djavax.net.ssl.trustStorePassword=mystorepassword
     server:
-      - connector.class=io.confluent.connect.replicator.ReplicatorSourceConnector
+      - connector.class=io.confluent-rbac.connect.replicator.ReplicatorSourceConnector
       # To activate the monitoring extension, configure this property
-      - rest.extension.classes=io.confluent.connect.replicator.monitoring.ReplicatorMonitoringExtension,io.confluent.connect.security.ConnectSecurityExtension
+      - rest.extension.classes=io.confluent-rbac.connect.replicator.monitoring.ReplicatorMonitoringExtension,io.confluent-rbac.connect.security.ConnectSecurityExtension
       - admin.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required metadataServerUrls="https://kafka.destination.svc.cluster.local:8090" username="connect" password="connect-secret";
       - consumer.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required metadataServerUrls="https://kafka.destination.svc.cluster.local:8090" username="connect" password="connect-secret";
       - producer.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required metadataServerUrls="https://kafka.destination.svc.cluster.local:8090" username="connect" password="connect-secret";
       - sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required metadataServerUrls="https://kafka.destination.svc.cluster.local:8090" username="connect" password="connect-secret";
-      - confluent.metadata.basic.auth.user.info=connect:connect-secret
+      - confluent-rbac.metadata.basic.auth.user.info=connect:connect-secret
   dependencies:
     kafka:
       bootstrapEndpoint: kafka.destination.svc.cluster.local:9071

@@ -1,5 +1,5 @@
 ---
-# Source: confluent-for-kubernetes/crds/platform.confluent.io_kafkarestproxies.yaml
+# Source: confluent-rbac-for-kubernetes/crds/platform.confluent-rbac.io_kafkarestproxies.yaml
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -8,14 +8,14 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: kafkarestproxies.platform.confluent.io
+  name: kafkarestproxies.platform.confluent-rbac.io
 spec:
-  group: platform.confluent.io
+  group: platform.confluent-rbac.io
   names:
     categories:
     - all
-    - confluent-platform
-    - confluent
+    - confluent-rbac-platform
+    - confluent-rbac
     kind: KafkaRestProxy
     listKind: KafkaRestProxyList
     plural: kafkarestproxies
@@ -2456,7 +2456,7 @@ spec:
                 format: int32
                 type: integer
               telemetry:
-                description: ConfluentTelemetry provides a way to disable global confluent
+                description: ConfluentTelemetry provides a way to disable global confluent-rbac
                   telemetry setting configure as part of operator deployment.
                 properties:
                   global:

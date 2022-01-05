@@ -1,5 +1,5 @@
 ---
-# Source: confluent-for-kubernetes/crds/platform.confluent.io_kafkas.yaml
+# Source: confluent-rbac-for-kubernetes/crds/platform.confluent-rbac.io_kafkas.yaml
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -8,14 +8,14 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: kafkas.platform.confluent.io
+  name: kafkas.platform.confluent-rbac.io
 spec:
-  group: platform.confluent.io
+  group: platform.confluent-rbac.io
   names:
     categories:
     - all
-    - confluent-platform
-    - confluent
+    - confluent-rbac-platform
+    - confluent-rbac
     kind: Kafka
     listKind: KafkaList
     plural: kafkas
@@ -148,7 +148,7 @@ spec:
                         - type
                         type: object
                       endpoint:
-                        description: Endpoint defines where confluent Kafka Rest API
+                        description: Endpoint defines where confluent-rbac Kafka Rest API
                           is running
                         minLength: 1
                         pattern: ^https?://.*
@@ -4224,7 +4224,7 @@ spec:
                 - name
                 type: object
               telemetry:
-                description: ConfluentTelemetry defines the confluent telemetry reporter
+                description: ConfluentTelemetry defines the confluent-rbac telemetry reporter
                   configuration
                 properties:
                   global:

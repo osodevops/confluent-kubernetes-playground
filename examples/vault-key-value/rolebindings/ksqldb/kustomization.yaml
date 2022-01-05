@@ -1,5 +1,5 @@
 namespace: sandbox
 resources:
-  - ../../../../kustomize/base/rolebindings/ksqldb
+  - ../../../../kustomize/base/confluent-rbac/rolebindings/ksqldb
 patchesStrategicMerge:
   - ksqldb-base.yaml

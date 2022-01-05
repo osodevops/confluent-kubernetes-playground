@@ -1,5 +1,5 @@
 namespace: sandbox
 resources:
-  - ../../../../kustomize/base/rolebindings/connect
+  - ../../../../kustomize/base/confluent-rbac/rolebindings/connect
 patchesStrategicMerge:
   - connect-base.yaml

@@ -1,5 +1,5 @@
 ---
-# Source: confluent-for-kubernetes/crds/platform.confluent.io_connects.yaml
+# Source: confluent-rbac-for-kubernetes/crds/platform.confluent-rbac.io_connects.yaml
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -8,14 +8,14 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: connects.platform.confluent.io
+  name: connects.platform.confluent-rbac.io
 spec:
-  group: platform.confluent.io
+  group: platform.confluent-rbac.io
   names:
     categories:
     - all
-    - confluent-platform
-    - confluent
+    - confluent-rbac-platform
+    - confluent-rbac
     kind: Connect
     listKind: ConnectList
     plural: connects
@@ -149,7 +149,7 @@ spec:
                               getting from the Confluent Hub
                             items:
                               description: ConfluentHubPlugin defines the information
-                                to get the plugin from confluent hub
+                                to get the plugin from confluent-rbac hub
                               properties:
                                 name:
                                   description: Name defines the name of the connector
@@ -259,7 +259,7 @@ spec:
               connectorOverridePolicy:
                 description: ConnectorOverridePolicy allows policy to permit per-connector
                   override configuration for producer/consumer/admin prefix. More
-                  information can be found here, https://docs.confluent.io/platform/current/connect/security.html#separate-principals
+                  information can be found here, https://docs.confluent-rbac.io/platform/current/connect/security.html#separate-principals
                 enum:
                 - All
                 - Principal
@@ -564,7 +564,7 @@ spec:
                         type: object
                     type: object
                   interceptor:
-                    description: configure confluent monitoring interceptor
+                    description: configure confluent-rbac monitoring interceptor
                     properties:
                       configs:
                         description: Configs defines configs for the CP interceptor
@@ -1656,7 +1656,7 @@ spec:
                 type: string
               keyConverterType:
                 description: KeyConverter defines the supported converters package
-                  for CP platform Supported converter types here,  https://docs.confluent.io/current/connect/concepts.html#connect-converters
+                  for CP platform Supported converter types here,  https://docs.confluent-rbac.io/current/connect/concepts.html#connect-converters
                   By default, it is configured as org.apache.kafka.connect.json.JsonConverter
                 minLength: 1
                 type: string
@@ -2996,7 +2996,7 @@ spec:
                 format: int32
                 type: integer
               telemetry:
-                description: ConfluentTelemetry defines the confluent telemetry reporter
+                description: ConfluentTelemetry defines the confluent-rbac telemetry reporter
                   configuration
                 properties:
                   global:
@@ -3050,7 +3050,7 @@ spec:
                 type: object
               valueConverterType:
                 description: ValueConverter defines the supported converters package
-                  for CP platform Supported converter types here, https://docs.confluent.io/current/connect/concepts.html#connect-converters
+                  for CP platform Supported converter types here, https://docs.confluent-rbac.io/current/connect/concepts.html#connect-converters
                   By default, it is configured as org.apache.kafka.connect.json.JsonConverter
                 minLength: 1
                 type: string

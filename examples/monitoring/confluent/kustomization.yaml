@@ -6,7 +6,7 @@ resources:
 - ldap.yaml
 - namespace.yaml
 - rest-proxy.yaml
-- ../../../kustomize/base/confluent
+- ../../../kustomize/base/confluent-rbac
 patchesStrategicMerge:
   - zookeeper.yaml
   - kafka.yaml

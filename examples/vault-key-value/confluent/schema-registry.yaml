@@ -1,33 +1,33 @@
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: SchemaRegistry
 metadata:
   name: schemaregistry
 spec:
   podTemplate:
-    serviceAccountName: oso-confluent-vault-account
+    serviceAccountName: oso-confluent-rbac-vault-account
     annotations:
       vault.hashicorp.com/agent-inject: "true"
-      vault.hashicorp.com/role: "oso-confluent-vault-role"
-      vault.hashicorp.com/agent-inject-secret-client.txt: "oso-confluent/client/mds-client-sr"
+      vault.hashicorp.com/role: "oso-confluent-rbac-vault-role"
+      vault.hashicorp.com/agent-inject-secret-client.txt: "oso-confluent-rbac/client/mds-client-sr"
       vault.hashicorp.com/agent-inject-template-client.txt: |
         {{- with secret "oso-confluent/client/mds-client-sr" -}}
         username={{ .Data.data.username }}
         password={{ .Data.data.password }}
         {{- end }}
-      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent/client/mds-client-sr"
+      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent-rbac/client/mds-client-sr"
       vault.hashicorp.com/agent-inject-template-bearer.txt: |
         {{- with secret "oso-confluent/client/mds-client-sr" -}}
         username={{ .Data.data.username }}
         password={{ .Data.data.password }}
         {{- end }}
-      vault.hashicorp.com/agent-inject-secret-mdspublickey.pem: "oso-confluent/client/mds-key"
+      vault.hashicorp.com/agent-inject-secret-mdspublickey.pem: "oso-confluent-rbac/client/mds-key"
       vault.hashicorp.com/agent-inject-template-mdspublickey.pem: |
         {{- with secret "oso-confluent/client/mds-key" -}}
         {{ .Data.data.key }}
         {{- end }}
   configOverrides:
     server:
-      - confluent.metadata.basic.auth.user.info=${file:/vault/secrets/client.txt:username}:${file:/vault/secrets/client.txt:password}
+      - confluent-rbac.metadata.basic.auth.user.info=${file:/vault/secrets/client.txt:username}:${file:/vault/secrets/client.txt:password}
       - kafkastore.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required metadataServerUrls="https://kafka.sandbox.svc.cluster.local:8090" username="${file:/vault/secrets/client.txt:username}" password="${file:/vault/secrets/client.txt:password}";
       - public.key.path=/vault/secrets/mdspublickey.pem
   authorization:

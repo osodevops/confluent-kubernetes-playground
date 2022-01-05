@@ -1,4 +1,4 @@
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: Connect
 metadata:
   name: connect
@@ -23,9 +23,9 @@ spec:
       - config.storage.topic=_confluent-connect-configs
       - offset.storage.topic=_confluent-connect-offsets
       - status.storage.topic=_confluent-connect-status
-      - confluent.topic.security.protocol=SASL_SSL
-      - confluent.topic.sasl.mechanism=OAUTHBEARER
-      - confluent.topic.sasl.login.callback.handler.class=io.confluent.kafka.clients.plugins.auth.token.TokenUserLoginCallbackHandler
-      - confluent.topic.ssl.truststore.location=/mnt/sslcerts/truststore.jks
-      - confluent.topic.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+      - confluent-rbac.topic.security.protocol=SASL_SSL
+      - confluent-rbac.topic.sasl.mechanism=OAUTHBEARER
+      - confluent-rbac.topic.sasl.login.callback.handler.class=io.confluent-rbac.kafka.clients.plugins.auth.token.TokenUserLoginCallbackHandler
+      - confluent-rbac.topic.ssl.truststore.location=/mnt/sslcerts/truststore.jks
+      - confluent-rbac.topic.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
 

@@ -1,13 +1,13 @@
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: Zookeeper
 metadata:
   name: zookeeper
 spec:
   podTemplate:
-    serviceAccountName: oso-confluent-vault-account
+    serviceAccountName: oso-confluent-rbac-vault-account
     annotations:
       vault.hashicorp.com/agent-inject: "true"
-      vault.hashicorp.com/role: "oso-confluent-vault-role"
+      vault.hashicorp.com/role: "oso-confluent-rbac-vault-role"
       vault.hashicorp.com/agent-inject-secret-server.cert: "pki_int/issue/sandbox.svc.cluster.local"
       vault.hashicorp.com/agent-inject-template-server.cert: |
         {{- with secret "pki_int/issue/sandbox.svc.cluster.local" "common_name=kafka.sandbox.svc.cluster.local" -}}

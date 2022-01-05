@@ -3,8 +3,8 @@ kind: Kustomization
 namespace: destination
 resources:
 - ./namespace.yaml
-- ../../../kustomize/base/confluent
-- ../../../kustomize/base/secrets-tls
+- ../../../kustomize/base/confluent-rbac
+- ../../../kustomize/base/confluent-rbac/secrets
 - ../../../kustomize/base/secrets-user
 - ./replicator.yaml
 - ./controlcentre-c3-rb.yaml

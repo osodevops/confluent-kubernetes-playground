@@ -1,5 +1,5 @@
 
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: connect-rb-cluster-admin
@@ -9,11 +9,11 @@ spec:
     name: connect
   role: ClusterAdmin
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: replicator-topics
-  namespace: confluent
+  namespace: confluent-rbac
 spec:
   principal:
     name: connect
@@ -46,16 +46,16 @@ spec:
     - name: _confluent-gcsconnect-configs
       patternType: LITERAL
       resourceType: Topic
-    - name: confluent.gcsconnect-
+    - name: confluent-rbac.gcsconnect-
       patternType: PREFIXED
       resourceType: Topic
   role: ResourceOwner
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: gcsconnect-idempotent-write
-  namespace: confluent
+  namespace: confluent-rbac
 spec:
   principal:
     name: connect

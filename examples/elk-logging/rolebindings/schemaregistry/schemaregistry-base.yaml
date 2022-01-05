@@ -1,4 +1,4 @@
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: registry-base
@@ -10,7 +10,7 @@ spec:
     type: user
   role: SecurityAdmin
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: registry-mds-client-resources-base

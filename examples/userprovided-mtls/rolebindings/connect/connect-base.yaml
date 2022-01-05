@@ -1,5 +1,5 @@
 
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: connect-cluster-base
@@ -11,7 +11,7 @@ spec:
     type: user
   role: SecurityAdmin
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: connect-resources-base
@@ -28,7 +28,7 @@ spec:
       resourceType: Topic
   role: ResourceOwner
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: connect-monitoring-base

@@ -1,5 +1,5 @@
 ---
-# Source: confluent-for-kubernetes/templates/clusterrole.yaml
+# Source: confluent-rbac-for-kubernetes/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -13,7 +13,7 @@ metadata:
   name: confluent-operator
 rules:
 - apiGroups:
-  - cluster.confluent.com
+  - cluster.confluent-rbac.com
   resources:
   - zookeeperclusters
   - zookeeperclusters/status
@@ -26,7 +26,7 @@ rules:
   verbs:
   - '*'
 - apiGroups:
-  - operator.confluent.cloud
+  - operator.confluent-rbac.cloud
   resources:
   - physicalstatefulclusters
   - physicalstatefulclusters/scale
@@ -35,7 +35,7 @@ rules:
   verbs:
   - '*'
 - apiGroups:
-  - platform.confluent.io
+  - platform.confluent-rbac.io
   resources:
   - '*'
   verbs:

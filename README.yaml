@@ -14,7 +14,7 @@ description: |-
   This GitHub repository accompanies the official [Confluent for Kubernetes documentation](https://docs.confluent.io/operator/current/overview.html).
 
 # Canonical GitHub repo
-github_repo: osodevops/confluent-kubernetes-playground
+github_repo: osodevops/confluent-rbac-kubernetes-playground
 
 # How to use this project
 usage: |-
@@ -50,7 +50,7 @@ related:
     url: "https://github.com/osodevops/kafka-gitops-examples"
   - name: "Confluent Platform on Azure"
     description: "Terraform Module for deploying best practice HA Confluent Platform on Azure"
-    url: "https://github.com/osodevops/terraform-azure-confluent-platform"
+    url: "https://github.com/osodevops/terraform-azure-confluent-rbac-platform"
   - name: "Run Confluent Platform locally with Vagrant"
-    description: "Vagrantfile to start a virtual machine running the confluent platform: Zookeeper, Kafka, Schema registry and Confluent control centre using cp-ansible"
-    url: "https://github.com/osodevops/vagrant-confluent-platform"
+    description: "Vagrantfile to start a virtual machine running the confluent-rbac platform: Zookeeper, Kafka, Schema registry and Confluent control centre using cp-ansible"
+    url: "https://github.com/osodevops/vagrant-confluent-rbac-platform"

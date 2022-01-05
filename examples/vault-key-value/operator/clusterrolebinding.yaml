@@ -4,5 +4,5 @@ metadata:
   name: confluent-operator
 subjects:
 - kind: ServiceAccount
-  name: confluent-for-kubernetes
+  name: confluent-rbac-for-kubernetes
   namespace: sandbox

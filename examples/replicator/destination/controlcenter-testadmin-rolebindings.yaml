@@ -1,5 +1,5 @@
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: testadmin-rb
@@ -9,7 +9,7 @@ spec:
     name: testadmin
   role: ClusterAdmin
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: testadmin-rb-sr
@@ -21,7 +21,7 @@ spec:
     schemaRegistryClusterId: id_schemaregistry_destination
   role: SystemAdmin
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: testadmin-rb-replicator

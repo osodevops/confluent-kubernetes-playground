@@ -1,4 +1,4 @@
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: KafkaTopic
 metadata:
   name: brand-new-topic
@@ -15,7 +15,7 @@ spec:
   configs:
     confluent.key.schema.validation: "true"
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: brand-new-topic

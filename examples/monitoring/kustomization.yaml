@@ -2,9 +2,10 @@ namespace: sandbox
 resources:
   - confluent
   - rolebindings
+  - prometheus
 #  - producer
 #  - operator
 
 #  - grafana
-#  - prometheus
+
 

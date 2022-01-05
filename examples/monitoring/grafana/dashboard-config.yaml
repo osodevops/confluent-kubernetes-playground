@@ -14,7 +14,7 @@ data:
       providers:
         - name: 'oso-provider'
           orgId: 1
-          folder: 'confluent-examples'
+          folder: 'confluent-rbac-examples'
           type: file
           disableDeletion: true
           updateIntervalSeconds: 10

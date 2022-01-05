@@ -1,5 +1,5 @@
 ---
-# Source: confluent-for-kubernetes/crds/platform.confluent.io_migrationjobs.yaml
+# Source: confluent-rbac-for-kubernetes/crds/platform.confluent-rbac.io_migrationjobs.yaml
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -8,14 +8,14 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: migrationjobs.platform.confluent.io
+  name: migrationjobs.platform.confluent-rbac.io
 spec:
-  group: platform.confluent.io
+  group: platform.confluent-rbac.io
   names:
     categories:
     - all
-    - confluent-platform
-    - confluent
+    - confluent-rbac-platform
+    - confluent-rbac
     kind: MigrationJob
     listKind: MigrationJobList
     plural: migrationjobs

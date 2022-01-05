@@ -4,7 +4,7 @@ This example deploys a basic deployment.  No RBAC/LDAP.  Just a single topic 'fo
 ### Deploy CRDs
 Deploy the CRDS using the standard way:
 ```shell
-cd examples/confluent-cli
+cd examples/confluent-rbac-cli
 kubectl apply -k ../../kustomize/crds
 ```
 
@@ -25,7 +25,7 @@ KAFKA_ID=$(curl -x socks5h://127.0.0.1:9100 -ks https://kafka.sandbox.svc.cluste
 
 CONFLUENT_USERNAME=kafka \
 CONFLUENT_PASSWORD=kafka-secret \
-confluent login
+confluent-rbac login
 
 ```
 
@@ -40,5 +40,5 @@ CONFLUENT_USERNAME=kafka \
 CONFLUENT_PASSWORD=kafka-secret \
 CONFLUENT_MDS_URL=https://kafka.sandbox.svc.cluster.local:8090 \
 CONFLUENT_CA_CERT_PATH=../certificates/rootca.pem \ #pull from tls-group1 secret 
-confluent login
+confluent-rbac login
 ```

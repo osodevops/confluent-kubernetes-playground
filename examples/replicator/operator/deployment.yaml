@@ -9,4 +9,4 @@ spec:
         - args:
             - --debug=false
             - --namespaces=sandbox,destination
-          name: confluent-operator
+          name: confluent-rbac-operator

@@ -1,27 +1,25 @@
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: Kafka
 metadata:
   name: kafka
 spec:
   configOverrides:
     server:
-      - confluent.schema.registry.url=https://schemaregistry.sandbox.svc.cluster.local:8081
-      - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-      - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-      - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-      - authorizer.class.name=io.confluent.kafka.security.authorizer.ConfluentServerAuthorizer
-      - confluent.authorizer.access.rule.providers=ZK_ACL,CONFLUENT
+      - confluent-rbac.schema.registry.url=https://schemaregistry.sandbox.svc.cluster.local:8081
+      - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent-rbac.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent-rbac.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent-rbac.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - authorizer.class.name=io.confluent-rbac.kafka.security.authorizer.ConfluentServerAuthorizer
+      - confluent-rbac.authorizer.access.rule.providers=ZK_ACL,CONFLUENT
     log4j:
-      - log4j.logger.io.confluent.security.auth.provider.ldap.LdapGroupManager=DEBUG
-  tls:
-    secretRef: tls-group1
+      - log4j.logger.io.confluent-rbac.security.auth.provider.ldap.LdapGroupManager=DEBUG
   metricReporter:
     enabled: true
     authentication:
       type: plain
       jaasConfigPassThrough:
-        secretRef: broker-credential
+        secretRef: credential
     tls:
       enabled: true
   listeners:
@@ -29,14 +27,14 @@ spec:
       authentication:
         type: plain
         jaasConfigPassThrough:
-          secretRef: broker-credential
+          secretRef: credential
       tls:
         enabled: true
     external:
       authentication:
         type: plain
         jaasConfigPassThrough:
-          secretRef: broker-credential
+          secretRef: credential
       tls:
         enabled: true
   authorization:
@@ -48,15 +46,15 @@ spec:
       tls:
         enabled: true
       tokenKeyPair:
-        secretRef: broker-credential
+        secretRef: credential
       provider:
         type: ldap
         ldap:
-          address: ldap://ldap.sandbox.svc.cluster.local:389
+          address: ldap://ldap:389
           authentication:
             type: simple
             simple:
-              secretRef: broker-credential
+              secretRef: credential
           tls:
             enabled: true
           configurations:
@@ -74,12 +72,12 @@ spec:
       authentication:
         type: bearer
         bearer:
-          secretRef: broker-credential
+          secretRef: credential
     zookeeper:
-      endpoint: zookeeper.sandbox.svc.cluster.local:2182
+      endpoint: zookeeper:2182
       authentication:
         type: digest
         jaasConfig:
-          secretRef: broker-credential
+          secretRef: credential
       tls:
         enabled: true

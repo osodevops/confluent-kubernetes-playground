@@ -1,8 +1,8 @@
 namespace: sandbox
 resources:
 - ./namespace.yaml
-- ../../../kustomize/base/confluent
-- ../../../kustomize/base/secrets-tls
+- ../../../kustomize/base/confluent-rbac
+- ../../../kustomize/base/confluent-rbac/secrets
 patchesStrategicMerge:
   - custom-kafka-connect.yaml
   - zookeeper.yaml

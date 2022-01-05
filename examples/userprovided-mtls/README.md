@@ -51,5 +51,5 @@ kubectl logs -f -n sandbox kafka-0
 [INFO] 2021-08-17 14:49:00,492 [LicenseBackgroundFetcher RUNNING] org.apache.kafka.common.utils.AppInfoParser <init> - Kafka version: 6.1.2-ce
 [INFO] 2021-08-17 14:49:00,493 [LicenseBackgroundFetcher RUNNING] org.apache.kafka.common.utils.AppInfoParser <init> - Kafka commitId: 4c988093cc81349d
 [INFO] 2021-08-17 14:49:00,493 [LicenseBackgroundFetcher RUNNING] org.apache.kafka.common.utils.AppInfoParser <init> - Kafka startTimeMs: 1629211740492
-[INFO] 2021-08-17 14:49:00,493 [kafka-producer-network-thread | confluent-metrics-reporter] org.apache.kafka.clients.Metadata update - [Producer clientId=confluent-metrics-reporter] Cluster ID: xBPcfVfKSrCS15AmzC6BUQ
+[INFO] 2021-08-17 14:49:00,493 [kafka-producer-network-thread | confluent-rbac-metrics-reporter] org.apache.kafka.clients.Metadata update - [Producer clientId=confluent-rbac-metrics-reporter] Cluster ID: xBPcfVfKSrCS15AmzC6BUQ
 ```

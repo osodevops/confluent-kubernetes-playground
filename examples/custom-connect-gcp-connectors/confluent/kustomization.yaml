@@ -2,8 +2,8 @@ namespace: sandbox
 resources:
 - ./namespace.yaml
 - ./ldap.yaml
-- ../../../kustomize/base/confluent
-- ../../../kustomize/base/secrets-tls
+- ../../../kustomize/base/confluent-rbac
+- ../../../kustomize/base/confluent-rbac/secrets
 - ../../../kustomize/base/secrets-user
 - ./source-topic.yaml
 - ./gcs-connect.yaml

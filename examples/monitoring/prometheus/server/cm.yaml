@@ -30,15 +30,32 @@ data:
     - job_name: "prometheus"
       static_configs:
         - targets: ["localhost:9090"]
-    - job_name: "kafka-exporter"
-      static_configs:
-        - targets: ["oso-prometheus-kafka-exporter:9308"]
-    - job_name: "kafka-lag-exporter"
-      static_configs:
-        - targets: ["oso-kafka-lag-exporter-service:8000"]
     - job_name: "node-exporter"
       static_configs:
-        - targets: ["oso-prometheus-node-exporter:9100"]
+        - targets: ["node-exporter:9100"]
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: hostname
+          regex: '([^:]+)(:[0-9]+)?'
+          replacement: '${1}'
+    - job_name: "zookeeper"
+      static_configs:
+        - targets: [
+            "zookeeper:7203"
+        ]
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: hostname
+          regex: '([^:]+)(:[0-9]+)?'
+          replacement: '${1}'
+    - job_name: "kafka-broker"
+      static_configs:
+        - targets: ["kafka-1-internal:7203","kafka-2-internal:7203","kafka-3-internal:7203"]
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: hostname
+          regex: '([^:]+)(:[0-9]+)?'
+          replacement: '${1}'
     alerting:
       alertmanagers:
       - kubernetes_sd_configs:

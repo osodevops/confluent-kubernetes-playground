@@ -1,5 +1,5 @@
 ---
-# Source: confluent-for-kubernetes/crds/platform.confluent.io_kafkatopics.yaml
+# Source: confluent-rbac-for-kubernetes/crds/platform.confluent-rbac.io_kafkatopics.yaml
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -8,14 +8,14 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: kafkatopics.platform.confluent.io
+  name: kafkatopics.platform.confluent-rbac.io
 spec:
-  group: platform.confluent.io
+  group: platform.confluent-rbac.io
   names:
     categories:
     - all
-    - confluent-platform
-    - confluent
+    - confluent-rbac-platform
+    - confluent-rbac
     kind: KafkaTopic
     listKind: KafkaTopicList
     plural: kafkatopics
@@ -69,7 +69,7 @@ spec:
                 additionalProperties:
                   type: string
                 description: Configs allows passing configs for topic More information
-                  about topic configs is available here https://docs.confluent.io/current/installation/configuration/topic-configs.html
+                  about topic configs is available here https://docs.confluent-rbac.io/current/installation/configuration/topic-configs.html
                 type: object
               kafkaClusterRef:
                 description: KafkaClusterRef defines the name of the kafka cluster
@@ -126,7 +126,7 @@ spec:
                     - type
                     type: object
                   endpoint:
-                    description: Endpoint defines where confluent Rest API is running
+                    description: Endpoint defines where confluent-rbac Rest API is running
                     minLength: 1
                     pattern: ^https?://.*
                     type: string

@@ -1,4 +1,4 @@
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: ksqldb-cluster-base
@@ -14,7 +14,7 @@ spec:
       resourceType: KsqlCluster
   role: ResourceOwner
 ---
-apiVersion: platform.confluent.io/v1beta1
+apiVersion: platform.confluent-rbac.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: ksqldb-cluster-resources-base
@@ -23,7 +23,7 @@ spec:
     name: ksql
     type: user
   resourcePatterns:
-    - name: _confluent-ksql-confluent.ksqldb_
+    - name: _confluent-ksql-confluent-rbac.ksqldb_
       patternType: PREFIXED
       resourceType: Topic
   role: ResourceOwner

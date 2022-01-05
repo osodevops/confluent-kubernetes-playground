@@ -1,0 +1,63 @@
+apiVersion: platform.confluent-rbac.io/v1beta1
+kind: KafkaRestProxy
+metadata:
+  name: kafkarestproxy
+spec:
+  configOverrides:
+    server:
+      - debug=true
+      - confluent-rbac.rest.auth.propagate.method=SSL
+      - confluent-rbac.rest.auth.ssl.principal.mapping.rules=RULE:.*CN[\s]?=[\s]?([a-zA-Z0-9.]*)?.*/$1/
+      - ssl.client.authentication=REQUIRED
+      - ssl.cipher.suites=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+#      - ssl.client.auth=required
+#      - ssl.truststore.location=/mnt/sslcerts/truststore.p12
+#      - ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+#      - ssl.truststore.type=PKCS12
+#      - ssl.keystore.type=PKCS12
+#      - kafka.rest.resource.extension.class=io.confluent-rbac.kafkarest.security.KafkaRestSecurityResourceExtension
+#    jvm:
+#      - -Djavax.net.debug=all
+  replicas: 1
+  image:
+    application: confluentinc/cp-kafka-rest:7.0.0
+    init: confluentinc/confluent-rbac-init-container:2.2.0
+  podTemplate:
+    resources:
+      limits:
+        cpu: 2
+        memory: 4Gi
+  authentication:
+    type: mtls
+#  authorization:
+#    kafkaRestClassRef:
+#      name: mtls-rest
+#    type: rbac
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka:9071
+      authentication:
+        type: mtls
+      tls:
+        enabled: true
+        secretRef: kafka-generated-jks
+#    mds:
+#      endpoint: https://kafka:8090
+#      tokenKeyPair:
+#        secretRef: mds-public
+#      authentication:
+#        type: bearer
+#        bearer:
+#          secretRef: credential
+#      tls:
+#        enabled: true
+#        secretRef: kafka-generated-jks
+  tls:
+    secretRef: abc-tls
+
+
+
+
+
+
+

@@ -1,5 +1,5 @@
 namespace: sandbox
 resources:
-  - ../../../../kustomize/base/rolebindings/schemaregistry
+  - ../../../../kustomize/base/confluent-rbac/rolebindings/schemaregistry
 patchesStrategicMerge:
   - schemaregistry-base.yaml

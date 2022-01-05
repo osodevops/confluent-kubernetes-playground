@@ -6,5 +6,6 @@ resources:
   - namespace.yaml
   - zookeeper.yaml
   - kafka.yaml
+  - control-centre.yaml
   - rest-class.yaml
 

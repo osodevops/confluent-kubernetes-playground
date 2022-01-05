@@ -1,6 +1,0 @@
-namespace: sandbox
-resources:
-  - confluent
-  - operator
-  - rolebindings
-  - ../../kustomize/base/tools/

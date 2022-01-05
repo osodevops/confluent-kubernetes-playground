@@ -1,9 +1,0 @@
-apiVersion: platform.confluent-rbac.io/v1beta1
-kind: ConfluentRolebinding
-metadata:
-  name: testadmin-rb
-spec:
-  principal:
-    type: user
-    name: testadmin
-  role: ClusterAdmin

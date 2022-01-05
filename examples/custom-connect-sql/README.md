@@ -12,21 +12,17 @@ NOTE: For ease of readability, we will simply reference the scripts that perform
 The Dockerfile installs a custom plugin with the following line: `RUN confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:1.6.0`.  To build, run:
 
 ```shell
-./build-inside.sh
+cd docker && ./build-inside.sh && cd ..
 ```
-### Deploy CRDs
+### Deploy CFK CRDs & Confluent Components
 Deploy the CRDS using the standard way:
 ```shell
-kubectl apply -k ../../kustomize/crds
-```
-### Deploy Confluent Operator and Confluent Services 
-Deploy the confluent operator and services:
-```shell
-kubectl apply -k .
+kubectl apply -k ../../kustomize/crds && sleep 1 && kubectl apply -k .
 ```
 ### Enable CDC on 'person' table of AdventureWorks Database
 CDC needs to be enabled on a table by table basis.  This table is also referenced in the prod-mssql-connnector.json file. 
 ```shell
+cd connect-scripts
 ./enable_cdc.sh
 Context "minikube" modified.
 Changed database context to 'AdventureWorks'.
@@ -34,14 +30,21 @@ Job 'cdc.AdventureWorks_capture' started successfully.
 Job 'cdc.AdventureWorks_cleanup' started successfully.
 ```
 ### Deploy Debezium Connector
-A curl request is sent to the 'connect pod' to install the connector.
+A curl request is sent to the 'connect pod' to install the connector.  First we need to forward the kafka connect port to our localhost:
+
+```shell
+kubectl port-forward \
+$(kubectl get pods -n sandbox -l app=connect -o name) \
+8083:8083 --namespace sandbox
+```
+In a separate terminal window, run:
 ```shell
 ./deploy_connector.sh
 ```
 
 At this stage, if you log onto Control Center, you should see a running connector:
 
-![connector](./connect_image.png)
+![connector](docs/connect_image.png)
 
 ### Update CDC enabled 'Person' table
 Now we will send a SQL Command that will update all users in the person.Person table on the AdventureWorks database:
@@ -56,4 +59,4 @@ Changed database context to 'AdventureWorks'.
 If you observe the automatically created topic `adventureworks-connect.Person.Person` you will see the update event messages streaming through
 
 
-![topic_update](./topic_update.png)
+![topic_update](docs/topic_update.png)

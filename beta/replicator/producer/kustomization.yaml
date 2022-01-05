@@ -1,0 +1,4 @@
+namespace: sandbox
+resources:
+- kafka-client-config-secure.yaml
+- rbac-producer-app.yaml

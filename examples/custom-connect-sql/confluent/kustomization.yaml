@@ -4,7 +4,7 @@ resources:
 - ../../../kustomize/base/confluent-rbac
 - ../../../kustomize/base/confluent-rbac/secrets
 patchesStrategicMerge:
-  - custom-kafka-connect.yaml
+  - ../custom-connect/custom-kafka-connect.yaml
   - zookeeper.yaml
   - kafka.yaml
   - control-centre.yaml

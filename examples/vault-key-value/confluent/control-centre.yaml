@@ -8,21 +8,15 @@ spec:
     annotations:
       vault.hashicorp.com/agent-inject: "true"
       vault.hashicorp.com/role: "oso-confluent-vault-role"
-      vault.hashicorp.com/agent-inject-secret-client.txt: "oso-confluent/client/mds-client-c3"
+      vault.hashicorp.com/agent-inject-secret-client.txt: "oso-confluent/client/bearer"
       vault.hashicorp.com/agent-inject-template-client.txt: |
-        {{- with secret "oso-confluent/client/mds-client-c3" -}}
+        {{- with secret "oso-confluent/client/bearer" -}}
         username={{ .Data.data.username }}
         password={{ .Data.data.password }}
         {{- end }}
-      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent/client/mds-client-c3"
+      vault.hashicorp.com/agent-inject-secret-bearer.txt: "oso-confluent/client/bearer"
       vault.hashicorp.com/agent-inject-template-bearer.txt: |
-        {{- with secret "oso-confluent/client/mds-client-c3" -}}
-        username={{ .Data.data.username }}
-        password={{ .Data.data.password }}
-        {{- end }}
-      vault.hashicorp.com/agent-inject-secret-plain.txt: "oso-confluent/client/mds-client-connect"
-      vault.hashicorp.com/agent-inject-template-plain.txt: |
-        {{- with secret "oso-confluent/client/mds-client-connect" -}}
+        {{- with secret "oso-confluent/client/bearer" -}}
         username={{ .Data.data.username }}
         password={{ .Data.data.password }}
         {{- end }}
@@ -40,15 +34,17 @@ spec:
       - public.key.path=/vault/secrets/mdspublickey.pem
   dependencies:
     kafka:
-      bootstrapEndpoint: kafka.sandbox.svc.cluster.local:9071
+      bootstrapEndpoint: kafka:9071
       authentication:
+        jaasConfig:
+          $patch: delete
         type: plain
         jaasConfigPassThrough:
           directoryPathInContainer: /vault/secrets
       tls:
         enabled: true
     mds:
-      endpoint: https://kafka.sandbox.svc.cluster.local:8090
+      endpoint: https://kafka:8090
       tokenKeyPair:
         directoryPathInContainer: /vault/secrets
       authentication:
@@ -56,7 +52,7 @@ spec:
         bearer:
 #           Receive an error from operator '"error":"loading mds authentication from directoryPathInContainer is not supported"}'
 #          directoryPathInContainer: /vault/secrets
-          secretRef: dummy-secret
+          secretRef: credential
       tls:
         enabled: true
 

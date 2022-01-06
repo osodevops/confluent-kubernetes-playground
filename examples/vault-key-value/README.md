@@ -19,6 +19,4 @@ This demo exhibits how we can integrate Hashicorp Vault into the confluent for k
       kubernetes_host=https://$KUBERNETES_PORT_443_TCP_ADDR:$KUBERNETES_PORT_443_TCP_PORT \
       kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       ```
-* Deploy confluent
-  `kubectl apply -k .`
   

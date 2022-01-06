@@ -14,7 +14,9 @@ spec:
         {{ .Data.data.jaas }}
         {{- end }}
   authentication:
+    jaasConfig:
+      $patch: delete
     type: digest
     jaasConfigPassThrough:
       directoryPathInContainer: /vault/secrets
-  replicas: 1
+  replicas: 3

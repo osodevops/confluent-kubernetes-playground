@@ -7,3 +7,5 @@ patchesStrategicMerge:
   - confluent/zookeeper.yaml
   - confluent/kafka.yaml
   - confluent/rest-class.yaml
+
+

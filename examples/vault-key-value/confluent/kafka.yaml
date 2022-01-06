@@ -44,7 +44,6 @@ spec:
 
   configOverrides:
     server:
-      - confluent.schema.registry.url=https://schemaregistry.sandbox.svc.cluster.local:8081
       - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
@@ -58,6 +57,8 @@ spec:
   metricReporter:
     enabled: true
     authentication:
+      jaasConfig:
+        $patch: delete
       type: plain
       jaasConfigPassThrough:
         directoryPathInContainer: /vault/secrets
@@ -66,6 +67,8 @@ spec:
   listeners:
     internal:
       authentication:
+        jaasConfig:
+          $patch: delete
         type: plain
         jaasConfigPassThrough:
           directoryPathInContainer: /vault/secrets
@@ -73,6 +76,8 @@ spec:
         enabled: true
     external:
       authentication:
+        jaasConfig:
+          $patch: delete
         type: plain
         jaasConfigPassThrough:
           directoryPathInContainer: /vault/secrets
@@ -87,7 +92,7 @@ spec:
       provider:
         type: ldap
         ldap:
-          address: ldap://ldap.tools.svc.cluster.local:389
+          address: ldap://ldap:389
           authentication:
             type: simple
             simple:
@@ -113,6 +118,8 @@ spec:
     zookeeper:
       endpoint: zookeeper.sandbox.svc.cluster.local:2182
       authentication:
+        jaasConfig:
+          $patch: delete
         type: digest
         jaasConfigPassThrough:
           directoryPathInContainer: /vault/secrets

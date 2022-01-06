@@ -1,34 +1,47 @@
 apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
-  name: testadmin-rb-cluster-admin
+  name: gcs-cluster-admin
 spec:
   principal:
     type: user
-    name: connect
+    name: kafka
   role: ClusterAdmin
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: gcsconnect-cluster-base
-  namespace: confluent
+  namespace: sandbox
 spec:
   clustersScopeByIds:
     connectClusterId: sandbox.gcsconnect
   principal:
-    name: connect
+    name: kafka
     type: user
   role: SecurityAdmin
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
+  name: gcsconnect-cluster-kafka
+  namespace: sandbox
+spec:
+  clustersScopeByIds:
+    connectClusterId: sandbox.gcsconnect
+  principal:
+    name: kafka
+    type: user
+  role: ClusterAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
   name: gcsconnect-resources-base
-  namespace: confluent
+  namespace: sandbox
 spec:
   principal:
-    name: connect
+    name: kafka
     type: user
   resourcePatterns:
     - name: gcsconnect-cluster
@@ -46,10 +59,10 @@ apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: gcsconnect-topics
-  namespace: confluent
+  namespace: sandbox
 spec:
   principal:
-    name: connect
+    name: kafka
     type: user
   resourcePatterns:
     - name: sbs-kafka-test
@@ -91,10 +104,10 @@ apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
   name: gcsconnect-idempotent-write
-  namespace: confluent
+  namespace: sandbox
 spec:
   principal:
-    name: connect
+    name: kafka
     type: user
   resourcePatterns:
     - name: kafka-cluster

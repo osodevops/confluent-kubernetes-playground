@@ -7,7 +7,7 @@ minikube start --cpus=6 --memory=16384
 
 3. apply CFK crds and Componets 
 ```shell
-kubectl apply -k ../../kustomize/crds && kubectl apply -k .
+kubectl apply -k ../../base/crds && kubectl apply -k .
 ```
 
 4. run docker build for connect image into minikube
@@ -19,7 +19,7 @@ cd docker
 [//]# (TODO) There is no such service-account.json 
 6. create google service account secret which is used in the connect config
 ```shell
- kubectl create secret generic gcs-service-account --from-file=./service-account.json -n sandbox
+ kubectl create secret generic gcs-service-account --from-file=./gcs-connect/service-account.json -n sandbox
 ```
 
 7. Port forward the connect cluster to create connect task:
@@ -29,11 +29,12 @@ kubectl port-forward -n sandbox gcsconnect-0 8083:8083
 
 8. Create connectors using sample JSON
 ```shell
+cd gcs-connect
 # GCS example connector
-curl -XPUT -H "Content-Type: application/json" --data @gcs-sink.json -u connect:connect-secret https://localhost:8083/connectors/gcs-sink/config -kv
+curl -XPUT -H "Content-Type: application/json" --data @gcs-connect/gcs-sink.json -u kafka:kafka-secret https://localhost:8083/connectors/gcs-sink/config -kv
 
 # Spanner Sink connector
-curl -XPUT -H "Content-Type: application/json" --data @spanner-sink.json -u connect:connect-secret https://localhost:8083/connectors/spanner-sink-connector/config -kv
+curl -XPUT -H "Content-Type: application/json" --data @spanner-sink.json -u kafka:kafka-secret https://localhost:8083/connectors/spanner-sink-connector/config -kv
 ```
 
 

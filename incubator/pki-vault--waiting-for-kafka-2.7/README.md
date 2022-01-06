@@ -1,6 +1,5 @@
 **NOTE!**  
-
-This example is not presently working, as it would seem that [KIP-651](https://cwiki.apache.org/confluence/display/KAFKA/KIP-651+-+Support+PEM+format+for+SSL+certificates+and+private+key) is only available in version 2.7 of Kafka, whereas the latest version of Confluent Kafka at time of writing of is 2.6.
+## This example is not presently working, as it would seem that [KIP-651](https://cwiki.apache.org/confluence/display/KAFKA/KIP-651+-+Support+PEM+format+for+SSL+certificates+and+private+key) is only available in version 2.7 of Kafka, whereas the latest version of Confluent Kafka at time of writing of is 2.6.
 
 The error when trying to specify PEM files as per documntation is:
 

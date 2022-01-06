@@ -6,7 +6,7 @@ spec:
   clustersScopeByIds:
     schemaRegistryClusterId: id_registry_sandbox
   principal:
-    name: registry
+    name: kafka
     type: user
   role: SecurityAdmin
 ---
@@ -16,7 +16,7 @@ metadata:
   name: registry-mds-client-resources-base
 spec:
   principal:
-    name: registry
+    name: kafka
     type: user
   resourcePatterns:
     - name: _confluent-license

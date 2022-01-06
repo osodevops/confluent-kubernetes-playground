@@ -6,9 +6,21 @@ spec:
   clustersScopeByIds:
     connectClusterId: sandbox.connect
   principal:
-    name: connect
+    name: kafka
     type: user
   role: SecurityAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: connect-cluster-base-cluster
+spec:
+  clustersScopeByIds:
+    connectClusterId: sandbox.connect
+  principal:
+    name: kafka
+    type: user
+  role: ClusterAdmin
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding
@@ -16,7 +28,7 @@ metadata:
   name: connect-resources-base
 spec:
   principal:
-    name: connect
+    name: kafka
     type: user
   resourcePatterns:
     - name: sandbox.connect
@@ -33,7 +45,7 @@ metadata:
   name: connect-monitoring-base
 spec:
   principal:
-    name: connect
+    name: kafka
     type: user
   resourcePatterns:
     - name: _confluent-monitoring

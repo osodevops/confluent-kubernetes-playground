@@ -1,0 +1,11 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: ControlCenter
+metadata:
+  name: controlcenter
+spec:
+  dependencies:
+    connect:
+      - name: connect-gcs
+        url: https://gcsconnect:8083
+        tls:
+          enabled: true

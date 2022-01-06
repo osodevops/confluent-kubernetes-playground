@@ -1,5 +1,0 @@
-namespace: sandbox
-resources:
-  - ../../stable/rbac
-  - ../../kustomize/base/confluent-rbac/connect
-  - gcs-connect

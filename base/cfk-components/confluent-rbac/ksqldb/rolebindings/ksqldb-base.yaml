@@ -6,7 +6,7 @@ spec:
   clustersScopeByIds:
     ksqlClusterId: sandbox.ksqldb_
   principal:
-    name: ksql
+    name: kafka
     type: user
   resourcePatterns:
     - name: ksql-cluster
@@ -20,7 +20,7 @@ metadata:
   name: ksqldb-cluster-resources-base
 spec:
   principal:
-    name: ksql
+    name: kafka
     type: user
   resourcePatterns:
     - name: _confluent-ksql-confluent.ksqldb_

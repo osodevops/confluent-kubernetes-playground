@@ -1,62 +1,15 @@
 ---
-apiVersion: platform.confluent-rbac.io/v1beta1
+apiVersion: platform.confluent.io/v1beta1
 kind: Kafka
 metadata:
   name: kafka
 spec:
-  configOverrides:
-    server:
-      - confluent-rbac.schema.registry.url=https://schemaregistry.sandbox.svc.cluster.local:8081
   tls:
     secretRef: tls-kafka
   listeners:
     internal:
       authentication:
         type: mtls
-#        principalMappingRules:
-#          - RULE:CN=([\^,]*).*
       tls:
         enabled: true
         # Will use the certificates in the parent secretRef tls-kafka
-  authorization:
-    type: rbac
-    superUsers:
-      - User:kafka
-  services:
-    mds:
-      tls:
-        enabled: true
-      tokenKeyPair:
-        secretRef: broker-credential
-      provider:
-        type: ldap
-        ldap:
-          address: ldap://ldap.sandbox.svc.cluster.local:389
-          authentication:
-            type: simple
-            simple:
-              secretRef: broker-credential
-          tls:
-            enabled: true
-          configurations:
-            groupNameAttribute: cn
-            groupObjectClass: groupOfNames
-            groupMemberAttribute: member
-            groupMemberAttributePattern: cn=(.*),ou=users,dc=test,dc=com
-            groupSearchBase: ou=groups,dc=test,dc=com
-            userNameAttribute: cn
-            userMemberOfAttributePattern: cn=(.*),ou=users,dc=test,dc=com
-            userObjectClass: organizationalRole
-            userSearchBase: ou=users,dc=test,dc=com
-  dependencies:
-    kafkaRest:
-      authentication:
-        type: bearer
-        bearer:
-          secretRef: broker-credential
-    zookeeper:
-      endpoint: zookeeper.sandbox.svc.cluster.local:2182
-      authentication:
-        type: mtls
-      tls:
-        enabled: true

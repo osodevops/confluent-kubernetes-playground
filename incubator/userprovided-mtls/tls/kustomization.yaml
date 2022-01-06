@@ -1,0 +1,4 @@
+namespace: sandbox
+resources:
+- kafka-sslcerts.yaml
+- zookeeper-sslcerts.yaml

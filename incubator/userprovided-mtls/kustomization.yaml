@@ -1,7 +1,8 @@
 namespace: sandbox
 resources:
-  - namespace.yaml
-  - ldap.yaml
-  - operator
-  - confluent
-#  - rolebindings
+- ../../base/operator
+- ../../base/cfk-components/confluent-rbac
+- tls
+patchesStrategicMerge:
+  - confluent/kafka.yaml
+  - confluent/zookeeper.yaml

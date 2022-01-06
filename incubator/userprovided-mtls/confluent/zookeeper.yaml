@@ -1,11 +1,8 @@
-apiVersion: platform.confluent-rbac.io/v1beta1
+apiVersion: platform.confluent.io/v1beta1
 kind: Zookeeper
 metadata:
   name: zookeeper
 spec:
-  configOverrides:
-    jvm:
-      - "-Djavax.net.debug=ssl"
   authentication:
     type: mtls
     principalMappingRules:

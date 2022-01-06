@@ -13,7 +13,7 @@ kubectl create secret generic tls-zookeeper \
   --dry-run=client \
   --from-file=fullchain.pem=./zookeeper-server.pem \
   --from-file=cacerts.pem=./root-ca.pem \
-  --from-file=privkey.pem=./zookeeper-server-key.pem -o yaml > confluent/zookeeper-sslcerts.yaml
+  --from-file=privkey.pem=./zookeeper-server-key.pem -o yaml > zookeeper-sslcerts.yaml
 
 # Create Kafka server certificates
 # Use the SANs listed in kafka-server-domain.json
@@ -26,4 +26,4 @@ kubectl create secret generic tls-kafka \
   --dry-run=client \
   --from-file=fullchain.pem=./kafka-server.pem \
   --from-file=cacerts.pem=./root-ca.pem \
-  --from-file=privkey.pem=./kafka-server-key.pem -o yaml > confluent/kafka-sslcerts.yaml
+  --from-file=privkey.pem=./kafka-server-key.pem -o yaml > kafka-sslcerts.yaml

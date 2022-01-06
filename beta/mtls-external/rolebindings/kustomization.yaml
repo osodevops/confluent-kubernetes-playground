@@ -1,4 +1,0 @@
-namespace: sandbox
-resources:
-  - controlcenter-testadmin-rolebindings.yaml
-  - test-user-rolebindings.yaml

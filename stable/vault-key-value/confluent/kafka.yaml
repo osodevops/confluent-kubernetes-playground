@@ -59,7 +59,6 @@ spec:
     authentication:
       jaasConfig:
         $patch: delete
-      type: plain
       jaasConfigPassThrough:
         directoryPathInContainer: /vault/secrets
     tls:
@@ -78,51 +77,26 @@ spec:
       authentication:
         jaasConfig:
           $patch: delete
-        type: plain
         jaasConfigPassThrough:
           directoryPathInContainer: /vault/secrets
-      tls:
-        enabled: true
   services:
     mds:
-      tls:
-        enabled: true
       tokenKeyPair:
         directoryPathInContainer: /vault/secrets
       provider:
-        type: ldap
         ldap:
-          address: ldap://ldap:389
           authentication:
-            type: simple
             simple:
               directoryPathInContainer: /vault/secrets
-          tls:
-            enabled: true
-          configurations:
-            groupNameAttribute: cn
-            groupObjectClass: groupOfNames
-            groupMemberAttribute: member
-            groupMemberAttributePattern: cn=(.*),ou=users,dc=test,dc=com
-            groupSearchBase: ou=groups,dc=test,dc=com
-            userNameAttribute: cn
-            userMemberOfAttributePattern: cn=(.*),ou=users,dc=test,dc=com
-            userObjectClass: organizationalRole
-            userSearchBase: ou=users,dc=test,dc=com
   dependencies:
     kafkaRest:
       authentication:
-        type: bearer
         bearer:
           directoryPathInContainer: /vault/secrets
     zookeeper:
-      endpoint: zookeeper.sandbox.svc.cluster.local:2182
       authentication:
         jaasConfig:
           $patch: delete
-        type: digest
         jaasConfigPassThrough:
           directoryPathInContainer: /vault/secrets
-      tls:
-        enabled: true
 

@@ -1,0 +1,686 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sandbox
+---
+apiVersion: v1
+imagePullSecrets:
+- name: confluent-registry
+kind: ServiceAccount
+metadata:
+  labels:
+    app: confluent-for-kubernetes
+    app.kubernetes.io/component: confluent-operator
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: confluent-for-kubernetes
+    helm.sh/chart: confluent-for-kubernetes-0.304.2
+  name: confluent-for-kubernetes
+  namespace: sandbox
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: confluent-for-kubernetes
+    app.kubernetes.io/component: confluent-operator
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: confluent-for-kubernetes
+    helm.sh/chart: confluent-for-kubernetes-0.304.2
+  name: confluent-operator
+rules:
+- apiGroups:
+  - cluster.confluent.com
+  resources:
+  - zookeeperclusters
+  - zookeeperclusters/status
+  - zookeeperclusters/scale
+  - zookeeperclusters/finalizers
+  - kafkaclusters
+  - kafkaclusters/status
+  - kafkaclusters/scale
+  - kafkaclusters/finalizers
+  verbs:
+  - '*'
+- apiGroups:
+  - operator.confluent.cloud
+  resources:
+  - physicalstatefulclusters
+  - physicalstatefulclusters/scale
+  - physicalstatefulclusters/status
+  - physicalstatefulclusters/finalizers
+  verbs:
+  - '*'
+- apiGroups:
+  - platform.confluent.io
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- apiGroups:
+  - policy
+  resources:
+  - poddisruptionbudgets
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - route.openshift.io
+  resources:
+  - routes
+  - routes/custom-host
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - apps
+  resources:
+  - statefulsets
+  - statefulsets/scale
+  - statefulsets/status
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - events
+  - persistentvolumeclaims
+  - secrets
+  - secrets/finalizers
+  - pods
+  - services
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  - ingresses/status
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: confluent-for-kubernetes
+    app.kubernetes.io/component: confluent-operator
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: confluent-for-kubernetes
+    helm.sh/chart: confluent-for-kubernetes-0.304.2
+  name: confluent-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: confluent-operator
+subjects:
+- kind: ServiceAccount
+  name: confluent-for-kubernetes
+  namespace: sandbox
+---
+apiVersion: v1
+data:
+  0_groups.ldif: |-
+    dn: ou=groups,dc=test,dc=com
+    objectClass: organizationalUnit
+    objectClass: top
+    ou: groups
+  0_users.ldif: |-
+    dn: ou=users,dc=test,dc=com
+    objectClass: organizationalUnit
+    objectClass: top
+    ou: users
+  1_alice.ldif: |-
+    dn: cn=alice,ou=users,dc=test,dc=com
+    userPassword: alice-secret
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    description: Alice is great at changing perspectives, but sometimes chases down rabbit holes
+    cn: alice
+  1_c3-test.ldif: |-
+    dn: cn=testadmin,ou=users,dc=test,dc=com
+    userPassword: testadmin
+    description: testadmin user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: testadmin
+  1_c3.ldif: |-
+    dn: cn=c3,ou=users,dc=test,dc=com
+    userPassword: c3-secret
+    description: control center user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: c3
+  1_connect.ldif: |-
+    dn: cn=connect,ou=users,dc=test,dc=com
+    userPassword: connect-secret
+    description: connect user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: connect
+  1_developers.ldif: |-
+    dn: cn=developers,ou=groups,dc=test,dc=com
+    objectClass: top
+    objectClass: groupOfNames
+    description: A group of software developers and the apps they are responsible for
+    cn: developers
+    member: cn=alice,ou=users,dc=test,dc=com
+  1_emmy.ldif: |-
+    dn: cn=emmy,ou=users,dc=test,dc=com
+    userPassword: emmy-secret
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    description: Interested in action and conservation. If you like it, you should put a Noetherian Ring on it.
+    cn: emmy
+  1_erp.ldif: |-
+    dn: cn=erp,ou=users,dc=test,dc=com
+    userPassword: erp-secret
+    description: erp user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: erp
+  1_kafka.ldif: |-
+    dn: cn=kafka,ou=users,dc=test,dc=com
+    userPassword: kafka-secret
+    description: kafka user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: kafka
+  1_ksql.ldif: |-
+    dn: cn=ksql,ou=users,dc=test,dc=com
+    userPassword: ksql-secret
+    description: ksql user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: ksql
+  1_replicator.ldif: |-
+    dn: cn=replicator,ou=users,dc=test,dc=com
+    userPassword: replicator-secret
+    description: replicator user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: replicator
+  1_sr.ldif: |-
+    dn: cn=sr,ou=users,dc=test,dc=com
+    userPassword: sr-secret
+    description: schema registry user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: sr
+kind: ConfigMap
+metadata:
+  name: ldap-ldifs
+  namespace: sandbox
+---
+apiVersion: v1
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURtRENDQW9DZ0F3SUJBZ0lVSEZEYWdiZ0Y4bTg0NzhoUEJpTktGOGI5MHVzd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1pERVJNQThHQTFVRUJoTUlWVzVwZG1WeWMyVXhEekFOQmdOVkJBZ1RCbEJoYm1kbFlURU9NQXdHQTFVRQpCeE1GUldGeWRHZ3hEVEFMQmdOVkJBb1RCRUZqYldVeERqQU1CZ05WQkFzVEJVMTVUM0puTVE4d0RRWURWUVFECkV3WlVaWE4wUTBFd0hoY05NakV3T0RFMk1USXhPREF3V2hjTk1qWXdPREUxTVRJeE9EQXdXakJrTVJFd0R3WUQKVlFRR0V3aFZibWwyWlhKelpURVBNQTBHQTFVRUNCTUdVR0Z1WjJWaE1RNHdEQVlEVlFRSEV3VkZZWEowYURFTgpNQXNHQTFVRUNoTUVRV050WlRFT01Bd0dBMVVFQ3hNRlRYbFBjbWN4RHpBTkJnTlZCQU1UQmxSbGMzUkRRVENDCkFTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBSzZ6NzJNbithSElYZ1RkODVqdi8rMm4KT0daQU9ITWhOQ2J2V1Y1cWVlTlgwaXZIZVhtRkF4TmFSc2ZKbGhOUllpTVRLRTRoUjZreTdEUWxFbVZLQ1g0cwpnaExYZ28wU3pUV3BhNkltcmFIbnplQWhob1gyaWxFdjRvUVVxMVFDdHhRd0NhVmxLYXhCM1pLNExzVVFuZlRqClBFL3JtQURwd2UxSjlteWxLeDJuNEl1V2NNRjE5dlBFdjc4dTdXU0FDNUQzdXVjTUwwRzByZys3K0srTXRQV1EKSk9UcWp2MHR6RGt4UXg0NmVlL042eFI0czdKbVRHc29SeC9KRDVOVUozNTJYYTFrNHhSUVltRnJ0U0V4UTBPUgpWSVNhYnQ2ZzA5L1NqQ0JrQTRWb0NoazBXL0o0K0k1VGR0clh0ZUpaTVBrWlhKMkxvS3hXM0NCVW0vRG9xUXNDCkF3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0VHTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3SFFZRFZSME8KQkJZRUZOSFRzcEFlcURDVFUwMDB5SGU0ZzlEMURrcXNNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUF3VFErOApzTExxbURpV2RSeTZrOThyWWpPR3RXVW10ZWVSNDhNRWxQR3RSZ3BLWFhjcTBaSnd5ZHd3VTVZKzhuL3lyYW5UCmQzUWxEOWR5MDlZNHhYbDFkR2FhbWw0ZXE4cFZWQm04WE9kVkNaWnR3WjNHQ0I1NFdrQ2RHdnFIS3hnclVzb1IKMC9UYU15TVNXbmZMdk9XNHhLOXpQanAxYUc1eDdGeFJybW5OVjRUTHE5UFpOa3krK3Y2Y2dyNTF4OXdPOVNHaQpGTHBJOE9yTkdVeWxuZGhVMGFYSzRnZUFwZXh2cEJDNjdqY1Y4Nmo4emxKNkJaMnRRQXA0ZDFBeGVVQjROdmVsCmg3TFRCS0toemRER2lWUTFWYStoR1pGaE1GeXUxTzUrbVhzaUFwOTc1UEZ2S1pLMWJaeC90WjdMZjRSdXZpUjgKRHBQRUpMT2c1TXpQb2FFLwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBcnJQdll5ZjVvY2hlQk4zem1PLy83YWM0WmtBNGN5RTBKdTlaWG1wNTQxZlNLOGQ1CmVZVURFMXBHeDhtV0UxRmlJeE1vVGlGSHFUTHNOQ1VTWlVvSmZpeUNFdGVDalJMTk5hbHJvaWF0b2VmTjRDR0cKaGZhS1VTL2loQlNyVkFLM0ZEQUpwV1VwckVIZGtyZ3V4UkNkOU9NOFQrdVlBT25CN1VuMmJLVXJIYWZnaTVadwp3WFgyODhTL3Z5N3RaSUFMa1BlNjV3d3ZRYlN1RDd2NHI0eTA5WkFrNU9xTy9TM01PVEZESGpwNTc4M3JGSGl6CnNtWk1heWhISDhrUGsxUW5mblpkcldUakZGQmlZV3UxSVRGRFE1RlVoSnB1M3FEVDM5S01JR1FEaFdnS0dUUmIKOG5qNGpsTjIydGUxNGxrdytSbGNuWXVnckZiY0lGU2I4T2lwQ3dJREFRQUJBb0lCQUg1T2pTYXRRaWdiaXc0Tgp3ZzZ5aGVBMlkrcFpSL2JFN01XeGluVmVtZDBxSTBPUHBsMmJNd3dNMnR1YS9TdmVUUXQ2MEVzY2VJajF6aHd0CktVMmQ1NXNYWnJ0a29IaUtQVjhzckNyQnVBczBZbjVHL3RGZjI4U3kwQndhTFh4QnNrZWdLM2t1MktBM3hwQkwKSlZWSW5FcnU5eTM0OFI3SDRuTkNaQzFNaFEyY25SeFluc0Y0c2JxYWtvVHhMa08waTh3OXIwSXIwKzZIK0tJLwpjeUFWaWJuUi80L2VxODh0UDRhT0RrazZ0cUsweTk2S2ZqTEdpbGdsWW9CemUyK1AvNHhrSHlJYXZHd3ZCdllNCkgrc042OGhNbnhXbzg0cVp1RENROWJkOTA3MFV2d1NOc2ZNNkRBL3NBYWVTb0VSeHE4Z0xpSlhXZVZXQ3JNKzEKMFdrQTZJRUNnWUVBNXR4dStTZk0ra2NtM1hoMitKUWlIeERVNC9oankvYlBpV2k2d3ZjR2tFVksvRGQxZHlWQwprYUVjT05oblBFNytCZ21YbWVQdno3dG9nTmtrK2FncGY4L1JQVmFvNUQxemZSNkZESGU5QnBWWjRxUDdzYzk4CjFHRC9vVzFDaWVvUmVyQVlMM1BVWktIZ0g1a0ltR21ZR3owSUVxa0ZzeHl5bG4vVkc1T2ZoT0VDZ1lFQXdib0QKOUJKWGwxK3dUVHdPRE9KclFzZlFUc0lxR1pzZUtMYlM3cGwvT29mUWxCd0ZYN0VrV0RFejE4ZjV1MUEvUnhaSApCeUNTY2tiZW5GbXhFR0Zpa2Foc05EaGhzRWw3blpveDlDcWJFWXJwY08rUWRTTmlSSDBralpLdTladnd6VERxCmhMclV4b2Irbm5WdFFqenZCNmYrZThCc052UkJIY1hxUkhQZy8yc0NnWUFmaHY4SXU2eThpVGIvaTlJRGhJZGMKWXJvUUgvM1Evdlc4dURhNUpXOGFDTHlDMFRnVGUxMHA4aXllZnI4cWQwY3RuK1c2T0d5cG05aGJzRXZpWkZxMgpmN1Q5Z1hZekpVaytUd3F3ZHpHelVuWWlBMjcrQzIzcXV3eHVDVFBMRGRJeFJSY29jOU1Qb3lPdWJRSEZmcll0CkVocW1JYnNMaU9IQ3Q5WnNtNjV2UVFLQmdEa0tyWmxUUVVsSUdxQlRPNHZkcTFtSmZqT0NobVR0d0s2YVRuZUUKNk9weURSOWZOTkhkVmVkRjdZN3V5Z0MyZXp0U091M0ZVSG1ubG1xUkdrckpjZjJUaXZEQlhUcE1HTUxxSVNWVQoyajRMR2Z0di9xZ1BHQ00wZWV2WnNmeU53eFNYLzZXL1lXRm5aRmVDR2Y2ejlHbmJ0Rm41NmFNd3ZtK20wL2o5CjZkVXJBb0dCQUt2a0UrcnQ4MldRbjQydTNaei9aa3RMNHhLM3FKU3lDR0kycnpPQUtDTm92M1FPWlpiVVdqTDAKaTBYeVA5dFRDMnJYRDhZelVUblYzbUM5YjlGUkI5UFZ4OHY0OTllQjJaYTNiY29CRERpVU9VT0NsTlc5VElqWgpFNnFCSm5aY21QTllqZXl3UFE3aFFhbU1NUnA1MWlOeUVZYTVGOXFuU3hhcUN1cjRsaUN6Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: ca-pair-sslcerts
+  namespace: sandbox
+type: kubernetes.io/tls
+---
+apiVersion: v1
+data:
+  publicKey.pem: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF2YUd5OFRPZGJDTXlTTTd6cVpzeApuNjJ5dUUrQmhJUGxjOXo5Y3RyWCt0QldOQ0NKZVBaYktIVFpTOXVLTGVLVWk5dTA3dHMvMzVYUm5FNEFURDZxCmx3am5Tb0pPa2VJWGNZaUorWEdFeE4xb1JFOFJsNW90dmRtSkVzYjlZNkpzZmUybFJDQ3NaTng2azFzMU5tUUYKUjR3blJpS3lsSWlZSjl1V1VHZkgxOEpLWnFNOHo5UXFrWi8relFrekhOWXNYbi9ZeVJ1RElRWGVVU2VjaHI5MwpKanQ3OUFpa3NraWNvVDA0bHF6L0dhSHoyV0pFeXV2TExFMWpOQk9Db21LbDA1UWIreXZKbUdudC83SFg2SFQ3CjNobkNYYnNsd3R6cDBDbWVHT2lKUmJKeGJhaGtURnFoMW9LcVpYVURDWnJLQ05OUnZYcU4vUUhxbmF3bzZrSnkKOHdJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t
+kind: Secret
+metadata:
+  labels:
+    app: confluent-for-kubernetes
+    app.kubernetes.io/component: confluent-operator
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: confluent-for-kubernetes
+    helm.sh/chart: confluent-for-kubernetes-0.304.2
+  name: confluent-operator-licensing
+  namespace: sandbox
+type: Opaque
+---
+apiVersion: v1
+data:
+  bearer.txt: dXNlcm5hbWU9a2Fma2EKcGFzc3dvcmQ9a2Fma2Etc2VjcmV0Cg==
+  digest-users.json: ewogICJrYWZrYSI6ICJrYWZrYS1zZWNyZXQiCn0K
+  digest.txt: dXNlcm5hbWU9ImthZmthIgpwYXNzd29yZD0ia2Fma2Etc2VjcmV0Ig==
+  ldap.txt: dXNlcm5hbWU9Y249bWRzLGRjPXRlc3QsZGM9Y29tCnBhc3N3b3JkPURldmVsb3BlciEK
+  mdsPublicKey.pem: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF3TXlqblA0cWZkVEtoQ1M1c1BiVgpxaVhWeVExNXdyZVZBc0VxRXNuTUZ0Mkp0TUwxM0VMT1Eyc3pXbjU3V3p1NzgyYnlFdFlGbEYzVG9WVzNjbDRkCk9KUnphU0VRNnhlMTBSL2k3VG5lSXRFUWZwSnIvMkw0YnVidVFSR05lL0tyTE1FMGl2cjl1NElFYmJSUytsdHUKNkE5Z2d6R2NhRFN4Vi9leUtNTlBhZEhRL0FONEJaaWpBZUtaY0RUano2YkhqSjZFUTNZTmdxeW44NDZyZVFrOQpUb0habDhiR0hPaHo1Qzd5b0lmc3haZ1lIbG54NkpHc2lVWjVQMzZXR2MzOFpJQi9tNDVvOGN2NGlmVVZQVUIwCklRUTlBaFlJNVp1TXJ4RHNSUERYMkdHNkU1YlcydnFEV3lxWE9ZN2NTb0k3QWlrRmR3QVRXNFJ2N2V1RUpVeXoKTndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t
+  mdsTokenKeyPair.pem: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBd015am5QNHFmZFRLaENTNXNQYlZxaVhWeVExNXdyZVZBc0VxRXNuTUZ0Mkp0TUwxCjNFTE9RMnN6V241N1d6dTc4MmJ5RXRZRmxGM1RvVlczY2w0ZE9KUnphU0VRNnhlMTBSL2k3VG5lSXRFUWZwSnIKLzJMNGJ1YnVRUkdOZS9LckxNRTBpdnI5dTRJRWJiUlMrbHR1NkE5Z2d6R2NhRFN4Vi9leUtNTlBhZEhRL0FONApCWmlqQWVLWmNEVGp6NmJIako2RVEzWU5ncXluODQ2cmVRazlUb0habDhiR0hPaHo1Qzd5b0lmc3haZ1lIbG54CjZKR3NpVVo1UDM2V0djMzhaSUIvbTQ1bzhjdjRpZlVWUFVCMElRUTlBaFlJNVp1TXJ4RHNSUERYMkdHNkU1YlcKMnZxRFd5cVhPWTdjU29JN0Fpa0Zkd0FUVzRSdjdldUVKVXl6TndJREFRQUJBb0lCQVFDS3pJaFpoSTE0cTFIawprai93eTdNRTNGb3RkUHNjbUdlNVpQRHlONzhyRXZDSlp2WHpUVkVMTGtqNU5DZUFoZCtJbXF0WnJpUzBMRndvClFQcGhacW5veXM3UGQ1T2pmQjFUNFgzUVJTSEx0UEVIL2tlcncwZVJKOFdNcUtOUUFXTUVSRStjWXBkNmYxN0sKejlBUkZ2UWdNcm5MbVZLOW5ubXlGOHQyRnkyN3dxVVZCbVlYWC9tK25lLysyUzRQTzhac1BkM3dZMlk5UjhMVgp1ZmJIQytIMkV4QThuRTR6dGVmZzl6UHluMXdNaS9HTVVnMVdpQ1QzQjJ1M0Nac1dhWkp6Vkl0VDZ0N3FuQVpKClh6a2dOcElIbjltV3V3aDhreGdNZDZzeERSQU9ENWlQZDZhOWkwb0xTYVMzLzBMRGV6VUxDMFZoVFB5M0cyb1IKQTBBSmVPblJBb0dCQVBWMXV6MXBQSkF0ZW1yOHdMaUtoUU9lOGpBc3h0blN6VjhGcWQxMXFKWWduaWh3YWkrWQprNDRoT0ovMDIvNnd5cTQ5RmhNR21reUZXdjVkVURFUkdWN01jWFA2YkVmWTVjMVArUGRSVUFtNUg1bmVmMzd6Ck5SOWY3b2lmVjNqKzQ5dXkyVmZVUUNyL2grVCt5d3pBb2MwaVp5WUdhSTF3aktYUXIzKzFvNTV2QW9HQkFNa1UKQnEySWFJRHdvbUJnUUNLUWpDeS9BTmpRMzJ5TUFHSGYvbUUzMlJURnB1NVNaRUxlOXlyR1FyM3hIRnRROWFRTApWdjVQMDl3WmZiNElPZHAvM3d3SE1xRmpOak5kRzhzdzdSeU5TK3dmUUd1OHYxR2ZZc3N1QnVYaTl2MFhHWEZICldlbk5RRVVQYmliUmJvY0o5Mk9KVEpLNFAvczV2djEzMkhEUi9wdTVBb0dCQUorWThTbTQ1endIbGZWQ2FqeVQKTkhGcVE2YTNOb1FpNEkzTUxPcGx1andDOFZMeDVOa1ZwN3RlTm1jcTJtLzdtNDAzQXNkVUg3ZHBiZ1M5djRwbgp4OHN2dXdUaDZzMjhaWTdkVk0vWit1U1hqY2lLTnZQZ1JzWWpwZ0VIT2VUZU5tRi9KSHBLODM0QnIrWmhGTDB4Cjh3SmlRQmNsUzQzTGhHZThES0JKQmgzWkFvR0FONWJIdWRYS1BrdElPS2lqVW1ydnRiY2dQdENQMCt4b2RxWjgKSnRoUHRVUm5QOStiUkRscnozRjhKaEt3S2phWmtqNW9VR28xUWRYeVEwVDI2WWNNWE1Eb3FHRkxMS3dDOFF1WApvWnNXY0RLN2xvMVp2dkQzV1FCaWU4OWhSTnJMOTlzbjZsRUtBWTJnZ0M3S0JaOGx1MmpMdUl3amRBcWsyR0gzCmZra3Z3RkVDZ1lBeVhqNXo2Q09QSURKMUUxVkxySml3MVlCWGFhN1pMazVFcHczUXZDTTdoVEtTRmJ1U053c3AKRXVMbU03Zzh3TVBaQWJ6cy9SUU9hZjlJaEUveDUzZE8ySW1rNVBBUmFvRXNTRmpORDRkcFZIYUtlbTJjQm9tdAp4NXEwU3FVVnE2eHY0MjIxM2dsQlFNREo0cVFYVHJzRUJkcE55bnY3b1ZlWFh3Y2FPVFVhQnc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQ==
+  plain-jaas.conf: c2FzbC5qYWFzLmNvbmZpZz1vcmcuYXBhY2hlLmthZmthLmNvbW1vbi5zZWN1cml0eS5wbGFpbi5QbGFpbkxvZ2luTW9kdWxlIHJlcXVpcmVkIHVzZXJuYW1lPSJrYWZrYSIgcGFzc3dvcmQ9ImthZmthLXNlY3JldCI7
+  plain.txt: dXNlcm5hbWU9ImthZmthIgpwYXNzd29yZD0ia2Fma2Etc2VjcmV0Ig==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: credential
+  namespace: sandbox
+---
+apiVersion: v1
+data:
+  mdsPublicKey.pem: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF3TXlqblA0cWZkVEtoQ1M1c1BiVgpxaVhWeVExNXdyZVZBc0VxRXNuTUZ0Mkp0TUwxM0VMT1Eyc3pXbjU3V3p1NzgyYnlFdFlGbEYzVG9WVzNjbDRkCk9KUnphU0VRNnhlMTBSL2k3VG5lSXRFUWZwSnIvMkw0YnVidVFSR05lL0tyTE1FMGl2cjl1NElFYmJSUytsdHUKNkE5Z2d6R2NhRFN4Vi9leUtNTlBhZEhRL0FONEJaaWpBZUtaY0RUano2YkhqSjZFUTNZTmdxeW44NDZyZVFrOQpUb0habDhiR0hPaHo1Qzd5b0lmc3haZ1lIbG54NkpHc2lVWjVQMzZXR2MzOFpJQi9tNDVvOGN2NGlmVVZQVUIwCklRUTlBaFlJNVp1TXJ4RHNSUERYMkdHNkU1YlcydnFEV3lxWE9ZN2NTb0k3QWlrRmR3QVRXNFJ2N2V1RUpVeXoKTndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: mds-public
+  namespace: sandbox
+---
+apiVersion: v1
+data:
+  cacerts.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURtRENDQW9DZ0F3SUJBZ0lVQW9pMzRCbmprMVNiRVBnME1rWjQxeWxnd0FNd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1pERVJNQThHQTFVRUJoTUlWVzVwZG1WeWMyVXhEekFOQmdOVkJBZ1RCbEJoYm1kbFlURU9NQXdHQTFVRQpCeE1GUldGeWRHZ3hEVEFMQmdOVkJBb1RCRUZqYldVeERqQU1CZ05WQkFzVEJVMTVUM0puTVE4d0RRWURWUVFECkV3WlVaWE4wUTBFd0hoY05Nakl3TVRBMk1UVXpNVEF3V2hjTk1qY3dNVEExTVRVek1UQXdXakJrTVJFd0R3WUQKVlFRR0V3aFZibWwyWlhKelpURVBNQTBHQTFVRUNCTUdVR0Z1WjJWaE1RNHdEQVlEVlFRSEV3VkZZWEowYURFTgpNQXNHQTFVRUNoTUVRV050WlRFT01Bd0dBMVVFQ3hNRlRYbFBjbWN4RHpBTkJnTlZCQU1UQmxSbGMzUkRRVENDCkFTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBS3Y3NVRIdnlUcFJRVGNQRmRGY1k5S2cKZyszeitpSXRjUnhJSnA4ODBuL1hMQ2Z2U3VqdUVoWGFnRHEwZmx3NmpwTS9oTGp0cE5YZXZUSHdndjUzMDcvUgpyZmdsUnpIRk53ZVFqWVdQMmdRbnJybUpEQmJmT0J0enVBTjlHOEUxbHVwclNLZjNHT3pVeE1HcE5iL0w1TThXCjVhNnFPZVdGcVppNTFYanZrc3BjaGZxeHI1V050bkk1ZkhmemMweFJ1MWdiUzczNFo3Y21NQ1k2U1ZSUEdoV1MKa1ppMFl0dTNqdVBTNjdFWmgzNXliYVgyWXhmYWoyaXlVM3NSVnNud1JraExSZXpmV0wvUHdOUWo4QlljNG5zVQpRcW9ZZWxuazQ3dVk1V3c1Y2tYOE92ek1DWTRlcFJnK0ZveHB1SExGcDZFMmRMV3d3MHlpQ3N4SFR2UUp0UkVDCkF3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0VHTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3SFFZRFZSME8KQkJZRUZPek1Wb3dhaVZOVy80cUxoUXZnT1BSZFozWmhNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUFIMS81cApqWkUvd0lvcG1SeGhzd2RmSFE5RURSNXdiekVBeU9ubzNuSzdhZkRZZ3RaU3FOS0EvVUVMeXZtV3pWYzdxeWtZCmNzeUduem5nbnJvbjBoTmZCczhQQTdWVkJ3ZjlQREU0TUxRWG9Bdlk2cGpnQi9BVTVuU0YwVnlSNU5sSGxhNmUKRklLb3JnZG1NZnBpVzBMMFFQR0Nab3Bya2E5b0lzcHhSZjhtYzBuU3NyYnV1RENhYUc3emFGd003MjZKeDdiaQpuRW9pRk1Kc0YzVXpjeUtaYXNaakMrZDNDdS8wYVlveXlkTm1iSERyWjlzRld6VGQ1bHk0ZjB4VXNtVlR4MXlCCit6TURoOEtRQWFORlJ2dkdBTnZLc2J4aVloYXhIWnRwTVhZRExEZGtqL21lTUVhWCtOUlIvWjV3cFZVSkdSUE8KUll5ZHhSYlZzL2M1WlIwQQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  fullchain.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVHakNDQXdLZ0F3SUJBZ0lVWWVySUFMai9DeHZEZXU2bEFic3Z1aGh4eExvd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1pERVJNQThHQTFVRUJoTUlWVzVwZG1WeWMyVXhEekFOQmdOVkJBZ1RCbEJoYm1kbFlURU9NQXdHQTFVRQpCeE1GUldGeWRHZ3hEVEFMQmdOVkJBb1RCRUZqYldVeERqQU1CZ05WQkFzVEJVMTVUM0puTVE4d0RRWURWUVFECkV3WlVaWE4wUTBFd0hoY05Nakl3TVRBMk1UVXpNVEF3V2hjTk1qY3dNVEExTVRVek1UQXdXakJFTVJFd0R3WUQKVlFRR0V3aFZibWwyWlhKelpURVBNQTBHQTFVRUNCTUdVR0Z1WjJWaE1RNHdEQVlEVlFRSEV3VkZZWEowYURFTwpNQXdHQTFVRUF4TUZhMkZtYTJFd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUM3Cnl4N0pIL1lZTmVnTVdFU0FaVkNJN3dMSG5sTWZ5aGY4NDJMTVlUd1pLK25IdWg2RmxNZHFoNXVOeG12UWFSV3EKaEg5NDZJMC9IanQyNmlEN2JUOFllTmpkc3haY1JTdVVRelNvV3dQbnRRTW9VUms3N2hYWEtQTkNncmVFNDNTbwo3bzNQdHh1WDVNbUtXaUdXcUs0RW1iNXVXK3d0SjRZd29VVFE0VTVPV1F4anY4K0ZUWmk5WTJVaU1JVUxCMi9YClhYWFhxWjhvRDVDeGxyc3UxWWZsV3NybFFQTFRPU0NxK1pHeEdLQ1ljMjdoaExIb0JXZjJsSnkxb29ma0lpRDQKb1dKOExhaWpMRFkwd0lodGhxMytWankySUhpVnozVS9ET21NaXMrYUwzRUR5dnE2c1E5M2l6L1A1aEszRTM1SQozR3B6NHd4MHhYWUR4d25iK3VkTkFnTUJBQUdqZ2VNd2dlQXdEZ1lEVlIwUEFRSC9CQVFEQWdXZ01CMEdBMVVkCkpRUVdNQlFHQ0NzR0FRVUZCd01CQmdnckJnRUZCUWNEQWpBTUJnTlZIUk1CQWY4RUFqQUFNQjBHQTFVZERnUVcKQkJSUnMvdzYwYmNjbWR0K2g3aldRRG8wY0xzZ3N6QWZCZ05WSFNNRUdEQVdnQlRzekZhTUdvbFRWditLaTRVTAo0RGowWFdkMllUQmhCZ05WSFJFRVdqQllnZ1ZyWVdacllZSUxLaTV0ZVM1a2IyMWhhVzZDSDJ0aFptdGhMbk5oCmJtUmliM2d1YzNaakxtTnNkWE4wWlhJdWJHOWpZV3lDSVNvdWEyRm1hMkV1YzJGdVpHSnZlQzV6ZG1NdVkyeDEKYzNSbGNpNXNiMk5oYkRBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQW8rYmRrOVVMYUdQcjE5Y0xlRlZTNmlOKwpiZDYxdUVzRUZXMUlQZ3F3OVFoUGx0MWtySTBib0dFdkZadll6T0Y1U3BYeTdvZXA2UGRSSTdHMmtCU01EaVh5ClFPOWh4WkZXaVdRZlpraFJCRWd4NTVwMzVVLzJRM3IrZ3JONHZJbXFJVVJzNElaSm9qcnFJc2VSTzVqMnViTmoKalZ4OFR1RktTZTIvLzRBRlNnL3JvY3FvcHhwYmo5dU9sZVZlVHhuUTcvSE14OGFLcTFWWGlrdHVuZlV4azhtZApJcXcrZTd3YXpWNFBKbThMWVliR3JlU3dtejRndFJMRFpSaVJzSVJkTmNnVVJ0RTR5OW9tY2hUaGxJQWRiS2l4CmpHSDhNKzIvRm1iekEzRTh2Vm1LRXQvcW9ZRm5HZnFlZ0dZYzRhMmM5Q3ZKanNpTW95K0kyYnJTMkhhTHlnPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  privkey.pem: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcFFJQkFBS0NBUUVBdThzZXlSLzJHRFhvREZoRWdHVlFpTzhDeDU1VEg4b1gvT05pekdFOEdTdnB4N29lCmhaVEhhb2ViamNacjBHa1Zxb1IvZU9pTlB4NDdkdW9nKzIwL0dIalkzYk1XWEVVcmxFTTBxRnNENTdVREtGRVoKTys0VjF5anpRb0szaE9OMHFPNk56N2NibCtUSmlsb2hscWl1QkptK2JsdnNMU2VHTUtGRTBPRk9UbGtNWTcvUApoVTJZdldObElqQ0ZDd2R2MTExMTE2bWZLQStRc1phN0x0V0g1VnJLNVVEeTB6a2dxdm1Sc1JpZ21ITnU0WVN4CjZBVm45cFNjdGFLSDVDSWcrS0ZpZkMyb295dzJOTUNJYllhdC9sWTh0aUI0bGM5MVB3enBqSXJQbWk5eEE4cjYKdXJFUGQ0cy96K1lTdHhOK1NOeHFjK01NZE1WMkE4Y0oyL3JuVFFJREFRQUJBb0lCQVFDVDlIcHkxMzJhb1k0TAplOWVzbVNZVVhNc0IzeGw2cUV5eDc2eTlmYlpOMXEwL3NNR3ZXUUtzU2Q4aW1qd0RYV2UyaXVHcnJ2enB4N1h1CkFKU3Z3dWk5TFNrZnNxTmhXeFgwbitaeTVoSnprY2ZGRWZBaHFYa0hwYm5Tb3c1WDRxVGRHK1lheXhjd1d3NzIKdEFCV3BOdEZ3S09xYXozdWJYOXAvUVVzMVBaTy9ycHg2SDhIYVlDU2tibnEzMUdTb0Jpai8yTnV6eXA0aDBHTAo5d3hIZ3EvMm9laVdFZHVQQkQ2QUpHQURkZlNqZkt2OUNLblRYQk9pd2FtOUp0NWdzSXc4TVNkajBtQnBHZmtpCmRKaCs0VW1LVnl3UnNDb1RSWU53ekk5KzlxZHFYeEM4bUc4V1QvaVlMZmtnU3FnVkg4aWlrTThXc01xL3VEVmwKUmZlYk83MEJBb0dCQVBJb2p4a3RIZXkxcFI2bTBNNDY3cGdQWi9qWXpvMUFhc0c1dkp0d3lpMkRvblZnY1lXWQpicEZuUW5MYUVSRkM2UGwvRWsrOW5MRHJMSE5xR2pvaHo1ZUxpbElqSGU4dHR2RVZEaVdPY2x1NmtPZnRicEExCkU2UGJVVDZiZDc4RWdJS0V6M1ZYd2k2SlBnaEszNERuMnRuamk0NzZrcERCU0JINkxnelFwMmZoQW9HQkFNYUgKRFhKUHhsMWQzeWQ0eDVudGthSDNmdStmZGh2OXF4L2kyMmJsZkRXRWdYNHFFNy9ZVVNRcEU2VTR3RmZUMHVnego2SFZTdWs3ejVrODlSVEhvU1RZVU5PSVlWMWlmVFMyOWFVcUNzWTV5U3Z4MzRQcmFwSEZJWFhSeUxlcFFZTjRuCi9uZTM5UVdqa240OUpXTHdGK0dPTzFkbjV3OUVpUmlSM1o5Tmh6enRBb0dCQUk3Z3QyM1hYT3lwVUQrQmxYblkKODZYc2tTQVdhK2lUdFdtUU9XUk5iRHptaWhoUFN5dlVBSWp5TUJhcjY1NFBxSDV0SjFTOVA1SnpiOHE1TTdoUQo4cmNyc2ZVOG14RGdIQ3lxaTZwRkhkeFplOTRjRFR3dzFPRzlLWGFUTEZnY1ErYStqZGxpYWtRaTNlTHVxbWpZClpCeGpVWmlPNTZOWkp6alVNQStIblA2QkFvR0FBZzlVckdMM2cvQjlhRU53anNCUVNvWHU0ejJjVkI0RnNJY0MKRDhkQnlxeGRTNW5VS3FGcjlod1hBQmZlcHdxam5aVXNURXRYYzRwRVVYNHBRYU5QWHloR2hESU1kZmJ4TGhCUgpEMXpieXNhVTBKbk4wOHlBK0V2djdFMWkvSk5vN2VVc1ZzR3A0UzBaVUFZQ1pVeG9jd2F1eHZGbERGdUJzS2VTCnpSeFkwdUVDZ1lFQXlRMWJmV3dmM1RPM09XUnRvelFQVHg3WStsUFVWMldWRE8vSXdoRDlIdFpQcFIrQ3RXYzgKd3dVd0Nwa1ZwamtQZ3dNcEViMTd1UXZIRHpnRjcyWjFVemZJSWlwWkRnWllJd2EyQ3J2VEQ1VlJNbDF5R3hpaAoyK0lhY09PWkFHQlhxalAwWWRMLzhYTkhFMExoTW5VQWNxcTh2eFFHSU9RZ2xWWXBYaDhwRXVNPQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: tls-kafka
+  namespace: sandbox
+---
+apiVersion: v1
+data:
+  cacerts.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURtRENDQW9DZ0F3SUJBZ0lVQW9pMzRCbmprMVNiRVBnME1rWjQxeWxnd0FNd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1pERVJNQThHQTFVRUJoTUlWVzVwZG1WeWMyVXhEekFOQmdOVkJBZ1RCbEJoYm1kbFlURU9NQXdHQTFVRQpCeE1GUldGeWRHZ3hEVEFMQmdOVkJBb1RCRUZqYldVeERqQU1CZ05WQkFzVEJVMTVUM0puTVE4d0RRWURWUVFECkV3WlVaWE4wUTBFd0hoY05Nakl3TVRBMk1UVXpNVEF3V2hjTk1qY3dNVEExTVRVek1UQXdXakJrTVJFd0R3WUQKVlFRR0V3aFZibWwyWlhKelpURVBNQTBHQTFVRUNCTUdVR0Z1WjJWaE1RNHdEQVlEVlFRSEV3VkZZWEowYURFTgpNQXNHQTFVRUNoTUVRV050WlRFT01Bd0dBMVVFQ3hNRlRYbFBjbWN4RHpBTkJnTlZCQU1UQmxSbGMzUkRRVENDCkFTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBS3Y3NVRIdnlUcFJRVGNQRmRGY1k5S2cKZyszeitpSXRjUnhJSnA4ODBuL1hMQ2Z2U3VqdUVoWGFnRHEwZmx3NmpwTS9oTGp0cE5YZXZUSHdndjUzMDcvUgpyZmdsUnpIRk53ZVFqWVdQMmdRbnJybUpEQmJmT0J0enVBTjlHOEUxbHVwclNLZjNHT3pVeE1HcE5iL0w1TThXCjVhNnFPZVdGcVppNTFYanZrc3BjaGZxeHI1V050bkk1ZkhmemMweFJ1MWdiUzczNFo3Y21NQ1k2U1ZSUEdoV1MKa1ppMFl0dTNqdVBTNjdFWmgzNXliYVgyWXhmYWoyaXlVM3NSVnNud1JraExSZXpmV0wvUHdOUWo4QlljNG5zVQpRcW9ZZWxuazQ3dVk1V3c1Y2tYOE92ek1DWTRlcFJnK0ZveHB1SExGcDZFMmRMV3d3MHlpQ3N4SFR2UUp0UkVDCkF3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0VHTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3SFFZRFZSME8KQkJZRUZPek1Wb3dhaVZOVy80cUxoUXZnT1BSZFozWmhNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUFIMS81cApqWkUvd0lvcG1SeGhzd2RmSFE5RURSNXdiekVBeU9ubzNuSzdhZkRZZ3RaU3FOS0EvVUVMeXZtV3pWYzdxeWtZCmNzeUduem5nbnJvbjBoTmZCczhQQTdWVkJ3ZjlQREU0TUxRWG9Bdlk2cGpnQi9BVTVuU0YwVnlSNU5sSGxhNmUKRklLb3JnZG1NZnBpVzBMMFFQR0Nab3Bya2E5b0lzcHhSZjhtYzBuU3NyYnV1RENhYUc3emFGd003MjZKeDdiaQpuRW9pRk1Kc0YzVXpjeUtaYXNaakMrZDNDdS8wYVlveXlkTm1iSERyWjlzRld6VGQ1bHk0ZjB4VXNtVlR4MXlCCit6TURoOEtRQWFORlJ2dkdBTnZLc2J4aVloYXhIWnRwTVhZRExEZGtqL21lTUVhWCtOUlIvWjV3cFZVSkdSUE8KUll5ZHhSYlZzL2M1WlIwQQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  fullchain.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVIVENDQXdXZ0F3SUJBZ0lVYVpvaHgvakRiV0lQYTlIeGRxOUNHTENOOUdJd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1pERVJNQThHQTFVRUJoTUlWVzVwZG1WeWMyVXhEekFOQmdOVkJBZ1RCbEJoYm1kbFlURU9NQXdHQTFVRQpCeE1GUldGeWRHZ3hEVEFMQmdOVkJBb1RCRUZqYldVeERqQU1CZ05WQkFzVEJVMTVUM0puTVE4d0RRWURWUVFECkV3WlVaWE4wUTBFd0hoY05Nakl3TVRBMk1UVXpNVEF3V2hjTk1qY3dNVEExTVRVek1UQXdXakJJTVJFd0R3WUQKVlFRR0V3aFZibWwyWlhKelpURVBNQTBHQTFVRUNCTUdVR0Z1WjJWaE1RNHdEQVlEVlFRSEV3VkZZWEowYURFUwpNQkFHQTFVRUF4TUplbTl2YTJWbGNHVnlNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQVE4QU1JSUJDZ0tDCkFRRUE5RGpTVjhma3pzaGZUR2lscG10a1VBbW1GZjF4eTJIalhpdTdXUVZsZ1E1L21vSWRFeEhYYVc3c2h6RWsKdHFrVXNPc1pIVTVDeEh2MTZHK1M3UHcyRURlMmFQcEdPTVJ5ZEdLV2dNK2xQTUZ1SmU5MFJxOS9qSnBmaWY4QQo4b1llcFRXN0lrajhsK2VWRmo5c2NBdExUVnh5L1NKS1YyZ3VTdHRiZFVZT3RyYkx3QU94SWVaZmE5REhQaGtsCnFXa0JOOGk3NnRGaHZaR3l2WDlJdU1oY0JEb05HcjVBcWhFY3RxdW5TOVVzY0g4WTN0RGZXYktUZlRRR1poZ2oKMDloNTNKWmErUVBUUHRYOEdUNVJFTkdrL2dmeFBEekJYb0lyQ3hGbGg1d2pmNXIwQUJUV0FrNkJreXhhMUd3KwpybnNUSjRkdERmYVpEWkxZVDNzb1RjNXhpUUlEQVFBQm80SGlNSUhmTUE0R0ExVWREd0VCL3dRRUF3SUZvREFkCkJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFRWUlLd1lCQlFVSEF3SXdEQVlEVlIwVEFRSC9CQUl3QURBZEJnTlYKSFE0RUZnUVVod2ZUZ1BzYThXak9DeE9uQkI3dzZOR210RUl3SHdZRFZSMGpCQmd3Rm9BVTdNeFdqQnFKVTFiLwppb3VGQytBNDlGMW5kbUV3WUFZRFZSMFJCRmt3VjRJSmVtOXZhMlZsY0dWeWdpTjZiMjlyWldWd1pYSXVjMkZ1ClpHSnZlQzV6ZG1NdVkyeDFjM1JsY2k1c2IyTmhiSUlsS2k1NmIyOXJaV1Z3WlhJdWMyRnVaR0p2ZUM1emRtTXUKWTJ4MWMzUmxjaTVzYjJOaGJEQU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUFWeVdKelZBUWtpSzR2L0RlRUtsVQpSV2hKdnB1aEt0Y0JERDVtV1UrTDhtbFdTTW1wY01HSk1SVzRLVWtXeUE2RlF6bUxOcWRZelRoNDlJWGt2Q3Q2Ckd5d1FqKy9VZ0VmVmwzUHBlVnYwRm9mSGV3WEt3L25mTmxPOTRKUXNDZytMUkMwZ3dBT3JUNHNTYVF1ZXhtQS8KQTQ3dkxhZE5zdGxFRHIxMit2d1FMbGZ3UE12VWxJTFJPN09SaGEyYmxZNDdjU0VKUE5qT2FPUGY4cGlxNGR4KwpINGZyS0piQU1xN3RZU0UzYzZSU0FzTWpxNHdJOCt4dkVDMW1ZTURZQ2hEcERhVEFML3MzaVA2WTBlaHg4dG1uCjE1NGVCenk2eDRXWUJBL1Y2THRQMFhNUDhieEVwUE1uKy9velMvUDNxc2pwWHNnVWlYUjFaMDlZWGhCRi81Z28Ka2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  privkey.pem: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBOURqU1Y4Zmt6c2hmVEdpbHBtdGtVQW1tRmYxeHkySGpYaXU3V1FWbGdRNS9tb0lkCkV4SFhhVzdzaHpFa3Rxa1VzT3NaSFU1Q3hIdjE2RytTN1B3MkVEZTJhUHBHT01SeWRHS1dnTStsUE1GdUplOTAKUnE5L2pKcGZpZjhBOG9ZZXBUVzdJa2o4bCtlVkZqOXNjQXRMVFZ4eS9TSktWMmd1U3R0YmRVWU90cmJMd0FPeApJZVpmYTlESFBoa2xxV2tCTjhpNzZ0Rmh2Wkd5dlg5SXVNaGNCRG9OR3I1QXFoRWN0cXVuUzlVc2NIOFkzdERmCldiS1RmVFFHWmhnajA5aDUzSlphK1FQVFB0WDhHVDVSRU5Hay9nZnhQRHpCWG9JckN4RmxoNXdqZjVyMEFCVFcKQWs2Qmt5eGExR3crcm5zVEo0ZHREZmFaRFpMWVQzc29UYzV4aVFJREFRQUJBb0lCQUUrOFFZaWhYZVhaYTZ2Ugp1c3VqNG1OelV3TjQ5TzgzTFhtd2c0RmtEcWpkSi9JMUt2THY3MG1nQ3A5MC93eVlGWVpScTZoeXhiL0t6Uld2ClgrUDUwRmpwSjZnTWxtS3dXTUlBOGl4cUh3UEFENHRaSzdoc1VoT0F6MUtKckRDQ2MzenpGdjd4bjI2bEVIcnMKQ0Nab3VaUXZhK2VUaTN3UUtwVU1HMGNsc1dZYmt3bEhNd2ZDdHo1bUg2K2VkS045UU1WREo0TS9henFmRTcxTgpKaUgvZXhYd3R2b25IMzdHZ2Q0ZEJicWpZNm5WWG8zeWgyRW1OSjZFSUJFWlZVNmxkMEl4QXhjQVdHdVNGUUtZCm5YR2V5d1B4a2FpSklYVDBsWjNYdGh5b3FyQ2VWdm84eW1oUkVtUXdyVDZ2emc3LzhsYVFHZllySE5PeUZnem8KUHM3K00xRUNnWUVBOU9iMU80L1lPZnI1aFhVN0R2QW5XbWtBbjRWcWRYQ2czYXVCZ29xWkhpTzg2QWFtMDkxaApPNjJWc2hVcCtrbFJMVmR6MG1SZFh6amROSU8rUTJpUTZwRkROTStFZFZpWCtWcy9YbFlmSEhISzF6TEVDZnh2CnUzSzlZVXVNUTkyb2NNejhqdk1qclFleWMwMkxETFN1WkRIbzA3TzJ3SzdCc0dLN2lwTWZ4TDBDZ1lFQS8wbjUKQU90TXlvOENxWlAxc1BTK2hSTUF3N2xTQnhhUE13aUhaT3ZBWGhxS3Y4MWtyc0tLa1JJWW9MYTdyZGxtSytlagpuOE9hSzB3TUZYclJ1dVkzSWtlWnhWdmNxOWtIRTJCYkdMKytWYVNVT3Y5VURzNGUvZGhxdjg1dmttQXc4bS9LCjMzSjZLREl2azdadjZJcVJROFBuRW93di9oaVpnRWY4RXpwTEdyMENnWUJTQlN2cXA5RldFYzBSdW1KdUxWWXcKdkd2K0FSUFhnMElORzR5RGFPSEJLMXp3SkpJbzhNTEkxdWtFdkh2VG5FeDRzQXBWVTFIR08yZ3lWMUVZaUdQSQplNkFUaHRDbzhHUHRtbmJOcEhCRStZTmlzVmpnczAvRWFyZ3NacjN5V01FNkRoMGp6eUNLcWNKRlJab2xSam9GCnlvVmNxWnF5UzVVSSt2Z3VmL21xelFLQmdRQ2VJYUVHNjdtV1l2MWdNMUZsK2tRbFEvOGVQYVhNMURHQmlBL3QKK0lZaEJFbmJ3d3RSb1JtYUFONldkbnBNbHJST0Q5N3ZzSWJIdVFSbkxidktESjRzTXJQU1p6T0treFZwOEM2ZApadkFzTnBURzhxK0x1Q3ZFUzVEY0hMQkp1Q0c1bW52TTZ5azF5dGhqcEFjdndOMTRYMW03eUhCVjhjRHJrQ3RaCmNhdGg5UUtCZ1FDUjFDUG44OHc3NU9NODE1NmhRbzl2L3phWFMrSExFaUhJMlE5b29RYTVBamZaa0NZTnVMTE0KQytjOFk0R3RKbnMxSG1wQ0M0YlNXV2VqK2dyVkRJM0lreTJvVHk3RE9YZDcxYk1Day9lZEMxbmRZT2hTbnJ1OQpmTCs1SE1sS0JtTTBBcmwzNlIxeFZCMFJVUWR4UDk4cDRmaVQyQWJENlpnZEpOMFBzZ3IzZGc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: tls-zookeeper
+  namespace: sandbox
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: confluent-for-kubernetes
+    app.kubernetes.io/component: confluent-operator
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: confluent-for-kubernetes
+    helm.sh/chart: confluent-for-kubernetes-0.304.2
+  name: confluent-operator
+  namespace: sandbox
+spec:
+  ports:
+  - name: http-metric
+    port: 7778
+    protocol: TCP
+    targetPort: 7778
+  selector:
+    app: confluent-operator
+    app.kubernetes.io/name: confluent-operator
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ldap
+  name: ldap
+  namespace: sandbox
+spec:
+  clusterIP: None
+  ports:
+  - name: ldap
+    port: 389
+  - name: ldaps
+    port: 636
+  selector:
+    app: ldap
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: confluent-for-kubernetes
+    app.kubernetes.io/component: confluent-operator
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: confluent-for-kubernetes
+    helm.sh/chart: confluent-for-kubernetes-0.304.2
+    version: 0.304.2
+  name: confluent-operator
+  namespace: sandbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: RELEASE-NAME
+      app.kubernetes.io/name: confluent-operator
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "7778"
+        prometheus.io/scrape: "true"
+      labels:
+        app: confluent-operator
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/name: confluent-operator
+        confluent-platform: "true"
+        version: 0.304.2
+    spec:
+      containers:
+      - args:
+        - --debug=false
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: NODEIP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DD_ENTITY_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
+        image: docker.io/confluentinc/confluent-operator:0.304.2
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        name: confluent-operator
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 1001
+        runAsNonRoot: true
+        runAsUser: 1001
+      serviceAccountName: confluent-for-kubernetes
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: alice-sysadmin
+  namespace: sandbox
+spec:
+  principal:
+    name: alice
+    type: user
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ControlCenter
+metadata:
+  name: controlcenter
+  namespace: sandbox
+spec:
+  authorization:
+    type: rbac
+  dataVolumeCapacity: 10Gi
+  dependencies:
+    connect:
+    - name: connect
+      tls:
+        enabled: true
+      url: https://connect:8083
+    kafka:
+      authentication:
+        jaasConfig:
+          secretRef: credential
+        type: mtls
+      bootstrapEndpoint: kafka:9071
+      tls:
+        enabled: true
+    ksqldb:
+    - name: ksqldb
+      tls:
+        enabled: true
+      url: https://ksqldb:8088
+    mds:
+      authentication:
+        bearer:
+          secretRef: credential
+        type: bearer
+      endpoint: https://kafka:8090
+      tls:
+        enabled: true
+      tokenKeyPair:
+        secretRef: credential
+    schemaRegistry:
+      tls:
+        enabled: true
+      url: https://schemaregistry:8081
+  image:
+    application: confluentinc/cp-enterprise-control-center:7.0.0
+    init: confluentinc/confluent-init-container:2.2.0
+  podTemplate:
+    probe:
+      liveness:
+        failureThreshold: 5
+        periodSeconds: 10
+        timeoutSeconds: 500
+  replicas: 1
+  tls:
+    autoGeneratedCerts: true
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+  namespace: sandbox
+spec:
+  authorization:
+    superUsers:
+    - User:kafka
+    type: rbac
+  dataVolumeCapacity: 10Gi
+  dependencies:
+    kafkaRest:
+      authentication:
+        bearer:
+          secretRef: credential
+        type: bearer
+    zookeeper:
+      authentication:
+        type: mtls
+      endpoint: zookeeper:2182
+      tls:
+        enabled: true
+  image:
+    application: confluentinc/cp-server:7.0.0
+    init: confluentinc/confluent-init-container:2.2.0
+  listeners:
+    external:
+      authentication:
+        jaasConfigPassThrough:
+          secretRef: credential
+        type: plain
+      tls:
+        enabled: true
+    internal:
+      authentication:
+        jaasConfigPassThrough:
+          secretRef: credential
+        principalMappingRules:
+        - RULE:.*CN[\s]?=[\s]?([a-zA-Z0-9.]*)?.*/$1/
+        type: mtls
+      tls:
+        enabled: true
+  metricReporter:
+    authentication:
+      jaasConfigPassThrough:
+        secretRef: credential
+      type: plain
+    enabled: true
+    tls:
+      enabled: true
+  replicas: 3
+  services:
+    mds:
+      provider:
+        ldap:
+          address: ldap://ldap:389
+          authentication:
+            simple:
+              secretRef: credential
+            type: simple
+          configurations:
+            groupMemberAttribute: member
+            groupMemberAttributePattern: cn=(.*),ou=users,dc=test,dc=com
+            groupNameAttribute: cn
+            groupObjectClass: groupOfNames
+            groupSearchBase: ou=groups,dc=test,dc=com
+            userMemberOfAttributePattern: cn=(.*),ou=users,dc=test,dc=com
+            userNameAttribute: cn
+            userObjectClass: organizationalRole
+            userSearchBase: ou=users,dc=test,dc=com
+          tls:
+            enabled: true
+        type: ldap
+      tls:
+        enabled: true
+      tokenKeyPair:
+        secretRef: credential
+  tls:
+    autoGeneratedCerts: true
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestClass
+metadata:
+  name: default
+  namespace: sandbox
+spec:
+  kafkaRest:
+    authentication:
+      bearer:
+        secretRef: credential
+      type: mtls
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Zookeeper
+metadata:
+  name: zookeeper
+  namespace: sandbox
+spec:
+  authentication:
+    jaasConfig:
+      secretRef: credential
+    principalMappingRules:
+    - RULE:.*CN[\s]?=[\s]?([a-zA-Z0-9.]*)?.*/$1/
+    type: mtls
+  dataVolumeCapacity: 10Gi
+  image:
+    application: confluentinc/cp-zookeeper:7.0.0
+    init: confluentinc/confluent-init-container:2.2.0
+  logVolumeCapacity: 10Gi
+  replicas: 3
+  tls:
+    autoGeneratedCerts: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: ldap
+    role: ldap
+  name: ldap
+  namespace: sandbox
+spec:
+  containers:
+  - args:
+    - --copy-service
+    - --loglevel=debug
+    env:
+    - name: LDAP_ORGANISATION
+      value: Test Inc.
+    - name: LDAP_DOMAIN
+      value: test.com
+    - name: LDAP_ADMIN_PASSWORD
+      value: confluentrox
+    - name: LDAP_CONFIG_PASSWORD
+      value: confluentconfigrox
+    - name: LDAP_READONLY_USER
+      value: "True"
+    - name: LDAP_READONLY_USER_USERNAME
+      value: mds
+    - name: LDAP_READONLY_USER_PASSWORD
+      value: Developer!
+    - name: LDAP_TLS
+      value: "False"
+    image: osixia/openldap:1.3.0
+    livenessProbe:
+      initialDelaySeconds: 15
+      periodSeconds: 20
+      tcpSocket:
+        port: 389
+    name: ldap
+    ports:
+    - containerPort: 389
+      name: ldap
+    - containerPort: 636
+      name: ldaps
+    volumeMounts:
+    - mountPath: /container/service/slapd/assets/config/bootstrap/ldif/custom
+      name: customldif
+    - mountPath: /var/lib/ldap
+      name: ldap-data
+    - mountPath: /etc/ldap/slapd.d
+      name: ldap-config
+  restartPolicy: Always
+  volumes:
+  - configMap:
+      defaultMode: 420
+      name: ldap-ldifs
+    name: customldif
+  - emptyDir: {}
+    name: ldap-data
+  - emptyDir: {}
+    name: ldap-config

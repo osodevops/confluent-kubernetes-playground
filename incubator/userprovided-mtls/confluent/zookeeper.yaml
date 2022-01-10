@@ -6,6 +6,4 @@ spec:
   authentication:
     type: mtls
     principalMappingRules:
-      - RULE:CN=([^,]*).*
-  tls:
-    secretRef: tls-zookeeper
+      - RULE:.*CN[\s]?=[\s]?([a-zA-Z0-9.]*)?.*/$1/

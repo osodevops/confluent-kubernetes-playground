@@ -1,0 +1,9 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: alice-sysadmin
+spec:
+  principal:
+    name: alice
+    type: user
+  role: SystemAdmin

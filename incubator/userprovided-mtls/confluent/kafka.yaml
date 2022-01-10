@@ -4,12 +4,16 @@ kind: Kafka
 metadata:
   name: kafka
 spec:
-  tls:
-    secretRef: tls-kafka
   listeners:
     internal:
       authentication:
         type: mtls
-      tls:
-        enabled: true
-        # Will use the certificates in the parent secretRef tls-kafka
+        principalMappingRules:
+          - RULE:.*CN[\s]?=[\s]?([a-zA-Z0-9.]*)?.*/$1/
+  dependencies:
+    zookeeper:
+      authentication:
+        type: mtls
+        jaasConfig: null
+
+

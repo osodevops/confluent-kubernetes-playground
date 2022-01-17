@@ -1,0 +1,5 @@
+namespace: sandbox
+resources:
+- adventureworks-topic.yaml
+- custom-kafka-connect.yaml
+- adventure-works-sql-server.yaml

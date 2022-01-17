@@ -1,5 +1,0 @@
-namespace: sandbox
-resources:
-  - ../../../../kustomize/base/rolebindings/ksqldb
-patchesStrategicMerge:
-  - ksqldb-base.yaml

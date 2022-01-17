@@ -1,0 +1,5 @@
+namespace: sandbox
+resources:
+  - gcs-connect-rb.yaml
+  - gcs-connect.yaml
+  - source-topic.yaml

@@ -1,7 +1,0 @@
-apiVersion: v1
-data:
-  kafka.properties: Ym9vdHN0cmFwLnNlcnZlcnM9a2Fma2Euc2FuZGJveC5zdmMuY2x1c3Rlci5sb2NhbDo5MDcxCnNhc2wuamFhcy5jb25maWc9b3JnLmFwYWNoZS5rYWZrYS5jb21tb24uc2VjdXJpdHkucGxhaW4uUGxhaW5Mb2dpbk1vZHVsZSByZXF1aXJlZCB1c2VybmFtZT1rYWZrYSBwYXNzd29yZD1rYWZrYS1zZWNyZXQ7CnNhc2wubWVjaGFuaXNtPVNBU0xfUExBSU5URVhUCnNlY3VyaXR5LnByb3RvY29sPVNBU0xfUExBSU5URVhUCg==
-kind: Secret
-metadata:
-  creationTimestamp: null
-  name: kafka-client-config

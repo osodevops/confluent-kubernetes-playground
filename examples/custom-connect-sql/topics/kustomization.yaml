@@ -1,3 +1,0 @@
-namespace: sandbox
-resources:
-  - foobar-topic.yaml

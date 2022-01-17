@@ -1,0 +1,7 @@
+namespace: sandbox
+resources:
+  - ../../base/operator
+  - ../../base/cfk-components/confluent-rbac
+  - gcs-connect
+patchesStrategicMerge:
+  - confluent/control-centre.yaml

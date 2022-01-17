@@ -20,3 +20,6 @@ pki_intermediate.csr
 pki-ca-root.json
 cert_key_list
 nohup.out
+
+*.pem
+*.csr

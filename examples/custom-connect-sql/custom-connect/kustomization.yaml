@@ -1,3 +1,0 @@
-namespace: sandbox
-resources:
-- adventure-works-sql-server.yaml

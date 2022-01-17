@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: sandbox
+resources:
+- ldap.yaml
+- namespace.yaml
+- ../../../kustomize/base/confluent-rbac
+- ../../../kustomize/base/confluent-rbac/secrets
+- ../../../kustomize/base/secrets-user
+- source-topic.yaml
+patchesStrategicMerge:
+  - rest-class.yaml
+  - zookeeper.yaml
+  - kafka.yaml

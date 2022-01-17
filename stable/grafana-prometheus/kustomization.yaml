@@ -1,0 +1,9 @@
+namespace: sandbox
+resources:
+  - ../../base/operator
+  - ../../base/cfk-components/confluent-rbac
+  - ../../resources/producers/4-producers-tls
+  - grafana
+  - prometheus
+
+

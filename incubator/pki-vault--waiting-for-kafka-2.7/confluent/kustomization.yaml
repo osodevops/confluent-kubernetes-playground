@@ -1,0 +1,12 @@
+namespace: sandbox
+resources:
+- ../../../kustomize/base/confluent-rbac
+- ../../../kustomize/base/confluent-rbac/secrets
+- service-account-controlcenter.yml
+patchesStrategicMerge:
+  - zookeeper.yaml
+  - kafka.yaml
+  - control-centre.yaml
+  - kafka-connect.yaml
+  - ksqldb.yaml
+  - schema-registry.yaml

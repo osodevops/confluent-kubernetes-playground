@@ -1,8 +1,0 @@
-apiVersion: v1
-data:
-  bearer.txt: dXNlcm5hbWU9Y29ubmVjdApwYXNzd29yZD1jb25uZWN0LXNlY3JldAo=
-  plain.txt: dXNlcm5hbWU9Y29ubmVjdApwYXNzd29yZD1jb25uZWN0LXNlY3JldAo=
-kind: Secret
-metadata:
-  creationTimestamp: null
-  name: mds-client-connect

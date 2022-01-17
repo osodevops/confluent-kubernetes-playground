@@ -1,6 +1,0 @@
-namespace: sandbox
-resources:
-  - ../../../../kustomize/base/rolebindings/schemaregistry
-  - test-user.yaml
-patchesStrategicMerge:
-  - schemaregistry-base.yaml

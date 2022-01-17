@@ -1,6 +1,0 @@
-namespace: sandbox
-resources:
-  - connect
-  - ksqldb
-  - schemaregistry
-  - controlcenter-testadmin-rolebindings.yaml

@@ -1,0 +1,10 @@
+namespace: sandbox
+resources:
+  - ../../base/operator
+  - ../../base/cfk-components/confluent-rbac
+patchesStrategicMerge:
+  - confluent/kafka.yaml
+  - confluent/zookeeper.yaml
+  - tls-generation/ca-pair-sslcerts.yaml
+
+

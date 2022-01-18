@@ -1,0 +1,7 @@
+namespace: sandbox
+resources:
+  - ca-pair-sslcerts.yaml
+
+
+
+

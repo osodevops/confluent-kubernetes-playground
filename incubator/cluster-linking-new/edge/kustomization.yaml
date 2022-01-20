@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: edge
+resources:
+  - ../../../base/operator
+  - ../../../base/cfk-components/confluent-no-auth
+  - namespace.yaml
+  - clusterlink.yaml
+  - credential.yaml
+  - rest-class-cc.yaml
+patchesStrategicMerge:
+  - confluent/kafka.yaml
+  - confluent/control-centre.yaml

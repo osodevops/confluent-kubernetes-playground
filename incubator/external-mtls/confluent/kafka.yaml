@@ -11,6 +11,13 @@ spec:
       - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - authorizer.class.name=io.confluent.kafka.security.authorizer.ConfluentServerAuthorizer
       - confluent.authorizer.access.rule.providers=ZK_ACL,CONFLUENT
+    log4j:
+      - log4j.logger.kafka.authorizer.logger=DEBUG
+  metricReporter:
+    enabled: true
+    authentication:
+      type: mtls
+      jaasConfigPassThrough: null
   listeners:
     internal:
       authentication:

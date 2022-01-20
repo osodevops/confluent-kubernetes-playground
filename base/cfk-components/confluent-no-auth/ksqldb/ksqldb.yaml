@@ -6,7 +6,7 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: confluentinc/cp-ksqldb-server:7.0.0
+    application: confluentinc/cp-ksqldb-server:7.0.1
     init: confluentinc/confluent-init-container:2.2.0
   dataVolumeCapacity: 10Gi
   tls:

@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cluster-link-provision
+spec:
+  containers:
+    - name: cluster-link-provision
+      image: confluentinc/cp-server:7.0.1
+      command:
+        - /tmp/cluster-link/cluster-link-script.sh
+      env:
+        - name: CC_API_KEY
+          value: "4I4O5OHFVLLYAB4C"
+        - name: CC_API_SECRET
+          value: "wWQDkRN5CcrMDnnAmN+8Gm6jvZQyitw0ZuIqBoeQ5evnXLsn1pAa1tREeefbRy54"
+        - name: CC_CLUSTER_ID
+          value: "lkc-rqqyk"
+        - name: CC_BOOTSTRAP_SERVER
+          value: "https://pkc-v1gj5.eu-west-2.aws.confluent.cloud:9092"
+      volumeMounts:
+      - mountPath: /tmp/cluster-link
+        name: cluster-link-script
+      - mountPath: /mnt/sslcerts
+        name: sslcerts
+  volumes:
+    - name: cluster-link-script
+      configMap:
+        defaultMode: 0777
+        name: cluster-link-script
+    - name: sslcerts
+      secret:
+        secretName: kafka-generated-jks
+  restartPolicy: Never
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-link-script
+data:
+  cluster-link-script.sh: |-
+    #!/bin/bash
+    populate_properties() {
+    tee -a /tmp/command.properties <<EOF
+    bootstrap.servers=kafka:9071
+    sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="kafka" password="kafka-secret";
+    sasl.mechanism=PLAIN
+    security.protocol=SASL_SSL
+    ssl.truststore.location=/mnt/sslcerts/truststore.jks
+    ssl.truststore.password=mystorepassword
+    ssl.keystore.location=/mnt/sslcerts/keystore.jks
+    ssl.keystore.password=mystorepassword
+    EOF
+    
+    tee -a /tmp/command-dst.properties <<EOF
+    security.protocol=SASL_SSL
+    sasl.mechanism=PLAIN
+    sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="$CC_API_KEY" password="$CC_API_SECRET";
+    EOF
+
+    tee -a /tmp/link-dst.properties <<EOF
+    link.mode=DESTINATION
+    connection.mode=INBOUND
+    EOF
+
+    tee -a /tmp/link-src.properties <<EOF
+    link.mode=SOURCE
+    connection.mode=OUTBOUND
+    bootstrap.servers=$CC_BOOTSTRAP_SERVER
+    security.protocol=SASL_SSL
+    sasl.mechanism=PLAIN
+    sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='$CC_API_KEY' password='$CC_API_SECRET';
+    local.listener.name=INTERNAL
+    local.security.protocol=SASL_SSL
+    local.sasl.mechanism=PLAIN
+    local.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='kafka' password='kafka-secret';
+    EOF
+
+    tee -a /tmp/command-src.properties <<EOF
+    security.protocol=SASL_SSL
+    sasl.mechanism=PLAIN
+    sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='kafka' password='kafka-secret';
+    ssl.truststore.password=mystorepassword
+    ssl.truststore.location=/mnt/sslcerts/truststore.jks
+    EOF
+    }
+    populate_properties
+    CLUSTER_ID=$(kafka-cluster cluster-id --bootstrap-server kafka:9071 --config /tmp/command.properties | sed -e "s/^Cluster\ ID:\ //")
+
+    kafka-cluster-links \
+      --create \
+      --link oso-link \
+      --command-config /tmp/command-dst.properties \
+      --config-file /tmp/link-dst.properties \
+      --bootstrap-server "$CC_BOOTSTRAP_SERVER" \
+      --cluster-id $CLUSTER_ID
+
+    kafka-cluster-links \
+      --create \
+      --link oso-link \
+      --command-config /tmp/command-src.properties \
+      --config-file /tmp/link-src.properties \
+      --bootstrap-server kafka:9071 \
+      --cluster-id $CC_CLUSTER_ID
+    

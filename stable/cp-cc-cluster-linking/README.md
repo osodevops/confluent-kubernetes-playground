@@ -27,7 +27,7 @@ Save the API key and secret. The secret is not retrievable later.
 Save these values, they will referred to later as `CC_API_KEY`, and `CC_API_SECRET` respectively.
 
 ### Gather Confluent Cloud End Point
-* Acquire the Bootstrap endpoint by running confluent kafka cluster describe $CC_CLUSTER_ID.  We are looking for the value 'ENDPOINT', which will look something like: **SASL_SSL://pkc-v1gj5.eu-west-2.aws.confluent.cloud:9092**.  Later on, we will substitute the SASL_SSL prefix (for https), are refer to it as `$CC_BOOTSTRAP_SERVER`
+* Acquire the Bootstrap endpoint by running `confluent kafka cluster describe $CC_CLUSTER_ID`.  We are looking for the value 'ENDPOINT', which will look something like: **SASL_SSL://pkc-v1gj5.eu-west-2.aws.confluent.cloud:9092**.  Later on, we will substitute the SASL_SSL prefix (for https), are refer to it as `$CC_BOOTSTRAP_SERVER`
 
 ### Populate Variables
 In the file ./linking-script/link-provision update the pod variables stored at spec.containers.env. with the variables we made note of above. 

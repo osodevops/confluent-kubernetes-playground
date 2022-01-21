@@ -10,13 +10,13 @@ spec:
         - /tmp/cluster-link/cluster-link-script.sh
       env:
         - name: CC_API_KEY
-          value: "4I4O5OHFVLLYAB4C"
+          value: "YOUR_API_KEY_HERE"
         - name: CC_API_SECRET
-          value: "wWQDkRN5CcrMDnnAmN+8Gm6jvZQyitw0ZuIqBoeQ5evnXLsn1pAa1tREeefbRy54"
+          value: "YOUR_API_SECRET_HERE"
         - name: CC_CLUSTER_ID
-          value: "lkc-rqqyk"
+          value: "YOUR_CLUSTER_ID_HERE"
         - name: CC_BOOTSTRAP_SERVER
-          value: "https://pkc-v1gj5.eu-west-2.aws.confluent.cloud:9092"
+          value: "YOUR_BOOTSTRAP_SERVER_HERE--STARTS-WITH-HTTPS://"
       volumeMounts:
       - mountPath: /tmp/cluster-link
         name: cluster-link-script

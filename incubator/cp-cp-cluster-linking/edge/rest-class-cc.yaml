@@ -1,0 +1,11 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestClass
+metadata:
+  name: cc-cloud-cluster-link
+spec:
+  kafkaRest:
+    authentication:
+      type: basic
+      basic:
+        secretRef: credential
+    endpoint: https://kafka.destination.svc.cluster.local

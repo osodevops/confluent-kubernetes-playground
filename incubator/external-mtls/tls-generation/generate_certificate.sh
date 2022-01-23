@@ -3,6 +3,8 @@ cfssl gencert -initca base-ca-csr.json | cfssljson -bare ./sensitive-ca -
 # Verify with this:
 #openssl x509 -in sensitive-ca.pem -text -noout
 cfssl gencert -ca=./sensitive-ca.pem -ca-key=./sensitive-ca-key.pem -config=./base-ca-config.json -profile=server base-server-domain.json | cfssljson -bare sensitive-server
+
+cfssl gencert -ca=./sensitive-ca.pem -ca-key=./sensitive-ca-key.pem -config=./base-ca-config.json -profile=server alpha-client.json | cfssljson -bare alpha-client
 # This is required for 'auto-generated' example
 kubectl create secret tls ca-pair-sslcerts \
 --dry-run=client \

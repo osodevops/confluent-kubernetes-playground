@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   - ldap
   - secrets
-  - namespace.yaml
   - zookeeper.yaml
   - kafka.yaml
   - control-centre.yaml

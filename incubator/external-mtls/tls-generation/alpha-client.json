@@ -1,0 +1,24 @@
+{
+  "CN": "alpha.sandbox.svc.cluster.local",
+  "hosts": [
+    "*.sandbox.svc.cluster.local",
+    "*.zookeeper.sandbox.svc.cluster.local",
+    "*.kafka.sandbox.svc.cluster.local",
+    "*.my.domain",
+    "*.destination.svc.cluster.local",
+    "*.zookeeper.destination.svc.cluster.local",
+    "*.kafka.destination.svc.cluster.local",
+    "*.replicator.destination.svc.cluster.local"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "Universe",
+      "ST": "Pangea",
+      "L": "Earth"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 namespace: sandbox
 resources:
+  - namespace.yaml
   - ../../base/operator
   - ../../base/cfk-components/confluent-rbac
   - ../../resources/producers/1-producer-tls

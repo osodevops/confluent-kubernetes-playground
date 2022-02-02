@@ -3,7 +3,7 @@ This example deploys a basic deployment.  No RBAC/LDAP.  Just a single topic 'fo
 ### Deploy CRDs
 Deploy the CRDS using the standard way:
 ```shell
-kubectl apply -k ../../kustomize/crds
+kubectl apply -k ../../base/crds
 ```
 ### Deploy Confluent Operator and Confluent Services
 Deploy the confluent operator and services:

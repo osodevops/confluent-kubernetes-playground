@@ -9,6 +9,7 @@ cfssl gencert -ca=./sensitive-ca.pem -ca-key=./sensitive-ca-key.pem -config=./ba
 #openssl x509 -in sensitive-server.pem -text -noout
 
 # this is required for the 'custom-tls' example
+# component certs
 kubectl create secret generic abc-tls \
   --dry-run=client \
   --from-file=fullchain.pem=./sensitive-server.pem \

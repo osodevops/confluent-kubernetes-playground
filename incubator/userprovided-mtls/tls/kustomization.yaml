@@ -1,4 +1,7 @@
 namespace: sandbox
 resources:
+#- ca-pair-sslcerts.yaml
 - kafka-sslcerts.yaml
 - zookeeper-sslcerts.yaml
+- schemaregistry-sslcerts.yaml
+- controlcenter-sslcerts.yaml

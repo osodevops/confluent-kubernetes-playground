@@ -28,12 +28,40 @@ kubectl create secret generic tls-kafka \
   --from-file=cacerts.pem=./root-ca.pem \
   --from-file=privkey.pem=./kafka-server-key.pem -o yaml > kafka-sslcerts.yaml
 
+# Create Schema Registry certs
+# Use the SANs listed in kafka-server-domain.json
+cfssl gencert -ca=root-ca.pem \
+-ca-key=root-ca-key.pem \
+-config=base-ca-config.json \
+-profile=server schemaregistry-server-domain.json | cfssljson -bare schemaregistry-server
+
+kubectl create secret generic tls-schemaregistry \
+  --dry-run=client \
+  --from-file=fullchain.pem=./schemaregistry-server.pem \
+  --from-file=cacerts.pem=./root-ca.pem \
+  --from-file=privkey.pem=./schemaregistry-server-key.pem -o yaml > schemaregistry-sslcerts.yaml
+
+
+# Create Control Centre certs
+# Use the SANs listed in kafka-server-domain.json
+cfssl gencert -ca=root-ca.pem \
+-ca-key=root-ca-key.pem \
+-config=base-ca-config.json \
+-profile=server controlcenter-server-domain.json | cfssljson -bare controlcenter-server
+
+kubectl create secret generic tls-controlcenter \
+  --dry-run=client \
+  --from-file=fullchain.pem=./controlcenter-server.pem \
+  --from-file=cacerts.pem=./root-ca.pem \
+  --from-file=privkey.pem=./controlcenter-server-key.pem -o yaml > controlcenter-sslcerts.yaml
+
+################ CLIENTS #########################
 # Create Client Certificates
 # Use the SANs listed in kafka-server-domain.json
 cfssl gencert -ca=root-ca.pem \
 -ca-key=root-ca-key.pem \
 -config=base-ca-config.json \
--profile=server client-producer.json | cfssljson -bare kafka-client
+-profile=server alpha-client.json | cfssljson -bare alpha-client
 
 kubectl create secret generic tls-kafka \ connect to your Kafka cluster(s).
   --dry-run=client \

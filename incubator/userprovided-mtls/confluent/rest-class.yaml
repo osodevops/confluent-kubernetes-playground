@@ -5,8 +5,6 @@ metadata:
 spec:
   kafkaRest:
     authentication:
-      type: mtls
-    tls:
-      directoryPathInContainer: /mnt/sslcerts/
-      secretRef: tls-kafka
-
+      type: bearer
+      bearer:
+        secretRef: credential

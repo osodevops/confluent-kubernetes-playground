@@ -11,7 +11,7 @@ In this scenario example, you'll deploy the Confluent platform each with its own
 
 2. Deploy the CRDS using the standard way:
 ```shell
-kubectl apply -k ../../kustomize/crds
+kubectl apply -k ../../base/crds
 ```
 
 3. Deploy the mTLS example which use Kustomize to pull in the base and example overlays using the following

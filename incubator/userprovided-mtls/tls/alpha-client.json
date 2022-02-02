@@ -1,7 +1,7 @@
 {
-  "CN": "alphaproducer",
+  "CN": "alpha.sandbox.svc.cluster.local",
   "hosts": [
-    "alphaproducer"
+    "*.sandbox.svc.cluster.local"
   ],
   "key": {
     "algo": "rsa",

@@ -1,0 +1,21 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: confluent
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    path: incubator/argo-cd/environments/prod
+    repoURL: https://github.com/osodevops/confluent-kubernetes-playground.git
+    targetRevision: HEAD
+  destination:
+    namespace: prod
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

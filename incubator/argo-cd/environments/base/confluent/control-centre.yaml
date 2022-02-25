@@ -28,9 +28,7 @@ spec:
     kafka:
       bootstrapEndpoint: kafka:9071
       authentication:
-        type: plain
-        jaasConfig:
-          secretRef: credential
+        type: mtls
       tls:
         enabled: true
     mds:

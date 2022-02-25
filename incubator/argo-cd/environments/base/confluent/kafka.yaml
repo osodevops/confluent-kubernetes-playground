@@ -38,9 +38,7 @@ spec:
   listeners:
     internal:
       authentication:
-        type: plain
-        jaasConfigPassThrough:
-          secretRef: credential
+        type: mtls
       tls:
         enabled: true
     external:

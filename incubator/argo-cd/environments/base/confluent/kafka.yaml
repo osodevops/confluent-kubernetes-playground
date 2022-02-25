@@ -30,17 +30,13 @@ spec:
   metricReporter:
     enabled: true
     authentication:
-      type: plain
-      jaasConfigPassThrough:
-        secretRef: credential
+      type: mtls
     tls:
       enabled: true
   listeners:
     internal:
       authentication:
-        type: plain
-        jaasConfigPassThrough:
-          secretRef: credential
+        type: mtls
       tls:
         enabled: true
     external:
@@ -89,9 +85,6 @@ spec:
     zookeeper:
       endpoint: zookeeper:2182
       authentication:
-        type: digest
-        jaasConfig:
-          secretRef: credential
+        type: mtls
       tls:
         enabled: true
-

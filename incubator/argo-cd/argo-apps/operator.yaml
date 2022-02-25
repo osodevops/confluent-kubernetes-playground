@@ -1,25 +1,28 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+---
+kind: "Application"
+apiVersion: "argoproj.io/v1alpha1"
 metadata:
-  name: cfk-operator
-  namespace: argocd
+  creationTimestamp: "2022-02-25T13:02:35Z"
+  generation: 11
+  name: "cfk-operator"
+  namespace: "argocd"
+  resourceVersion: "941"
+  uid: "88bd170e-eb1f-42da-a834-aca2ec622105"
 spec:
   destination:
-    name: ''
-    namespace: argocd
-    server: 'https://kubernetes.default.svc'
+    namespace: "argocd"
+    server: "https://kubernetes.default.svc"
+  project: "default"
   source:
-    path: ''
-    repoURL: 'https://packages.confluent.io/helm'
-    targetRevision: 0.304.17
-    chart: confluent-for-kubernetes
+    chart: "confluent-for-kubernetes"
     helm:
-      valueFiles:
-        - values.yaml
       parameters:
-        - name: namespaced
-          value: 'false'
-  project: default
+      - name: "namespaced"
+        value: "false"
+      valueFiles:
+      - "values.yaml"
+    repoURL: "https://packages.confluent.io/helm"
+    targetRevision: "0.304.17"
   syncPolicy:
     automated:
       prune: true

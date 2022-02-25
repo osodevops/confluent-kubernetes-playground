@@ -3,7 +3,7 @@ kind: Zookeeper
 metadata:
   name: zookeeper
 spec:
-  replicas: 3
+  replicas: 1
   image:
     application: confluentinc/cp-zookeeper:7.0.1
     init: confluentinc/confluent-init-container:2.2.0

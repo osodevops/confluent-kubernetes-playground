@@ -2,12 +2,11 @@
 kind: "Application"
 apiVersion: "argoproj.io/v1alpha1"
 metadata:
-  creationTimestamp: "2022-02-25T13:02:35Z"
-  generation: 11
+  creationTimestamp: "2022-02-28T09:23:24Z"
   name: "cfk-operator"
   namespace: "argocd"
-  resourceVersion: "941"
-  uid: "88bd170e-eb1f-42da-a834-aca2ec622105"
+  resourceVersion: "79201"
+  uid: "82e1ff7e-fcf8-4b91-93fa-229435618f19"
 spec:
   destination:
     namespace: "argocd"
@@ -22,7 +21,7 @@ spec:
       valueFiles:
       - "values.yaml"
     repoURL: "https://packages.confluent.io/helm"
-    targetRevision: "0.304.17"
+    targetRevision: "0.304.2"
   syncPolicy:
     automated:
       prune: true

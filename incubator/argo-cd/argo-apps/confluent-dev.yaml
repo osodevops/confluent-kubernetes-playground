@@ -1,20 +1,21 @@
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: "Application"
+apiVersion: "argoproj.io/v1alpha1"
 metadata:
-  name: confluent-dev
-  namespace: argocd
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  creationTimestamp: "2022-02-28T09:23:24Z"
+  name: "confluent-dev"
+  namespace: "argocd"
+  resourceVersion: "131538"
+  uid: "df0737c5-50c9-4539-b5aa-1e42c5016017"
 spec:
-  project: default
-  source:
-    path: incubator/argo-cd/environments/dev
-    repoURL: https://github.com/osodevops/confluent-kubernetes-playground.git
-    targetRevision: HEAD
   destination:
-    namespace: dev
-    server: https://kubernetes.default.svc
+    namespace: "dev"
+    server: "https://kubernetes.default.svc"
+  project: "default"
+  source:
+    path: "incubator/argo-cd/environments/dev"
+    repoURL: "https://github.com/osodevops/confluent-kubernetes-playground.git"
+    targetRevision: "HEAD"
   syncPolicy:
     automated:
       prune: true

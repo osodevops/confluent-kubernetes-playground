@@ -7,4 +7,4 @@ spec:
     authentication:
       type: bearer
       bearer:
-        secretRef: credential
+        secretRef: sealed-credential

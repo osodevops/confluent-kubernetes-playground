@@ -43,7 +43,7 @@ spec:
       authentication:
         type: plain
         jaasConfigPassThrough:
-          secretRef: credential
+          secretRef: sealed-credential
       tls:
         enabled: true
   authorization:
@@ -55,7 +55,7 @@ spec:
       tls:
         enabled: true
       tokenKeyPair:
-        secretRef: credential
+        secretRef: mds-public
       provider:
         type: ldap
         ldap:
@@ -63,7 +63,7 @@ spec:
           authentication:
             type: simple
             simple:
-              secretRef: credential
+              secretRef: sealed-credential
           tls:
             enabled: true
           configurations:
@@ -81,7 +81,7 @@ spec:
       authentication:
         type: bearer
         bearer:
-          secretRef: credential
+          secretRef: sealed-credential
     zookeeper:
       endpoint: zookeeper:2182
       authentication:

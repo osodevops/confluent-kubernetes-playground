@@ -1,0 +1,19 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+spec:
+  listeners:
+    external:
+      externalAccess:
+        type: loadBalancer
+        loadBalancer:
+          bootstrapPrefix: andrew-kafka
+          brokerPrefix: andrew-kafka
+          domain: ramona
+      authentication:
+        type: plain
+        jaasConfigPassThrough:
+          secretRef: sealed-credential
+      tls:
+        enabled: true

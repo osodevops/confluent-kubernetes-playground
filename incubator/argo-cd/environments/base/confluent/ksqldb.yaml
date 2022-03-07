@@ -3,7 +3,7 @@ kind: KsqlDB
 metadata:
   name: ksqldb
 spec:
-  replicas: 0
+  replicas: 1
   image:
     application: confluentinc/cp-ksqldb-server:7.0.1
     init: confluentinc/confluent-init-container:2.2.0

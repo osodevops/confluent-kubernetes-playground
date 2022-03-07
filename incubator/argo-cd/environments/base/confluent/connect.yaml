@@ -3,7 +3,7 @@ kind: Connect
 metadata:
   name: connect
 spec:
-  replicas: 0
+  replicas: 1
   image:
     application: confluentinc/cp-server-connect:7.0.1
     init: confluentinc/confluent-init-container:2.2.0

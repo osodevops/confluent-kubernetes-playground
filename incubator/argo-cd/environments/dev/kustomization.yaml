@@ -5,3 +5,4 @@ resources:
   - ../base
 patchesStrategicMerge:
   - kafka.yaml
+  - schema-registry.yaml

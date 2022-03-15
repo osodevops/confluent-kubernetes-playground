@@ -6,7 +6,7 @@ spec:
   image:
     application: confluentinc/cp-schema-registry:7.0.1
     init: confluentinc/confluent-init-container:2.2.0
-  configOverrides:
-    server:
-      - kafkastore.topic.replication.factor=1
+#  configOverrides:
+#    server:
+#      - kafkastore.topic.replication.factor=1
 

@@ -1,8 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: dev
+namespace: failover
 resources:
+  - namespace.yaml
   - ../base
+  - cluster-link-rest-class.yaml
+  - cluster-link.yaml
 patchesStrategicMerge:
   - connect.yaml
   - control-centre.yaml

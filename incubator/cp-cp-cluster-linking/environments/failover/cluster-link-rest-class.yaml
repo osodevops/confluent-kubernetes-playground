@@ -1,0 +1,14 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestClass
+metadata:
+  name: failover-kafka-rest
+  namespace: failover
+spec:
+  kafkaClusterRef:
+    name: kafka
+  kafkaRest:
+    endpoint: https://kafka.failover.svc.cluster.local:8090
+    authentication:
+      type: basic
+      basic:
+        secretRef: sealed-credential

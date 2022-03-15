@@ -1,4 +1,3 @@
----
 apiVersion: platform.confluent.io/v1beta1
 kind: ControlCenter
 metadata:
@@ -10,7 +9,3 @@ spec:
       - confluent.controlcenter.command.topic.replication=1
       - confluent.monitoring.interceptor.topic.replication=1
       - confluent.metrics.topic.replication=1
-  dependencies:
-    connect: null
-    ksqldb: null
-    schemaRegistry: null

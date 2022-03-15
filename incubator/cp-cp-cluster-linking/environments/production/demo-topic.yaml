@@ -3,7 +3,7 @@ kind: KafkaTopic
 metadata:
   name: oso-clusterlink-demo
 spec:
-  replicas: 1
+  replicas: 3
   partitionCount: 4
   configs:
     cleanup.policy: "delete"

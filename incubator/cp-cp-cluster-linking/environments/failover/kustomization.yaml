@@ -7,7 +7,4 @@ resources:
   - cluster-link-rest-class.yaml
   - cluster-link.yaml
 patchesStrategicMerge:
-  - connect.yaml
-  - control-centre.yaml
   - kafka.yaml
-  - schema-registry.yaml

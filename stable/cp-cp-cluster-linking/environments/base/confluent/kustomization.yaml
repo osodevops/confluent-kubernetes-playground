@@ -5,8 +5,8 @@ resources:
   - kafka.yaml
   - control-centre.yaml
   - rest-class.yaml
-  - connect.yaml
-  - restproxy.yaml
-  - schema-registry.yaml
-  - ksqldb.yaml
+#  - connect.yaml
+#  - restproxy.yaml
+#  - schema-registry.yaml
+#  - ksqldb.yaml
 

@@ -1,4 +1,22 @@
-# Cluster Linking
+# Cluster Linking (Confluent Platform -> Confluent Cloud)
+An example which shows how to cluster link a topic from local to Confluent Cloud.
+
+## Features
+
+| Feature         | Enabled | Note                            |
+|:----------------|:-------:|:--------------------------------|
+| Kafka/Zookeeper |    ✅    |                                 |
+| Control Center  |    ✅    |                                 |
+| Connect         |    ❌    |                                 |
+| Schema Registry |    ❌    |                                 |
+| KSQL            |    ❌    |                                 |
+| TLS Encryption  |    ✅    | Self-signed certificates        |
+| Authentication  |    ✅    |                                 |
+| Authorization   |    ✅    | via LDAP                        |
+| Cluster Linking |    ✅    | Cluster link to Confluent Cloud |
+
+
+
 ## Prerequesites - Variable Gathering
 ### ConfluentCLI
 https://docs.confluent.io/ccloud-cli/current/install.html
@@ -33,18 +51,13 @@ Save these values, they will referred to later as `CC_API_KEY`, and `CC_API_SECR
 In the file ./linking-script/link-provision update the pod variables stored at spec.containers.env. with the variables we made note of above. 
 
 ## Deployment
-From the present directory:
-* Apply our CRDs
-  * kubectl apply -k ../../base/crds
-* Deploy out components:
-  * kubectl apply -k .
-
-Whilst our cluster is coming up, our cluster-link-provision pod will be running the necessary command line operations required to setup the link between Confluent Platform and Confluent Cloud.
+Proceed with deployment as described in `./GETTING_STARTED.md`.  Whilst our cluster is coming up, our cluster-link-provision pod will be running the necessary command line operations required to setup the link between Confluent Platform and Confluent Cloud.
 
 After the CP cluster becomes available, you should see successful connection messages in the 'cluster-link-provision' logs that indicate links have been configured: 
 
 ```
-Cluster link 'oso-link' creation successfully completed.                                               │ Cluster link 'oso-link' creation successfully completed.  
+Cluster link 'oso-link' creation successfully completed.                                               
+Cluster link 'oso-link' creation successfully completed.  
 ```
 
 

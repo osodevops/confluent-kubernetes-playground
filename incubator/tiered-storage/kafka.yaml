@@ -1,0 +1,28 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+spec:
+  configOverrides:
+    server:
+      - confluent.tier.feature=true
+      - confluent.tier.enable=true
+      - confluent.tier.backend=S3
+      - confluent.tier.s3.bucket=oso-confluent-tiered-storage-example
+      - confluent.tier.s3.region=eu-west-2
+      - confluent.tier.s3.cred.file.path=/mnt/aws-creds/credentials
+      - confluent.tier.fetcher.num.threads = 4
+      - confluent.tier.fetcher.num.threads = 2
+      - confluent.tier.topic.delete.check.interval.ms = 3600000
+      - log.segment.bytes = 104857600 # 104857600 == 100MB
+      - confluent.tier.local.hotset.ms = 60000 # 3600000 == 1 hour
+  mountedVolumes:
+    volumeMounts:
+      - name: aws-cred-mount
+        mountPath: /mnt/aws-creds
+        readOnly: true
+    volumes:
+      - name: aws-cred-mount
+        secret:
+          secretName: aws-cred-mount
+

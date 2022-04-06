@@ -1,9 +1,17 @@
+# Cluster Linking (Confluent Platform -> Confluent Platform)
+This example deploys a multi-tenant solution that exhibits how to perform Confluent Platform to Confluent Platform clusterlinking
 
+## Features
 
-
-docker run confluentinc/confluent-cli -- 
-
-docker login --url https://kafka.destination.svc.cluster.local
-
-
-bash-5.1# confluent cluster register --cluster-name kakfa --kafka-cluster-id uMF-aOdiRgGu6cHRLP0P1g --hosts kakfa:9071 --protocol SASL_SSL
+| Feature         | Enabled | Note                                                                              |
+|:----------------|:-------:|:----------------------------------------------------------------------------------|
+| Kafka/Zookeeper |    ✅    |                                                                                   |
+| Control Center  |    ✅    |                                                                                   |
+| Connect         |    ❌    |                                                                                   |
+| Schema Registry |    ❌    |                                                                                   |
+| KSQL            |    ❌    |                                                                                   |
+| TLS Encryption  |    ✅    | Self-signed certificates                                                          |
+| Authentication  |    ✅    | RBAC                                                                              |
+| Authorization   |    ✅    | via LDAP and mTLS (inter-component)                                               |
+| Multi-tenant    |    ✅    | Production and Failover environments running on same cluster                      |
+| Cluster Linking |    ✅    | Cluster link occurring on oso-clusterlink-demo topic from production to failover. |

@@ -2,13 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: sandbox
 resources:
-  - ldap.yaml
-  - ../../../kustomize/base/confluent
-  - ../../../kustomize/base/secrets-tls
-  - ../../../kustomize/base/secrets-user
+  - ../../../base/cfk-components/confluent-rbac
 patchesStrategicMerge:
-  - zookeeper.yaml
-  - kafka.yaml
   - rest-class.yaml
-  - control-centre.yaml
-  - schema-registry.yaml

@@ -1,5 +1,0 @@
-namespace: sandbox
-resources:
-  - daemonset.yaml
-  - serviceaccount.yaml
-  - svc.yaml

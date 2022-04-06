@@ -1,0 +1,10 @@
+namespace: sandbox
+resources:
+  - namespace.yaml
+  - ../../base/cfk-components/confluent-rbac
+  - ../../resources/producers/1-producer-tls
+  - elasticsearch
+  - filebeat
+  - kibana
+  - logstash
+

@@ -1,33 +1,38 @@
-1. cd into `/examples/custom-connect`
+# Custom Connect GCP Connectors
+Builds and deploys Google Cloud Spanner Sink connector to move data from Kafka to a Google Cloud Spanner database
 
-2. start minikube
-```shell
-minikube start --cpus=6 --memory=16384
-```
+## Features
 
-3. apply CFK crds and Componets 
-```shell
-kubectl apply -k ../../base/crds && kubectl apply -k .
-```
+| Feature         | Enabled | Note                                                                              |
+|:----------------|:-------:|:----------------------------------------------------------------------------------|
+| Kafka/Zookeeper |    ✅    |                                                                                   |
+| Control Center  |    ✅    |                                                                                   |
+| Connect         |    ✅    |                                                                                   |
+| Schema Registry |    ❌    |                                                                                   |
+| KSQL            |    ❌    |                                                                                   |
+| TLS Encryption  |    ✅    | Self-signed certificates                                                          |
+| Authentication  |    ✅    | RBAC                                                                              |
+| Authorization   |    ✅    | via LDAP and mTLS (inter-component)                                               |
 
-4. run docker build for connect image into minikube
+
+### run docker build for connect image into minikube
 ```shell
 cd docker
 ./build-inside.sh
 ```   
 
 [//]# (TODO) There is no such service-account.json 
-6. create google service account secret which is used in the connect config
+### create google service account secret which is used in the connect config
 ```shell
  kubectl create secret generic gcs-service-account --from-file=./gcs-connect/service-account.json -n sandbox
 ```
 
-7. Port forward the connect cluster to create connect task:
+### Port forward the connect cluster to create connect task:
 ```shell
 kubectl port-forward -n sandbox gcsconnect-0 8083:8083
 ```
 
-8. Create connectors using sample JSON
+### Create connectors using sample JSON
 ```shell
 cd gcs-connect
 # GCS example connector
@@ -44,7 +49,7 @@ if successfully:
 {"name":"gcs-sink","config":{"name":"gcs-sink","connector.class":"io.confluent.connect.gcs.GcsSinkConnector","tasks.max":"1","topics":"topic-in-source","gcs.bucket.name":"lloyds-kafka-example","gcs.part.size":"5242880","flush.size":"1","gcs.credentials.path":"/mnt/secrets/gcs-service-account/service-account.json","storage.class":"io.confluent.connect.gcs.storage.GcsStorage","format.class":"io.confluent.connect.gcs.format.avro.AvroFormat","partitioner.class":"io.confluent.connect.storage.partitioner.DefaultPartitioner","schema.compatibility":"NONE","confluent.topic.bootstrap.servers":"kafka.sandbox.svc.cluster.local:9071","confluent.topic.replication.factor":"1","confluent.topic.ssl.truststore.location":"/mnt/sslcerts/truststore.p12","confluent.topic.ssl.truststore.password":"mystorepassword","confluent.topic.ssl.truststore.type":"PKCS12","confluent.topic.security.protocol":"SASL_SSL","confluent.topic.sasl.mechanism":"PLAIN","confluent.topic.sasl.jaas.config":"org.apache.kafka.common.security.plain.PlainLoginModule required username=\"connect\" password=\"connect-secret\";"},"tasks":[],"type":"sink"}* Closing connection 0
 ```
 
-9. Produce some data to sync to bucket
+### Produce some data to sync to bucket
 ```shell
 # exec into kafka pod 
 kubectl exec -n sandbox -it kafka-0 -- bash

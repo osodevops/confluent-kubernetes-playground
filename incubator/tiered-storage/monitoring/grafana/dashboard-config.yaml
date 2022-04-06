@@ -1,0 +1,24 @@
+---
+# Source: prometheus/templates/server/cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    component: "server"
+    app: grafna
+    release: oso
+  name: oso-grafana-server-dashboard-config
+data:
+  config.yaml: |
+      apiVersion: 1
+      providers:
+        - name: 'oso-provider'
+          orgId: 1
+          folder: 'confluent-examples'
+          type: file
+          disableDeletion: true
+          updateIntervalSeconds: 10
+          allowUiUpdates: true
+          options:
+            path: /opt/bitnami/grafana/conf/provisioning/dashboard-source
+            foldersFromFilesStructure: true

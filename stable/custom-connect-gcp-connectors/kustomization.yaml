@@ -1,7 +1,6 @@
 namespace: sandbox
 resources:
   - namespace.yaml
-  - ../../base/operator
   - ../../base/cfk-components/confluent-rbac
   - gcs-connect
 patchesStrategicMerge:

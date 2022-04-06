@@ -8,16 +8,33 @@ In this example we go through the following process:
 
 NOTE: For ease of readability, we will simply reference the scripts that perform the actions of the following stages.  For better understanding of what is actually being done, please review the scripts themselves which will have their own comments/notations.  **Assumptions are that you will be running all commands from the present directory**
 
+
+## Features
+
+| Feature                         | Enabled | Note                                |
+|:--------------------------------|:-------:|:------------------------------------|
+| Kafka/Zookeeper                 |    ✅    |                                     |
+| Control Center                  |    ✅    |                                     |
+| Connect                         |    ❌    |                                     |
+| Schema Registry                 |    ❌    |                                     |
+| KSQL                            |    ❌    |                                     |
+| TLS Encryption                  |    ✅    | Self-signed certificates            |
+| Authentication                  |    ✅    | RBAC                                |
+| Authorization                   |    ✅    | via LDAP and mTLS (inter-component) |
+| SQL Server + Debezium connector |    ✅    |                                     |
+
+
+
 ### Building the custom docker image
 The Dockerfile installs a custom plugin with the following line: `RUN confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:1.6.0`.  To build, run:
 
 ```shell
 cd docker && ./build-inside.sh && cd ..
 ```
-### Deploy CFK CRDs & Confluent Components
-Deploy the CRDS using the standard way:
+### Deploy Confluent Components
+Deploy the components using the standard deployment approach:
 ```shell
-kubectl apply -k ../../kustomize/crds && sleep 1 && kubectl apply -k .
+kubectl apply -k .
 ```
 ### Enable CDC on 'person' table of AdventureWorks Database
 CDC needs to be enabled on a table by table basis.  This table is also referenced in the prod-mssql-connnector.json file. 

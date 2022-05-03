@@ -3,6 +3,6 @@ kind: Kustomization
 namespace: sandbox
 resources:
 - namespace.yaml
-- ../../base/cfk-components/confluent-no-auth
+- ../../base/cfk-components/confluent-no-auth-tls
 
 

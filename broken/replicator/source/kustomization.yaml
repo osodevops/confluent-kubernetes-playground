@@ -5,7 +5,7 @@ resources:
 - namespace.yaml
 - ../../../base/cfk-components/confluent-rbac
 - source-topic.yaml
-patchesStrategicMerge:
-  - rest-class.yaml
-  - zookeeper.yaml
-  - kafka.yaml
+#patchesStrategicMerge:
+#  - rest-class.yaml
+#  - zookeeper.yaml
+#  - kafka.yaml

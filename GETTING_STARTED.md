@@ -18,6 +18,24 @@ Unless otherwise started in the README.md of each example, it should be assumed 
   ```
 
 
+
+
+4. Using a tool like [K9s](https://github.com/derailed/k9s) check the status of the pods:
+```shell
+➜  replicator git:(replicator) ✗ kubectl get pods -A
+NAMESPACE     NAME                                 READY   STATUS    RESTARTS   AGE
+sandbox       confluent-operator-d4bb8cbd6-qg4dq   1/1     Running   0          14m
+sandbox       console-producer-0                   1/1     Running   1          14m
+sandbox       kafka-0                              1/1     Running   1          13m
+sandbox       kafka-1                              1/1     Running   0          13m
+sandbox       kafka-2                              1/1     Running   0          13m
+sandbox       zookeeper-0                          1/1     Running   0          13m
+sandbox       zookeeper-1                          1/1     Running   0          13m
+sandbox       zookeeper-2                          1/1     Running   0          13m
+tools         ldap                                 1/1     Running   1          14m
+```
+
+
 ### Tearing Down
 
 [//]: # (TODO: Describe recomendation to teardown and redeploy other examples)

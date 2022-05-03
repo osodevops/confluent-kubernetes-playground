@@ -4,15 +4,7 @@ namespace: destination
 resources:
 - namespace.yaml
 - ../../../base/cfk-components/confluent-rbac
-- ../../../base/cfk-components/confluent-rbac/schema-registry
 - replicator.yaml
-- controlcentre-c3-rb.yaml
 - replicator-rb.yaml
-- schemaregistry-base.yaml
-- controlcenter-testadmin-rolebindings.yaml
-patchesStrategicMerge:
-  - rest-class.yaml
-  - zookeeper.yaml
-  - kafka.yaml
-  - schema-registry.yaml
-  - control-centre.yaml
+#patchesStrategicMerge:
+##  - rest-class.yaml

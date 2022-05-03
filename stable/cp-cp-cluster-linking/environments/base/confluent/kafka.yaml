@@ -41,6 +41,15 @@ spec:
           secretRef: sealed-credential
       tls:
         enabled: true
+    custom:
+      - name: monitoring
+        authentication:
+          type: plain
+          jaasConfigPassThrough:
+            secretRef: sealed-credential
+        port: 9093
+        tls:
+          enabled: true
   authorization:
     type: rbac
     superUsers:

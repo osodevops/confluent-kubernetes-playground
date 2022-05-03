@@ -1,0 +1,16 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: SchemaExporter
+metadata:
+  name: schema-exporter-demo
+spec:
+  sourceCluster:
+    schemaRegistryRest:
+      endpoint: http://schemaregistry.source.svc.cluster.local:8081
+  destinationCluster:
+    schemaRegistryRest:
+      endpoint: http://schemaregistry.destination.svc.cluster.local:8081
+#  subjects:               --- [5]
+#  subjectRenameFormat:    --- [6]
+#  contextType:            --- [7]
+#  contextName:            --- [8]
+#  configs:                --- [9]

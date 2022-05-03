@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - platform.confluent.io_confluentrolebindings.yaml
+  - platform.confluent.io_connects.yaml
+  - platform.confluent.io_controlcenters.yaml
+  - platform.confluent.io_kafkarestclasses.yaml
+  - platform.confluent.io_kafkas.yaml
+  - platform.confluent.io_kafkatopics.yaml
+  - platform.confluent.io_ksqldbs.yaml
+  - platform.confluent.io_migrationjobs.yaml
+  - platform.confluent.io_schemaregistries.yaml
+  - platform.confluent.io_zookeepers.yaml

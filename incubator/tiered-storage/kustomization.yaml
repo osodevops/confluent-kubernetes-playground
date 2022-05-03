@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+namespace: sandbox
+resources:
+  - namespace.yaml
+  - ../../base/cfk-components/confluent-no-auth-no-tls
+  - ../../resources/producers/4-producers-no-tls
+  - monitoring
+  - aws-cred-mount.yaml
+patchesStrategicMerge:
+  - kafka.yaml
+
+

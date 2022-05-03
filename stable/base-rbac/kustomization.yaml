@@ -3,7 +3,6 @@ kind: Kustomization
 namespace: sandbox
 resources:
 - namespace.yaml
-- ../../base/operator
 - ../../base/cfk-components/confluent-rbac
 #- ../../base/cfk-components/confluent-rbac/connect
 #- ../../base/cfk-components/confluent-rbac/ksqldb

@@ -1,17 +1,19 @@
 # Multi tenancy Kafka (NICE!)
 A multi tenant RBAC enabled production Confluent Platform install. This example showcases how large highly regulated enterprises can leverage CFK to securely deploy Kafka As A Service (KAAS)
 
-### Deploy CRDs
-Deploy the CRDS using the standard way:
-```shell
-kubectl apply -k ../../kustomize/crds
-```
+## Features
 
-### Deploy Confluent Operator, Confluent Services, two namespaces with tenant topics
-Deploy the confluent operator and services:
-```shell
-kubectl apply -k .
-```
+| Feature          | Enabled | Note                     |
+|:-----------------|:-------:|:-------------------------|
+| Kafka/Zookeeper  |    ✅    |                          |
+| Control Center   |    ✅    |                          |
+| Connect          |    ❌    |                          |
+| Schema Registry  |    ❌    |                          |
+| KSQL             |    ❌    |                          |
+| TLS Encryption   |    ✅    | Self-signed certificates |
+| Authentication   |    ✅    |                          |
+| Authorization    |    ✅    | via LDAP                 |
+
 
 ### Using KafkaRestClass in multiple namespaces
 KafkaRestClass is an abstraction that contains information about address and credentials to enable something to talk to a Kafka REST MDS endpoint. We can use this per tenant to authenticate different users in different namespaces.

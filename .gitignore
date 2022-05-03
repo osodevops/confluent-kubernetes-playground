@@ -21,5 +21,7 @@ pki-ca-root.json
 cert_key_list
 nohup.out
 
+aws.credentials
+
 *.pem
 *.csr

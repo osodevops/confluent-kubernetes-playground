@@ -1,4 +1,4 @@
-FROM confluentinc/cp-server-connect-operator:6.1.4.0
+FROM confluentinc/cp-server-connect-operator:6.1.5.0
 USER root
 
 ENV CONNECT_PLUGIN_PATH="/usr/share/java,/usr/share/confluent-hub-components"

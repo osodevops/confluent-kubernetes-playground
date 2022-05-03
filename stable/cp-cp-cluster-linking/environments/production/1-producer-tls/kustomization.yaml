@@ -1,0 +1,4 @@
+namespace: sandbox
+resources:
+- kafka-client-config.yaml
+- producer-app.yaml

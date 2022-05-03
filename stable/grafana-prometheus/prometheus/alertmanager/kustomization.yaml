@@ -1,9 +1,0 @@
-namespace: sandbox
-resources:
-  - clusterrole.yaml
-  - clusterrolebinding.yaml
-  - cm.yaml
-  - deploy.yaml
-  - pvc.yaml
-  - service.yaml
-  - serviceaccount.yaml

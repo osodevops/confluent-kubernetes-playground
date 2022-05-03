@@ -1,0 +1,3332 @@
+---
+# Source: confluent-for-kubernetes/crds/platform.confluent.io_connects.yaml
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.4.1
+  creationTimestamp: null
+  name: connects.platform.confluent.io
+spec:
+  group: platform.confluent.io
+  names:
+    categories:
+    - all
+    - confluent-platform
+    - confluent
+    kind: Connect
+    listKind: ConnectList
+    plural: connects
+    shortNames:
+    - connect
+    singular: connect
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.replicas
+      name: Replicas
+      type: string
+    - jsonPath: .status.readyReplicas
+      name: Ready
+      type: string
+    - jsonPath: .status.phase
+      name: Status
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - jsonPath: .status.kafka.bootstrapEndpoint
+      name: Kafka
+      priority: 1
+      type: string
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: Connect is the schema for the Connect API.
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: spec defines the desired state of the Connect cluster.
+            properties:
+              authentication:
+                description: authentication specifies authentication configuration.
+                properties:
+                  basic:
+                    description: basic specifies the configuration for basic authentication.
+                    properties:
+                      debug:
+                        description: debug enables the basic authentication debug
+                          logs for JaaS configuration.
+                        type: boolean
+                      directoryPathInContainer:
+                        description: 'directoryPathInContainer allows to pass the
+                          basic credential through a directory path in the container.
+                          More info: https://docs.confluent.io/operator/current/co-authenticate.html#basic-authentication'
+                        minLength: 1
+                        type: string
+                      restrictedRoles:
+                        description: restrictedRoles specify the restricted roles
+                          on the server side only. Changes will be only reflected
+                          in Control Center. This configuration is ignored on the
+                          client side configuration.
+                        items:
+                          type: string
+                        minItems: 1
+                        type: array
+                      roles:
+                        description: roles specify the roles on the server side only.
+                          This configuration is ignored on the client side configuration.
+                        items:
+                          type: string
+                        type: array
+                      secretRef:
+                        description: 'secretRef defines secret reference to pass the
+                          required credentials. More info: https://docs.confluent.io/operator/current/co-authenticate.html#basic-authentication'
+                        maxLength: 30
+                        minLength: 1
+                        pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                        type: string
+                    type: object
+                  type:
+                    description: type specifies the authentication scheme for the
+                      REST API server. Valid options are `basic` and `mtls`.
+                    enum:
+                    - basic
+                    - mtls
+                    type: string
+                required:
+                - type
+                type: object
+              authorization:
+                description: authorization specifies the authorization configuration.
+                properties:
+                  kafkaRestClassRef:
+                    description: kafkaRestClassRef references the KafkaRestClass which
+                      specifies the Kafka REST API connection configuration.
+                    properties:
+                      name:
+                        description: name specifies the name of the KafkaRestClass
+                          application resource.
+                        minLength: 1
+                        type: string
+                      namespace:
+                        description: namespace specifies the namespace of the KafkaRestClass.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  type:
+                    description: type specifies the client-side authorization type.
+                      The valid option is `rbac`.
+                    enum:
+                    - rbac
+                    type: string
+                required:
+                - type
+                type: object
+              build:
+                description: build defines the build configurations for connector
+                  plugins.
+                properties:
+                  onDemand:
+                    description: OnDemand defines the build configurations for the
+                      `onDemand` build type.
+                    properties:
+                      plugins:
+                        description: plugins define the installation information for
+                          connector plugins.
+                        properties:
+                          confluentHub:
+                            description: confluentHub contains a list of connector
+                              plugins you get from Confluent Hub.
+                            items:
+                              description: ConfluentHubPlugin contains the required
+                                information to get the connector plugin from Confluent
+                                Hub.
+                              properties:
+                                name:
+                                  description: name specifies the name of the connector
+                                    plugin.
+                                  minLength: 1
+                                  type: string
+                                owner:
+                                  description: owner specifies the individual or organization
+                                    that provides the connector plugin, for example,
+                                    `confluentinc`.
+                                  minLength: 1
+                                  type: string
+                                version:
+                                  description: version specifies the version of the
+                                    connector plugin, which can be either the version
+                                    of the plugin or the literal `latest`.
+                                  minLength: 1
+                                  type: string
+                              required:
+                              - name
+                              - owner
+                              - version
+                              type: object
+                            type: array
+                          locationType:
+                            description: locationType specifies where to get connector
+                              plugins. Valid options are `confluentHub` and `url`.
+                            enum:
+                            - confluentHub
+                            - url
+                            type: string
+                          url:
+                            description: url contains a list of URL plugins you get
+                              from external URLs.
+                            items:
+                              description: URLPlugin defines the information to get
+                                the connector plugin from an external URL.
+                              properties:
+                                archivePath:
+                                  description: archivePath specifies the archive path
+                                    of the connector plugin.
+                                  minLength: 1
+                                  pattern: ^https?://.*
+                                  type: string
+                                checksum:
+                                  description: checksum defines the sha512sum checksum
+                                    of the connector plugin's remote file. It is used
+                                    to verify the remote file after it is downloaded.
+                                  type: string
+                                name:
+                                  description: name specifies the connector plugin
+                                    name.
+                                  minLength: 1
+                                  type: string
+                              required:
+                              - archivePath
+                              - checksum
+                              - name
+                              type: object
+                            type: array
+                        required:
+                        - locationType
+                        type: object
+                      storageLimit:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        description: storageLimit specifies the max amount of node
+                          volume that can be used to store connector plugins. The
+                          default value is `4G`.
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                    required:
+                    - plugins
+                    type: object
+                  type:
+                    description: type specifies the build type for connector plugins.
+                      Currently only the `onDemand` type is supported.
+                    enum:
+                    - onDemand
+                    type: string
+                required:
+                - type
+                type: object
+              configOverrides:
+                description: configOverrides specifies the configs to override the
+                  server, JVM, Log4j properties for the Connect cluster.
+                properties:
+                  jvm:
+                    description: jvm is a list of JVM configuration supported by the
+                      Confluent Platform component. This will either add or update
+                      the existing configuration.
+                    items:
+                      type: string
+                    type: array
+                  log4j:
+                    description: log4j is a list of Log4J configuration supported
+                      by the Confluent Platform component. This will either add or
+                      update the existing configuration.
+                    items:
+                      type: string
+                    type: array
+                  server:
+                    description: server is a list of server configuration supported
+                      by the Confluent Platform component. This will either add or
+                      update existing configuration.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              connectorOverridePolicy:
+                description: 'connectorOverridePolicy allows the policy to permit
+                  per-connector override configuration for producer/consumer/admin
+                  prefix. More info: https://docs.confluent.io/platform/current/connect/security.html#separate-principals'
+                enum:
+                - All
+                - Principal
+                type: string
+              connectorTLSCerts:
+                description: connectorTLSCerts are the custom TLS certificates injected
+                  into the Connect cluster for connectors to use. Check the Connect
+                  status for the mount path of the certificates. A change will roll
+                  the cluster.
+                items:
+                  description: CustomTLSCertificate defines the custom TLS structure
+                    for the application resources (connector, topic, schema, etc.)
+                    of the Confluent Platform component.
+                  properties:
+                    directoryPathInContainer:
+                      description: directoryPathInContainer contains the directory
+                        path in the container where `keystore.jks`, `truststore.jks`,
+                        `jksPassword.txt` keys are mounted.
+                      minLength: 1
+                      type: string
+                    jksPassword:
+                      description: jksPassword specifies the secret name that contains
+                        the JKS password.
+                      properties:
+                        secretRef:
+                          description: 'secretRef references the name of the secret
+                            containing the JKS password. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                          maxLength: 30
+                          minLength: 1
+                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                          type: string
+                      required:
+                      - secretRef
+                      type: object
+                    secretRef:
+                      description: 'secretRef specifies the secret name that contains
+                        the certificates. More info about certificates key/value format:
+                        https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                      maxLength: 30
+                      minLength: 1
+                      pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                      type: string
+                  type: object
+                type: array
+              dependencies:
+                description: ConnectDependencies contains the dependencies the Connect
+                  requires or can enable.
+                properties:
+                  admin:
+                    description: admin contains the security configuration to connect
+                      to the admin client. If `bootstrapEndpoint` is not configured,
+                      the security is configured based on the Kafka dependency configuration.
+                      Configure this property if different bootstrap endpoint is required
+                      for the admin client.
+                    properties:
+                      authentication:
+                        description: authentication defines the authentication for
+                          the Kafka cluster.
+                        properties:
+                          jaasConfig:
+                            description: jaasConfig specifies the Kafka client-side
+                              JaaS configuration.
+                            properties:
+                              secretRef:
+                                description: 'secretRef references the secret containing
+                                  the required credentials. More info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - secretRef
+                            type: object
+                          jaasConfigPassThrough:
+                            description: jaasConfigPassThrough specifies another way
+                              to provide the Kafka client-side JaaS configuration.
+                            properties:
+                              directoryPathInContainer:
+                                description: 'directoryPathInContainer specifies the
+                                  directory path in the container where required credentials
+                                  are mounted. More info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                minLength: 1
+                                type: string
+                              secretRef:
+                                description: 'secretRef references the secret containing
+                                  the required credentials for authentication. More
+                                  info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            type: object
+                          type:
+                            description: type specifies the Kafka client authentication
+                              type. Valid options are `plain`, `oauthbearer`, `digest`,
+                              and `mtls`.
+                            enum:
+                            - plain
+                            - oauthbearer
+                            - digest
+                            - mtls
+                            type: string
+                        required:
+                        - type
+                        type: object
+                      bootstrapEndpoint:
+                        description: bootstrapEndpoint specifies the Kafka bootstrap
+                          endpoint.
+                        minLength: 1
+                        pattern: .+:[0-9]+
+                        type: string
+                      discovery:
+                        description: discovery specifies the capability to discover
+                          the Kafka cluster.
+                        properties:
+                          name:
+                            description: name is the name of the Confluent Platform
+                              component cluster.
+                            type: string
+                          namespace:
+                            description: namespace is where the Confluent Platform
+                              component is running. The defauls value is the namespace
+                              where CFK is running.
+                            type: string
+                          secretRef:
+                            description: secretRef is the name of the secret used
+                              to discover the Confluent Platform component.
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      tls:
+                        description: tls defines the client-side TLS setting for the
+                          Kafka cluster.
+                        properties:
+                          directoryPathInContainer:
+                            description: directoryPathInContainer specifies the directory
+                              path in the container where `keystore.jks`, `truststore.jks`,
+                              and `jksPassword.txt` keys are mounted. `truststore.jks`
+                              is not configured and can be ignored when the `ignoreTrustStoreConfig`
+                              field is set to `true`.
+                            minLength: 1
+                            type: string
+                          enabled:
+                            description: enabled specifies to enable the TLS configuration
+                              for the Confluent component.
+                            type: boolean
+                          ignoreTrustStoreConfig:
+                            description: ignoreTrustStoreConfig indicates whether
+                              to ignore the truststore configuration for the Confluent
+                              component.
+                            type: boolean
+                          jksPassword:
+                            description: jksPassword references the secret containing
+                              the JKS password.
+                            properties:
+                              secretRef:
+                                description: 'secretRef references the name of the
+                                  secret containing the JKS password. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - secretRef
+                            type: object
+                          secretRef:
+                            description: 'secretRef references the secret containing
+                              the certificates. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        required:
+                        - enabled
+                        type: object
+                    type: object
+                  consumer:
+                    description: consumer contains the security configuration to connect
+                      to the Kafka cluster. It is used for sink connectors. If `bootstrapEndpoint`
+                      is not configured, the security is configured based on the Kafka
+                      dependency configuration. Configure this property if different
+                      bootstrap endpoint is required for the consumer.
+                    properties:
+                      authentication:
+                        description: authentication defines the authentication for
+                          the Kafka cluster.
+                        properties:
+                          jaasConfig:
+                            description: jaasConfig specifies the Kafka client-side
+                              JaaS configuration.
+                            properties:
+                              secretRef:
+                                description: 'secretRef references the secret containing
+                                  the required credentials. More info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - secretRef
+                            type: object
+                          jaasConfigPassThrough:
+                            description: jaasConfigPassThrough specifies another way
+                              to provide the Kafka client-side JaaS configuration.
+                            properties:
+                              directoryPathInContainer:
+                                description: 'directoryPathInContainer specifies the
+                                  directory path in the container where required credentials
+                                  are mounted. More info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                minLength: 1
+                                type: string
+                              secretRef:
+                                description: 'secretRef references the secret containing
+                                  the required credentials for authentication. More
+                                  info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            type: object
+                          type:
+                            description: type specifies the Kafka client authentication
+                              type. Valid options are `plain`, `oauthbearer`, `digest`,
+                              and `mtls`.
+                            enum:
+                            - plain
+                            - oauthbearer
+                            - digest
+                            - mtls
+                            type: string
+                        required:
+                        - type
+                        type: object
+                      bootstrapEndpoint:
+                        description: bootstrapEndpoint specifies the Kafka bootstrap
+                          endpoint.
+                        minLength: 1
+                        pattern: .+:[0-9]+
+                        type: string
+                      discovery:
+                        description: discovery specifies the capability to discover
+                          the Kafka cluster.
+                        properties:
+                          name:
+                            description: name is the name of the Confluent Platform
+                              component cluster.
+                            type: string
+                          namespace:
+                            description: namespace is where the Confluent Platform
+                              component is running. The defauls value is the namespace
+                              where CFK is running.
+                            type: string
+                          secretRef:
+                            description: secretRef is the name of the secret used
+                              to discover the Confluent Platform component.
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      tls:
+                        description: tls defines the client-side TLS setting for the
+                          Kafka cluster.
+                        properties:
+                          directoryPathInContainer:
+                            description: directoryPathInContainer specifies the directory
+                              path in the container where `keystore.jks`, `truststore.jks`,
+                              and `jksPassword.txt` keys are mounted. `truststore.jks`
+                              is not configured and can be ignored when the `ignoreTrustStoreConfig`
+                              field is set to `true`.
+                            minLength: 1
+                            type: string
+                          enabled:
+                            description: enabled specifies to enable the TLS configuration
+                              for the Confluent component.
+                            type: boolean
+                          ignoreTrustStoreConfig:
+                            description: ignoreTrustStoreConfig indicates whether
+                              to ignore the truststore configuration for the Confluent
+                              component.
+                            type: boolean
+                          jksPassword:
+                            description: jksPassword references the secret containing
+                              the JKS password.
+                            properties:
+                              secretRef:
+                                description: 'secretRef references the name of the
+                                  secret containing the JKS password. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - secretRef
+                            type: object
+                          secretRef:
+                            description: 'secretRef references the secret containing
+                              the certificates. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        required:
+                        - enabled
+                        type: object
+                    type: object
+                  interceptor:
+                    description: interceptor contains the dependency configuration
+                      for the monitoring interceptor.
+                    properties:
+                      configs:
+                        description: configs describe the configurations for the Confluent
+                          Platform interceptor. The config override feature can be
+                          used to pass the configuration settings.
+                        items:
+                          type: string
+                        type: array
+                      consumer:
+                        description: consumer specifies the consumer configuration
+                          for the interceptor. If not configured, it uses the Kafka
+                          dependency configuration.
+                        properties:
+                          authentication:
+                            description: authentication defines the authentication
+                              for the Kafka cluster.
+                            properties:
+                              jaasConfig:
+                                description: jaasConfig specifies the Kafka client-side
+                                  JaaS configuration.
+                                properties:
+                                  secretRef:
+                                    description: 'secretRef references the secret
+                                      containing the required credentials. More info:
+                                      https://docs.confluent.io/operator/current/co-authenticate.html'
+                                    maxLength: 30
+                                    minLength: 1
+                                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                    type: string
+                                required:
+                                - secretRef
+                                type: object
+                              jaasConfigPassThrough:
+                                description: jaasConfigPassThrough specifies another
+                                  way to provide the Kafka client-side JaaS configuration.
+                                properties:
+                                  directoryPathInContainer:
+                                    description: 'directoryPathInContainer specifies
+                                      the directory path in the container where required
+                                      credentials are mounted. More info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                    minLength: 1
+                                    type: string
+                                  secretRef:
+                                    description: 'secretRef references the secret
+                                      containing the required credentials for authentication.
+                                      More info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                    maxLength: 30
+                                    minLength: 1
+                                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                    type: string
+                                type: object
+                              type:
+                                description: type specifies the Kafka client authentication
+                                  type. Valid options are `plain`, `oauthbearer`,
+                                  `digest`, and `mtls`.
+                                enum:
+                                - plain
+                                - oauthbearer
+                                - digest
+                                - mtls
+                                type: string
+                            required:
+                            - type
+                            type: object
+                          bootstrapEndpoint:
+                            description: bootstrapEndpoint specifies the Kafka bootstrap
+                              endpoint.
+                            minLength: 1
+                            pattern: .+:[0-9]+
+                            type: string
+                          discovery:
+                            description: discovery specifies the capability to discover
+                              the Kafka cluster.
+                            properties:
+                              name:
+                                description: name is the name of the Confluent Platform
+                                  component cluster.
+                                type: string
+                              namespace:
+                                description: namespace is where the Confluent Platform
+                                  component is running. The defauls value is the namespace
+                                  where CFK is running.
+                                type: string
+                              secretRef:
+                                description: secretRef is the name of the secret used
+                                  to discover the Confluent Platform component.
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - name
+                            type: object
+                          tls:
+                            description: tls defines the client-side TLS setting for
+                              the Kafka cluster.
+                            properties:
+                              directoryPathInContainer:
+                                description: directoryPathInContainer specifies the
+                                  directory path in the container where `keystore.jks`,
+                                  `truststore.jks`, and `jksPassword.txt` keys are
+                                  mounted. `truststore.jks` is not configured and
+                                  can be ignored when the `ignoreTrustStoreConfig`
+                                  field is set to `true`.
+                                minLength: 1
+                                type: string
+                              enabled:
+                                description: enabled specifies to enable the TLS configuration
+                                  for the Confluent component.
+                                type: boolean
+                              ignoreTrustStoreConfig:
+                                description: ignoreTrustStoreConfig indicates whether
+                                  to ignore the truststore configuration for the Confluent
+                                  component.
+                                type: boolean
+                              jksPassword:
+                                description: jksPassword references the secret containing
+                                  the JKS password.
+                                properties:
+                                  secretRef:
+                                    description: 'secretRef references the name of
+                                      the secret containing the JKS password. More
+                                      info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                                    maxLength: 30
+                                    minLength: 1
+                                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                    type: string
+                                required:
+                                - secretRef
+                                type: object
+                              secretRef:
+                                description: 'secretRef references the secret containing
+                                  the certificates. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - enabled
+                            type: object
+                        type: object
+                      enabled:
+                        description: enabled indicates whether the Confluent Platform
+                          interceptor is enabled or disabled.
+                        type: boolean
+                      producer:
+                        description: producer specifies the producer configuration
+                          for the interceptor. If not configured, it uses the Kafka
+                          dependency configuration.
+                        properties:
+                          authentication:
+                            description: authentication defines the authentication
+                              for the Kafka cluster.
+                            properties:
+                              jaasConfig:
+                                description: jaasConfig specifies the Kafka client-side
+                                  JaaS configuration.
+                                properties:
+                                  secretRef:
+                                    description: 'secretRef references the secret
+                                      containing the required credentials. More info:
+                                      https://docs.confluent.io/operator/current/co-authenticate.html'
+                                    maxLength: 30
+                                    minLength: 1
+                                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                    type: string
+                                required:
+                                - secretRef
+                                type: object
+                              jaasConfigPassThrough:
+                                description: jaasConfigPassThrough specifies another
+                                  way to provide the Kafka client-side JaaS configuration.
+                                properties:
+                                  directoryPathInContainer:
+                                    description: 'directoryPathInContainer specifies
+                                      the directory path in the container where required
+                                      credentials are mounted. More info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                    minLength: 1
+                                    type: string
+                                  secretRef:
+                                    description: 'secretRef references the secret
+                                      containing the required credentials for authentication.
+                                      More info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                    maxLength: 30
+                                    minLength: 1
+                                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                    type: string
+                                type: object
+                              type:
+                                description: type specifies the Kafka client authentication
+                                  type. Valid options are `plain`, `oauthbearer`,
+                                  `digest`, and `mtls`.
+                                enum:
+                                - plain
+                                - oauthbearer
+                                - digest
+                                - mtls
+                                type: string
+                            required:
+                            - type
+                            type: object
+                          bootstrapEndpoint:
+                            description: bootstrapEndpoint specifies the Kafka bootstrap
+                              endpoint.
+                            minLength: 1
+                            pattern: .+:[0-9]+
+                            type: string
+                          discovery:
+                            description: discovery specifies the capability to discover
+                              the Kafka cluster.
+                            properties:
+                              name:
+                                description: name is the name of the Confluent Platform
+                                  component cluster.
+                                type: string
+                              namespace:
+                                description: namespace is where the Confluent Platform
+                                  component is running. The defauls value is the namespace
+                                  where CFK is running.
+                                type: string
+                              secretRef:
+                                description: secretRef is the name of the secret used
+                                  to discover the Confluent Platform component.
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - name
+                            type: object
+                          tls:
+                            description: tls defines the client-side TLS setting for
+                              the Kafka cluster.
+                            properties:
+                              directoryPathInContainer:
+                                description: directoryPathInContainer specifies the
+                                  directory path in the container where `keystore.jks`,
+                                  `truststore.jks`, and `jksPassword.txt` keys are
+                                  mounted. `truststore.jks` is not configured and
+                                  can be ignored when the `ignoreTrustStoreConfig`
+                                  field is set to `true`.
+                                minLength: 1
+                                type: string
+                              enabled:
+                                description: enabled specifies to enable the TLS configuration
+                                  for the Confluent component.
+                                type: boolean
+                              ignoreTrustStoreConfig:
+                                description: ignoreTrustStoreConfig indicates whether
+                                  to ignore the truststore configuration for the Confluent
+                                  component.
+                                type: boolean
+                              jksPassword:
+                                description: jksPassword references the secret containing
+                                  the JKS password.
+                                properties:
+                                  secretRef:
+                                    description: 'secretRef references the name of
+                                      the secret containing the JKS password. More
+                                      info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                                    maxLength: 30
+                                    minLength: 1
+                                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                    type: string
+                                required:
+                                - secretRef
+                                type: object
+                              secretRef:
+                                description: 'secretRef references the secret containing
+                                  the certificates. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - enabled
+                            type: object
+                        type: object
+                      publishMs:
+                        type: integer
+                    required:
+                    - enabled
+                    type: object
+                  kafka:
+                    description: kafka contains the Connect dependency for connecting
+                      to Kafka. The discovery method is used if this is not specified.
+                    properties:
+                      authentication:
+                        description: authentication defines the authentication for
+                          the Kafka cluster.
+                        properties:
+                          jaasConfig:
+                            description: jaasConfig specifies the Kafka client-side
+                              JaaS configuration.
+                            properties:
+                              secretRef:
+                                description: 'secretRef references the secret containing
+                                  the required credentials. More info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - secretRef
+                            type: object
+                          jaasConfigPassThrough:
+                            description: jaasConfigPassThrough specifies another way
+                              to provide the Kafka client-side JaaS configuration.
+                            properties:
+                              directoryPathInContainer:
+                                description: 'directoryPathInContainer specifies the
+                                  directory path in the container where required credentials
+                                  are mounted. More info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                minLength: 1
+                                type: string
+                              secretRef:
+                                description: 'secretRef references the secret containing
+                                  the required credentials for authentication. More
+                                  info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            type: object
+                          type:
+                            description: type specifies the Kafka client authentication
+                              type. Valid options are `plain`, `oauthbearer`, `digest`,
+                              and `mtls`.
+                            enum:
+                            - plain
+                            - oauthbearer
+                            - digest
+                            - mtls
+                            type: string
+                        required:
+                        - type
+                        type: object
+                      bootstrapEndpoint:
+                        description: bootstrapEndpoint specifies the Kafka bootstrap
+                          endpoint.
+                        minLength: 1
+                        pattern: .+:[0-9]+
+                        type: string
+                      discovery:
+                        description: discovery specifies the capability to discover
+                          the Kafka cluster.
+                        properties:
+                          name:
+                            description: name is the name of the Confluent Platform
+                              component cluster.
+                            type: string
+                          namespace:
+                            description: namespace is where the Confluent Platform
+                              component is running. The defauls value is the namespace
+                              where CFK is running.
+                            type: string
+                          secretRef:
+                            description: secretRef is the name of the secret used
+                              to discover the Confluent Platform component.
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      tls:
+                        description: tls defines the client-side TLS setting for the
+                          Kafka cluster.
+                        properties:
+                          directoryPathInContainer:
+                            description: directoryPathInContainer specifies the directory
+                              path in the container where `keystore.jks`, `truststore.jks`,
+                              and `jksPassword.txt` keys are mounted. `truststore.jks`
+                              is not configured and can be ignored when the `ignoreTrustStoreConfig`
+                              field is set to `true`.
+                            minLength: 1
+                            type: string
+                          enabled:
+                            description: enabled specifies to enable the TLS configuration
+                              for the Confluent component.
+                            type: boolean
+                          ignoreTrustStoreConfig:
+                            description: ignoreTrustStoreConfig indicates whether
+                              to ignore the truststore configuration for the Confluent
+                              component.
+                            type: boolean
+                          jksPassword:
+                            description: jksPassword references the secret containing
+                              the JKS password.
+                            properties:
+                              secretRef:
+                                description: 'secretRef references the name of the
+                                  secret containing the JKS password. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - secretRef
+                            type: object
+                          secretRef:
+                            description: 'secretRef references the secret containing
+                              the certificates. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        required:
+                        - enabled
+                        type: object
+                    type: object
+                  mds:
+                    description: mds contains the configuration for MDS dependency
+                      when RBAC is enabled.
+                    properties:
+                      authentication:
+                        description: authentication specifies the client side authentication
+                          configuration for the MDS.
+                        properties:
+                          bearer:
+                            description: bearer specifies the bearer authentication
+                              settings.
+                            properties:
+                              directoryPathInContainer:
+                                description: directoryPathInContainer specifies the
+                                  directory path in the container where the credential
+                                  is mounted.
+                                minLength: 1
+                                type: string
+                              secretRef:
+                                description: 'secretRef specifies the name of the
+                                  secret that contains the credential. More info:
+                                  https://docs.confluent.io/operator/current/co-authenticate.html#bearer-authentication'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            type: object
+                          type:
+                            description: type specifies the authentication method
+                              for the MDS. The valid option is `bearer`.
+                            enum:
+                            - bearer
+                            type: string
+                        required:
+                        - bearer
+                        - type
+                        type: object
+                      endpoint:
+                        description: endpoint specifies the MDS endpoint.
+                        minLength: 1
+                        pattern: ^https?://.*
+                        type: string
+                      tls:
+                        description: ClientTLSConfig specifies the TLS configuration
+                          for the Confluent component (dependencies, listeners).
+                        properties:
+                          directoryPathInContainer:
+                            description: directoryPathInContainer specifies the directory
+                              path in the container where `keystore.jks`, `truststore.jks`,
+                              and `jksPassword.txt` keys are mounted. `truststore.jks`
+                              is not configured and can be ignored when the `ignoreTrustStoreConfig`
+                              field is set to `true`.
+                            minLength: 1
+                            type: string
+                          enabled:
+                            description: enabled specifies to enable the TLS configuration
+                              for the Confluent component.
+                            type: boolean
+                          ignoreTrustStoreConfig:
+                            description: ignoreTrustStoreConfig indicates whether
+                              to ignore the truststore configuration for the Confluent
+                              component.
+                            type: boolean
+                          jksPassword:
+                            description: jksPassword references the secret containing
+                              the JKS password.
+                            properties:
+                              secretRef:
+                                description: 'secretRef references the name of the
+                                  secret containing the JKS password. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - secretRef
+                            type: object
+                          secretRef:
+                            description: 'secretRef references the secret containing
+                              the certificates. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        required:
+                        - enabled
+                        type: object
+                      tokenKeyPair:
+                        description: tokenKeyPair specifies the token keypair to configure
+                          the MDS.
+                        properties:
+                          directoryPathInContainer:
+                            description: directoryPathInContainer defines the directory
+                              path in the container where the MDS token key pair are
+                              mounted.
+                            minLength: 1
+                            type: string
+                          secretRef:
+                            description: secretRef references the name of the secret
+                              that contains the MDS token key pair.
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        type: object
+                    required:
+                    - authentication
+                    - endpoint
+                    - tokenKeyPair
+                    type: object
+                  producer:
+                    description: producer contains the security configuration to connect
+                      to the Kafka cluster. It is used for source connectors. If `bootstrapEndpoint`
+                      is not configured, the security is configured based on the Kafka
+                      dependency configuration. Configure this property if different
+                      bootstrap endpoint of security is required for the producer.
+                    properties:
+                      authentication:
+                        description: authentication defines the authentication for
+                          the Kafka cluster.
+                        properties:
+                          jaasConfig:
+                            description: jaasConfig specifies the Kafka client-side
+                              JaaS configuration.
+                            properties:
+                              secretRef:
+                                description: 'secretRef references the secret containing
+                                  the required credentials. More info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - secretRef
+                            type: object
+                          jaasConfigPassThrough:
+                            description: jaasConfigPassThrough specifies another way
+                              to provide the Kafka client-side JaaS configuration.
+                            properties:
+                              directoryPathInContainer:
+                                description: 'directoryPathInContainer specifies the
+                                  directory path in the container where required credentials
+                                  are mounted. More info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                minLength: 1
+                                type: string
+                              secretRef:
+                                description: 'secretRef references the secret containing
+                                  the required credentials for authentication. More
+                                  info: https://docs.confluent.io/operator/current/co-authenticate.html'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            type: object
+                          type:
+                            description: type specifies the Kafka client authentication
+                              type. Valid options are `plain`, `oauthbearer`, `digest`,
+                              and `mtls`.
+                            enum:
+                            - plain
+                            - oauthbearer
+                            - digest
+                            - mtls
+                            type: string
+                        required:
+                        - type
+                        type: object
+                      bootstrapEndpoint:
+                        description: bootstrapEndpoint specifies the Kafka bootstrap
+                          endpoint.
+                        minLength: 1
+                        pattern: .+:[0-9]+
+                        type: string
+                      discovery:
+                        description: discovery specifies the capability to discover
+                          the Kafka cluster.
+                        properties:
+                          name:
+                            description: name is the name of the Confluent Platform
+                              component cluster.
+                            type: string
+                          namespace:
+                            description: namespace is where the Confluent Platform
+                              component is running. The defauls value is the namespace
+                              where CFK is running.
+                            type: string
+                          secretRef:
+                            description: secretRef is the name of the secret used
+                              to discover the Confluent Platform component.
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      tls:
+                        description: tls defines the client-side TLS setting for the
+                          Kafka cluster.
+                        properties:
+                          directoryPathInContainer:
+                            description: directoryPathInContainer specifies the directory
+                              path in the container where `keystore.jks`, `truststore.jks`,
+                              and `jksPassword.txt` keys are mounted. `truststore.jks`
+                              is not configured and can be ignored when the `ignoreTrustStoreConfig`
+                              field is set to `true`.
+                            minLength: 1
+                            type: string
+                          enabled:
+                            description: enabled specifies to enable the TLS configuration
+                              for the Confluent component.
+                            type: boolean
+                          ignoreTrustStoreConfig:
+                            description: ignoreTrustStoreConfig indicates whether
+                              to ignore the truststore configuration for the Confluent
+                              component.
+                            type: boolean
+                          jksPassword:
+                            description: jksPassword references the secret containing
+                              the JKS password.
+                            properties:
+                              secretRef:
+                                description: 'secretRef references the name of the
+                                  secret containing the JKS password. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - secretRef
+                            type: object
+                          secretRef:
+                            description: 'secretRef references the secret containing
+                              the certificates. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        required:
+                        - enabled
+                        type: object
+                    type: object
+                  schemaRegistry:
+                    description: schemaRegistry contains the dependency configuration
+                      for the Schema Registry cluster.
+                    properties:
+                      authentication:
+                        description: authentication specifies the authentication for
+                          the Schema Registry cluster.
+                        properties:
+                          basic:
+                            description: basic specifies the configuration for basic
+                              authentication.
+                            properties:
+                              debug:
+                                description: debug enables the basic authentication
+                                  debug logs for JaaS configuration.
+                                type: boolean
+                              directoryPathInContainer:
+                                description: 'directoryPathInContainer allows to pass
+                                  the basic credential through a directory path in
+                                  the container. More info: https://docs.confluent.io/operator/current/co-authenticate.html#basic-authentication'
+                                minLength: 1
+                                type: string
+                              restrictedRoles:
+                                description: restrictedRoles specify the restricted
+                                  roles on the server side only. Changes will be only
+                                  reflected in Control Center. This configuration
+                                  is ignored on the client side configuration.
+                                items:
+                                  type: string
+                                minItems: 1
+                                type: array
+                              roles:
+                                description: roles specify the roles on the server
+                                  side only. This configuration is ignored on the
+                                  client side configuration.
+                                items:
+                                  type: string
+                                type: array
+                              secretRef:
+                                description: 'secretRef defines secret reference to
+                                  pass the required credentials. More info: https://docs.confluent.io/operator/current/co-authenticate.html#basic-authentication'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            type: object
+                          type:
+                            description: type specifies the authentication scheme
+                              for the REST API client. Valid options are `basic` and
+                              `mtls`.
+                            enum:
+                            - basic
+                            - mtls
+                            type: string
+                        required:
+                        - type
+                        type: object
+                      tls:
+                        description: tls defines the client-side TLS setting for the
+                          Schema Registry cluster.
+                        properties:
+                          directoryPathInContainer:
+                            description: directoryPathInContainer specifies the directory
+                              path in the container where `keystore.jks`, `truststore.jks`,
+                              and `jksPassword.txt` keys are mounted. `truststore.jks`
+                              is not configured and can be ignored when the `ignoreTrustStoreConfig`
+                              field is set to `true`.
+                            minLength: 1
+                            type: string
+                          enabled:
+                            description: enabled specifies to enable the TLS configuration
+                              for the Confluent component.
+                            type: boolean
+                          ignoreTrustStoreConfig:
+                            description: ignoreTrustStoreConfig indicates whether
+                              to ignore the truststore configuration for the Confluent
+                              component.
+                            type: boolean
+                          jksPassword:
+                            description: jksPassword references the secret containing
+                              the JKS password.
+                            properties:
+                              secretRef:
+                                description: 'secretRef references the name of the
+                                  secret containing the JKS password. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                                maxLength: 30
+                                minLength: 1
+                                pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                            required:
+                            - secretRef
+                            type: object
+                          secretRef:
+                            description: 'secretRef references the secret containing
+                              the certificates. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        required:
+                        - enabled
+                        type: object
+                      url:
+                        description: url specifies the URL endpoint of the Schema
+                          Registry cluster.
+                        minLength: 1
+                        pattern: ^https?://.*
+                        type: string
+                    required:
+                    - url
+                    type: object
+                type: object
+              enableSchemas:
+                description: enableSchemas indicates whether to enable scheme or not.
+                type: boolean
+              externalAccess:
+                description: CPExternalAccess holds all external access policies for
+                  the non-Kafka component clusters.
+                properties:
+                  loadBalancer:
+                    description: loadBalancer specifies the configuration to create
+                      a Kubernetes load balancer service.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: annotations specify Kubernetes annotations for
+                          the load balancer service.
+                        type: object
+                      domain:
+                        description: domain is the domain name of the component cluster.
+                        minLength: 1
+                        type: string
+                      externalTrafficPolicy:
+                        description: externalTrafficPolicy specifies the external
+                          traffic policy for the service. Valid options are `Local`
+                          and `Cluster`.
+                        enum:
+                        - Local
+                        - Cluster
+                        type: string
+                      loadBalancerSourceRanges:
+                        description: loadBalancerSourceRanges specify the source ranges.
+                        items:
+                          type: string
+                        type: array
+                      port:
+                        description: port specifies the external port for the client
+                          consumption. If not configured, the same internal/external
+                          port is configured for the component. Information about
+                          the port can be retrieved through the status API.
+                        format: int32
+                        type: integer
+                      prefix:
+                        description: prefix specify the prefix for the given domain.
+                          The default value is the name of the cluster.
+                        minLength: 1
+                        type: string
+                      servicePorts:
+                        description: servicePorts specify the user-provided service
+                          port(s).
+                        items:
+                          description: ServicePort contains information on service's
+                            port.
+                          properties:
+                            appProtocol:
+                              description: The application protocol for this port.
+                                This field follows standard Kubernetes label syntax.
+                                Un-prefixed names are reserved for IANA standard service
+                                names (as per RFC-6335 and http://www.iana.org/assignments/service-names).
+                                Non-standard protocols should use prefixed names such
+                                as mycompany.com/my-custom-protocol. Field can be
+                                enabled with ServiceAppProtocol feature gate.
+                              type: string
+                            name:
+                              description: The name of this port within the service.
+                                This must be a DNS_LABEL. All ports within a ServiceSpec
+                                must have unique names. When considering the endpoints
+                                for a Service, this must match the 'name' field in
+                                the EndpointPort. Optional if only one ServicePort
+                                is defined on this service.
+                              type: string
+                            nodePort:
+                              description: 'The port on each node on which this service
+                                is exposed when type=NodePort or LoadBalancer. Usually
+                                assigned by the system. If specified, it will be allocated
+                                to the service if unused or else creation of the service
+                                will fail. Default is to auto-allocate a port if the
+                                ServiceType of this Service requires one. More info:
+                                https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport'
+                              format: int32
+                              type: integer
+                            port:
+                              description: The port that will be exposed by this service.
+                              format: int32
+                              type: integer
+                            protocol:
+                              default: TCP
+                              description: The IP protocol for this port. Supports
+                                "TCP", "UDP", and "SCTP". Default is TCP.
+                              type: string
+                            targetPort:
+                              anyOf:
+                              - type: integer
+                              - type: string
+                              description: 'Number or name of the port to access on
+                                the pods targeted by the service. Number must be in
+                                the range 1 to 65535. Name must be an IANA_SVC_NAME.
+                                If this is a string, it will be looked up as a named
+                                port in the target Pod''s container ports. If this
+                                is not specified, the value of the ''port'' field
+                                is used (an identity map). This field is ignored for
+                                services with clusterIP=None, and should be omitted
+                                or set equal to the ''port'' field. More info: https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service'
+                              x-kubernetes-int-or-string: true
+                          required:
+                          - port
+                          type: object
+                        type: array
+                      sessionAffinity:
+                        description: 'sessionAffinity defines the Kubernetes session
+                          affinity. The valid options are `ClientIP` and `None`. `ClientIP`
+                          enables the client IP-based session affinity. The default
+                          value is `None`. More info: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies.'
+                        enum:
+                        - ClientIP
+                        - None
+                        type: string
+                      sessionAffinityConfig:
+                        description: SessionAffinityConfig contains the configurations
+                          of the session affinity.
+                        properties:
+                          clientIP:
+                            description: clientIP contains the configurations of Client
+                              IP based session affinity.
+                            properties:
+                              timeoutSeconds:
+                                description: timeoutSeconds specifies the seconds
+                                  of ClientIP type session sticky time. The value
+                                  must be >0 && <=86400(for 1 day) if ServiceAffinity
+                                  == "ClientIP". Default value is 10800(for 3 hours).
+                                format: int32
+                                type: integer
+                            type: object
+                        type: object
+                    required:
+                    - domain
+                    type: object
+                  nodePort:
+                    description: nodePort specifies the configuration to create a
+                      Kubernetes node port service.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: annotations contain Kubernetes annotations for
+                          the node port service.
+                        type: object
+                      externalTrafficPolicy:
+                        description: externalTrafficPolicy specifies the external
+                          traffic policy for the service. Valid options are `Local`
+                          and `Cluster`.
+                        enum:
+                        - Local
+                        - Cluster
+                        type: string
+                      host:
+                        description: host defines the host name of the cluster.
+                        minLength: 1
+                        type: string
+                      nodePortOffset:
+                        description: nodePortOffset specifies the starting offset
+                          of the node ports. The port numbers go in ascending order
+                          with respect to the replicas count. NodePort service creation
+                          fails if the node port is not in the range supported by
+                          the Kubernetes API server. The default Kubernetes Node Port
+                          range is `30000` - `32762`.
+                        format: int32
+                        minimum: 0
+                        type: integer
+                      servicePorts:
+                        description: servicePorts specify user-provided service port(s).
+                          For Kafka with the nodePort type, this setting is only applied
+                          to Kafka bootstrap service.
+                        items:
+                          description: ServicePort contains information on service's
+                            port.
+                          properties:
+                            appProtocol:
+                              description: The application protocol for this port.
+                                This field follows standard Kubernetes label syntax.
+                                Un-prefixed names are reserved for IANA standard service
+                                names (as per RFC-6335 and http://www.iana.org/assignments/service-names).
+                                Non-standard protocols should use prefixed names such
+                                as mycompany.com/my-custom-protocol. Field can be
+                                enabled with ServiceAppProtocol feature gate.
+                              type: string
+                            name:
+                              description: The name of this port within the service.
+                                This must be a DNS_LABEL. All ports within a ServiceSpec
+                                must have unique names. When considering the endpoints
+                                for a Service, this must match the 'name' field in
+                                the EndpointPort. Optional if only one ServicePort
+                                is defined on this service.
+                              type: string
+                            nodePort:
+                              description: 'The port on each node on which this service
+                                is exposed when type=NodePort or LoadBalancer. Usually
+                                assigned by the system. If specified, it will be allocated
+                                to the service if unused or else creation of the service
+                                will fail. Default is to auto-allocate a port if the
+                                ServiceType of this Service requires one. More info:
+                                https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport'
+                              format: int32
+                              type: integer
+                            port:
+                              description: The port that will be exposed by this service.
+                              format: int32
+                              type: integer
+                            protocol:
+                              default: TCP
+                              description: The IP protocol for this port. Supports
+                                "TCP", "UDP", and "SCTP". Default is TCP.
+                              type: string
+                            targetPort:
+                              anyOf:
+                              - type: integer
+                              - type: string
+                              description: 'Number or name of the port to access on
+                                the pods targeted by the service. Number must be in
+                                the range 1 to 65535. Name must be an IANA_SVC_NAME.
+                                If this is a string, it will be looked up as a named
+                                port in the target Pod''s container ports. If this
+                                is not specified, the value of the ''port'' field
+                                is used (an identity map). This field is ignored for
+                                services with clusterIP=None, and should be omitted
+                                or set equal to the ''port'' field. More info: https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service'
+                              x-kubernetes-int-or-string: true
+                          required:
+                          - port
+                          type: object
+                        type: array
+                      sessionAffinity:
+                        description: 'sessionAffinity defines the Kubernetes session
+                          affinity. The valid options are `ClientIP` and `None`. `ClientIP`
+                          enables the client IP-based session affinity. The default
+                          value is `None`. More info: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies.'
+                        enum:
+                        - ClientIP
+                        - None
+                        type: string
+                      sessionAffinityConfig:
+                        description: SessionAffinityConfig contains the configurations
+                          of the session affinity.
+                        properties:
+                          clientIP:
+                            description: clientIP contains the configurations of Client
+                              IP based session affinity.
+                            properties:
+                              timeoutSeconds:
+                                description: timeoutSeconds specifies the seconds
+                                  of ClientIP type session sticky time. The value
+                                  must be >0 && <=86400(for 1 day) if ServiceAffinity
+                                  == "ClientIP". Default value is 10800(for 3 hours).
+                                format: int32
+                                type: integer
+                            type: object
+                        type: object
+                    required:
+                    - host
+                    - nodePortOffset
+                    type: object
+                  route:
+                    description: route specifies the configuration to create a route
+                      service in OpenShift.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: annotations contain Kubernetes annotations for
+                          the route services.
+                        type: object
+                      domain:
+                        description: domain specifies the domain name of the Confluent
+                          component cluster.
+                        minLength: 1
+                        type: string
+                      prefix:
+                        description: prefix specifies the component prefix when configured
+                          for the domain. The default value is the name of the cluster.
+                        minLength: 1
+                        type: string
+                      wildcardPolicy:
+                        description: wildcardPolicy allows you to define a route that
+                          covers all hosts within a domain. Valid options are `Subdomain`
+                          and `None`. The default value is `None`.
+                        enum:
+                        - Subdomain
+                        - None
+                        type: string
+                    required:
+                    - domain
+                    type: object
+                  type:
+                    description: type specifies the Kubernetes external service for
+                      the component. Valid options are `loadBalancer`, `nodePort`,
+                      and `route`.
+                    enum:
+                    - loadBalancer
+                    - nodePort
+                    - route
+                    minLength: 1
+                    type: string
+                required:
+                - type
+                type: object
+              image:
+                description: image specifies the application and the init docker image
+                  configurations. A change to this setting will roll the cluster.
+                properties:
+                  application:
+                    description: application is the Docker image name of the application.
+                      Specify `<Docker-registry FQDN>/<docker-repository-name>/<component-image-name>:<tag>`.
+                    pattern: .+:.+
+                    type: string
+                  init:
+                    description: init is the init-container name. Specify `<Docker-registry
+                      FQDN>/<docker-repository-name>/<init-container-image-name>:<tag>`.
+                    pattern: .+:.+
+                    type: string
+                  pullPolicy:
+                    description: pullPolicy is the policy for pulling images. Valid
+                      options are `Always`, `Never`, and `IfNotPresent`. The default
+                      value is `IfNotPresent`.
+                    enum:
+                    - Always
+                    - Never
+                    - IfNotPresent
+                    type: string
+                  pullSecretRef:
+                    description: 'pullSecretRef references the secrets in the same
+                      namespace to be used for pulling images. Image pull secrets
+                      are distinct from secrets because secrets can be mounted in
+                      the pod, but image pull secrets are only accessed by `kubelet`.
+                      More info: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod'
+                    items:
+                      type: string
+                    type: array
+                required:
+                - application
+                - init
+                type: object
+              injectAnnotations:
+                additionalProperties:
+                  type: string
+                description: injectAnnotations are the annotations injected to the
+                  internal resources that CFK created. The internal annotations are
+                  preserved and cannot be overridden. For pod annotations, use `podTemplate.annotations`.
+                type: object
+              injectLabels:
+                additionalProperties:
+                  type: string
+                description: injectLabels are the labels injected to the internal
+                  resources that CFK created. The internal labels are preserved and
+                  cannot be overridden. For pod labels, use `podTemplate.labels`.
+                type: object
+              internalTopicReplicationFactor:
+                description: ' internalTopicReplicationFactor specifies the replication
+                  factor for the internal topics.  The default value is `3`.'
+                format: int32
+                type: integer
+              k8sClusterDomain:
+                description: k8sClusterDomain specifies the configuration of the Kubernetes
+                  cluster domain. The default is the `cluster.local` domain.
+                type: string
+              keyConverterType:
+                description: keyConverterType specifies the supported key converters
+                  package for the Confluent Platform. For the supported converter
+                  types, see https://docs.confluent.io/current/connect/concepts.html#connect-converters.
+                  The default value is `org.apache.kafka.connect.json.JsonConverter`.
+                minLength: 1
+                type: string
+              license:
+                description: license specifies the license configuration for the Confluent
+                  Platform component.
+                properties:
+                  directoryPathInContainer:
+                    description: 'directoryPathInContainer specifies the directory
+                      path in the container where the license key is mounted. More
+                      info: https://docs.confluent.io/operator/current/co-license.html#update-component-level-licenses'
+                    minLength: 1
+                    type: string
+                  globalLicense:
+                    description: globalLicense specifies whether the Confluent Platform
+                      component shares the CFK license.
+                    type: boolean
+                  secretRef:
+                    description: 'secretRef references the secret that provides the
+                      license for the Confluent Platform component. More info: https://docs.confluent.io/operator/current/co-license.html#update-component-level-licenses'
+                    maxLength: 30
+                    minLength: 1
+                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                    type: string
+                type: object
+              metrics:
+                description: metrics specify the security settings for the metric
+                  services.
+                properties:
+                  authentication:
+                    description: authentication specifies the authentication configuration
+                      for the metrics.
+                    properties:
+                      type:
+                        description: type specifies the metrics authentication method.
+                          The valid option is `mtls`.
+                        enum:
+                        - mtls
+                        type: string
+                    required:
+                    - type
+                    type: object
+                  prometheus:
+                    description: prometheus specifies the configuration overrides
+                      for the JMX-Prometheus exporter.
+                    properties:
+                      blacklist:
+                        items:
+                          type: string
+                        type: array
+                      rules:
+                        items:
+                          description: Rule defines the Prometheus Exporter rule override.
+                          properties:
+                            attrNameSnakeCase:
+                              type: boolean
+                            cache:
+                              type: boolean
+                            help:
+                              minLength: 1
+                              type: string
+                            labels:
+                              additionalProperties:
+                                type: string
+                              type: object
+                            name:
+                              minLength: 1
+                              type: string
+                            pattern:
+                              minLength: 1
+                              type: string
+                            type:
+                              minLength: 1
+                              type: string
+                            value:
+                              minLength: 1
+                              type: string
+                            valueFactor:
+                              anyOf:
+                              - type: integer
+                              - type: string
+                              pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                              x-kubernetes-int-or-string: true
+                          type: object
+                        type: array
+                      whitelist:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  tls:
+                    description: tls specifies the TLS configuration for the metrics.
+                    properties:
+                      directoryPathInContainer:
+                        description: directoryPathInContainer specifies the directory
+                          path in the container where `keystore.jks`, `truststore.jks`,
+                          and `jksPassword.txt` keys are mounted. `truststore.jks`
+                          is not configured and can be ignored when the `ignoreTrustStoreConfig`
+                          field is set to `true`.
+                        minLength: 1
+                        type: string
+                      enabled:
+                        description: enabled specifies to enable the TLS configuration
+                          for the Confluent component.
+                        type: boolean
+                      ignoreTrustStoreConfig:
+                        description: ignoreTrustStoreConfig indicates whether to ignore
+                          the truststore configuration for the Confluent component.
+                        type: boolean
+                      jksPassword:
+                        description: jksPassword references the secret containing
+                          the JKS password.
+                        properties:
+                          secretRef:
+                            description: 'secretRef references the name of the secret
+                              containing the JKS password. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                            maxLength: 30
+                            minLength: 1
+                            pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                        required:
+                        - secretRef
+                        type: object
+                      secretRef:
+                        description: 'secretRef references the secret containing the
+                          certificates. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                        maxLength: 30
+                        minLength: 1
+                        pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                        type: string
+                    required:
+                    - enabled
+                    type: object
+                type: object
+              mountedSecrets:
+                description: 'mountedSecrets list the secrets injected to the underlying
+                  statefulset configuration. The secret reference is mounted in the
+                  default path `/mnt/secrets/<secret-name>`. The underlying resources
+                  will follow the secret as a file configuration. More info: https://kubernetes.io/docs/concepts/configuration/secret/#using-secrets-as-files-from-a-pod.
+                  A change to this setting will roll the cluster.'
+                items:
+                  description: MountedSecrets provides a way to inject a custom secret
+                    to the underlying statefulset.
+                  properties:
+                    keyItems:
+                      description: keyItems are key and path names.
+                      items:
+                        description: Maps a string key to a path within a volume.
+                        properties:
+                          key:
+                            description: The key to project.
+                            type: string
+                          mode:
+                            description: 'Optional: mode bits to use on this file,
+                              must be a value between 0 and 0777. If not specified,
+                              the volume defaultMode will be used. This might be in
+                              conflict with other options that affect the file mode,
+                              like fsGroup, and the result can be other mode bits
+                              set.'
+                            format: int32
+                            type: integer
+                          path:
+                            description: The relative path of the file to map the
+                              key to. May not be an absolute path. May not contain
+                              the path element '..'. May not start with the string
+                              '..'.
+                            type: string
+                        required:
+                        - key
+                        - path
+                        type: object
+                      type: array
+                    secretRef:
+                      description: secretRef references the name of the secret.
+                      maxLength: 30
+                      minLength: 1
+                      pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                      type: string
+                  required:
+                  - secretRef
+                  type: object
+                type: array
+              oneReplicaPerNode:
+                description: oneReplicaPerNode controls whether to run 1 pod per node
+                  using the pod anti-affinity capability. Enabling this configuration
+                  in an existing cluster will roll the cluster.
+                type: boolean
+              podTemplate:
+                description: podTemplate specifies the statefulset pod template configuration.
+                properties:
+                  affinity:
+                    description: 'affinity specifies a group of affinity scheduling
+                      rules. More info: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity.'
+                    properties:
+                      nodeAffinity:
+                        description: Describes node affinity scheduling rules for
+                          the pod.
+                        properties:
+                          preferredDuringSchedulingIgnoredDuringExecution:
+                            description: The scheduler will prefer to schedule pods
+                              to nodes that satisfy the affinity expressions specified
+                              by this field, but it may choose a node that violates
+                              one or more of the expressions. The node that is most
+                              preferred is the one with the greatest sum of weights,
+                              i.e. for each node that meets all of the scheduling
+                              requirements (resource request, requiredDuringScheduling
+                              affinity expressions, etc.), compute a sum by iterating
+                              through the elements of this field and adding "weight"
+                              to the sum if the node matches the corresponding matchExpressions;
+                              the node(s) with the highest sum are the most preferred.
+                            items:
+                              description: An empty preferred scheduling term matches
+                                all objects with implicit weight 0 (i.e. it's a no-op).
+                                A null preferred scheduling term matches no objects
+                                (i.e. is also a no-op).
+                              properties:
+                                preference:
+                                  description: A node selector term, associated with
+                                    the corresponding weight.
+                                  properties:
+                                    matchExpressions:
+                                      description: A list of node selector requirements
+                                        by node's labels.
+                                      items:
+                                        description: A node selector requirement is
+                                          a selector that contains values, a key,
+                                          and an operator that relates the key and
+                                          values.
+                                        properties:
+                                          key:
+                                            description: The label key that the selector
+                                              applies to.
+                                            type: string
+                                          operator:
+                                            description: Represents a key's relationship
+                                              to a set of values. Valid operators
+                                              are In, NotIn, Exists, DoesNotExist.
+                                              Gt, and Lt.
+                                            type: string
+                                          values:
+                                            description: An array of string values.
+                                              If the operator is In or NotIn, the
+                                              values array must be non-empty. If the
+                                              operator is Exists or DoesNotExist,
+                                              the values array must be empty. If the
+                                              operator is Gt or Lt, the values array
+                                              must have a single element, which will
+                                              be interpreted as an integer. This array
+                                              is replaced during a strategic merge
+                                              patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                    matchFields:
+                                      description: A list of node selector requirements
+                                        by node's fields.
+                                      items:
+                                        description: A node selector requirement is
+                                          a selector that contains values, a key,
+                                          and an operator that relates the key and
+                                          values.
+                                        properties:
+                                          key:
+                                            description: The label key that the selector
+                                              applies to.
+                                            type: string
+                                          operator:
+                                            description: Represents a key's relationship
+                                              to a set of values. Valid operators
+                                              are In, NotIn, Exists, DoesNotExist.
+                                              Gt, and Lt.
+                                            type: string
+                                          values:
+                                            description: An array of string values.
+                                              If the operator is In or NotIn, the
+                                              values array must be non-empty. If the
+                                              operator is Exists or DoesNotExist,
+                                              the values array must be empty. If the
+                                              operator is Gt or Lt, the values array
+                                              must have a single element, which will
+                                              be interpreted as an integer. This array
+                                              is replaced during a strategic merge
+                                              patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                  type: object
+                                weight:
+                                  description: Weight associated with matching the
+                                    corresponding nodeSelectorTerm, in the range 1-100.
+                                  format: int32
+                                  type: integer
+                              required:
+                              - preference
+                              - weight
+                              type: object
+                            type: array
+                          requiredDuringSchedulingIgnoredDuringExecution:
+                            description: If the affinity requirements specified by
+                              this field are not met at scheduling time, the pod will
+                              not be scheduled onto the node. If the affinity requirements
+                              specified by this field cease to be met at some point
+                              during pod execution (e.g. due to an update), the system
+                              may or may not try to eventually evict the pod from
+                              its node.
+                            properties:
+                              nodeSelectorTerms:
+                                description: Required. A list of node selector terms.
+                                  The terms are ORed.
+                                items:
+                                  description: A null or empty node selector term
+                                    matches no objects. The requirements of them are
+                                    ANDed. The TopologySelectorTerm type implements
+                                    a subset of the NodeSelectorTerm.
+                                  properties:
+                                    matchExpressions:
+                                      description: A list of node selector requirements
+                                        by node's labels.
+                                      items:
+                                        description: A node selector requirement is
+                                          a selector that contains values, a key,
+                                          and an operator that relates the key and
+                                          values.
+                                        properties:
+                                          key:
+                                            description: The label key that the selector
+                                              applies to.
+                                            type: string
+                                          operator:
+                                            description: Represents a key's relationship
+                                              to a set of values. Valid operators
+                                              are In, NotIn, Exists, DoesNotExist.
+                                              Gt, and Lt.
+                                            type: string
+                                          values:
+                                            description: An array of string values.
+                                              If the operator is In or NotIn, the
+                                              values array must be non-empty. If the
+                                              operator is Exists or DoesNotExist,
+                                              the values array must be empty. If the
+                                              operator is Gt or Lt, the values array
+                                              must have a single element, which will
+                                              be interpreted as an integer. This array
+                                              is replaced during a strategic merge
+                                              patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                    matchFields:
+                                      description: A list of node selector requirements
+                                        by node's fields.
+                                      items:
+                                        description: A node selector requirement is
+                                          a selector that contains values, a key,
+                                          and an operator that relates the key and
+                                          values.
+                                        properties:
+                                          key:
+                                            description: The label key that the selector
+                                              applies to.
+                                            type: string
+                                          operator:
+                                            description: Represents a key's relationship
+                                              to a set of values. Valid operators
+                                              are In, NotIn, Exists, DoesNotExist.
+                                              Gt, and Lt.
+                                            type: string
+                                          values:
+                                            description: An array of string values.
+                                              If the operator is In or NotIn, the
+                                              values array must be non-empty. If the
+                                              operator is Exists or DoesNotExist,
+                                              the values array must be empty. If the
+                                              operator is Gt or Lt, the values array
+                                              must have a single element, which will
+                                              be interpreted as an integer. This array
+                                              is replaced during a strategic merge
+                                              patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                            required:
+                            - nodeSelectorTerms
+                            type: object
+                        type: object
+                      podAffinity:
+                        description: Describes pod affinity scheduling rules (e.g.
+                          co-locate this pod in the same node, zone, etc. as some
+                          other pod(s)).
+                        properties:
+                          preferredDuringSchedulingIgnoredDuringExecution:
+                            description: The scheduler will prefer to schedule pods
+                              to nodes that satisfy the affinity expressions specified
+                              by this field, but it may choose a node that violates
+                              one or more of the expressions. The node that is most
+                              preferred is the one with the greatest sum of weights,
+                              i.e. for each node that meets all of the scheduling
+                              requirements (resource request, requiredDuringScheduling
+                              affinity expressions, etc.), compute a sum by iterating
+                              through the elements of this field and adding "weight"
+                              to the sum if the node has pods which matches the corresponding
+                              podAffinityTerm; the node(s) with the highest sum are
+                              the most preferred.
+                            items:
+                              description: The weights of all of the matched WeightedPodAffinityTerm
+                                fields are added per-node to find the most preferred
+                                node(s)
+                              properties:
+                                podAffinityTerm:
+                                  description: Required. A pod affinity term, associated
+                                    with the corresponding weight.
+                                  properties:
+                                    labelSelector:
+                                      description: A label query over a set of resources,
+                                        in this case pods.
+                                      properties:
+                                        matchExpressions:
+                                          description: matchExpressions is a list
+                                            of label selector requirements. The requirements
+                                            are ANDed.
+                                          items:
+                                            description: A label selector requirement
+                                              is a selector that contains values,
+                                              a key, and an operator that relates
+                                              the key and values.
+                                            properties:
+                                              key:
+                                                description: key is the label key
+                                                  that the selector applies to.
+                                                type: string
+                                              operator:
+                                                description: operator represents a
+                                                  key's relationship to a set of values.
+                                                  Valid operators are In, NotIn, Exists
+                                                  and DoesNotExist.
+                                                type: string
+                                              values:
+                                                description: values is an array of
+                                                  string values. If the operator is
+                                                  In or NotIn, the values array must
+                                                  be non-empty. If the operator is
+                                                  Exists or DoesNotExist, the values
+                                                  array must be empty. This array
+                                                  is replaced during a strategic merge
+                                                  patch.
+                                                items:
+                                                  type: string
+                                                type: array
+                                            required:
+                                            - key
+                                            - operator
+                                            type: object
+                                          type: array
+                                        matchLabels:
+                                          additionalProperties:
+                                            type: string
+                                          description: matchLabels is a map of {key,value}
+                                            pairs. A single {key,value} in the matchLabels
+                                            map is equivalent to an element of matchExpressions,
+                                            whose key field is "key", the operator
+                                            is "In", and the values array contains
+                                            only "value". The requirements are ANDed.
+                                          type: object
+                                      type: object
+                                    namespaces:
+                                      description: namespaces specifies which namespaces
+                                        the labelSelector applies to (matches against);
+                                        null or empty list means "this pod's namespace"
+                                      items:
+                                        type: string
+                                      type: array
+                                    topologyKey:
+                                      description: This pod should be co-located (affinity)
+                                        or not co-located (anti-affinity) with the
+                                        pods matching the labelSelector in the specified
+                                        namespaces, where co-located is defined as
+                                        running on a node whose value of the label
+                                        with key topologyKey matches that of any node
+                                        on which any of the selected pods is running.
+                                        Empty topologyKey is not allowed.
+                                      type: string
+                                  required:
+                                  - topologyKey
+                                  type: object
+                                weight:
+                                  description: weight associated with matching the
+                                    corresponding podAffinityTerm, in the range 1-100.
+                                  format: int32
+                                  type: integer
+                              required:
+                              - podAffinityTerm
+                              - weight
+                              type: object
+                            type: array
+                          requiredDuringSchedulingIgnoredDuringExecution:
+                            description: If the affinity requirements specified by
+                              this field are not met at scheduling time, the pod will
+                              not be scheduled onto the node. If the affinity requirements
+                              specified by this field cease to be met at some point
+                              during pod execution (e.g. due to a pod label update),
+                              the system may or may not try to eventually evict the
+                              pod from its node. When there are multiple elements,
+                              the lists of nodes corresponding to each podAffinityTerm
+                              are intersected, i.e. all terms must be satisfied.
+                            items:
+                              description: Defines a set of pods (namely those matching
+                                the labelSelector relative to the given namespace(s))
+                                that this pod should be co-located (affinity) or not
+                                co-located (anti-affinity) with, where co-located
+                                is defined as running on a node whose value of the
+                                label with key <topologyKey> matches that of any node
+                                on which a pod of the set of pods is running
+                              properties:
+                                labelSelector:
+                                  description: A label query over a set of resources,
+                                    in this case pods.
+                                  properties:
+                                    matchExpressions:
+                                      description: matchExpressions is a list of label
+                                        selector requirements. The requirements are
+                                        ANDed.
+                                      items:
+                                        description: A label selector requirement
+                                          is a selector that contains values, a key,
+                                          and an operator that relates the key and
+                                          values.
+                                        properties:
+                                          key:
+                                            description: key is the label key that
+                                              the selector applies to.
+                                            type: string
+                                          operator:
+                                            description: operator represents a key's
+                                              relationship to a set of values. Valid
+                                              operators are In, NotIn, Exists and
+                                              DoesNotExist.
+                                            type: string
+                                          values:
+                                            description: values is an array of string
+                                              values. If the operator is In or NotIn,
+                                              the values array must be non-empty.
+                                              If the operator is Exists or DoesNotExist,
+                                              the values array must be empty. This
+                                              array is replaced during a strategic
+                                              merge patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                    matchLabels:
+                                      additionalProperties:
+                                        type: string
+                                      description: matchLabels is a map of {key,value}
+                                        pairs. A single {key,value} in the matchLabels
+                                        map is equivalent to an element of matchExpressions,
+                                        whose key field is "key", the operator is
+                                        "In", and the values array contains only "value".
+                                        The requirements are ANDed.
+                                      type: object
+                                  type: object
+                                namespaces:
+                                  description: namespaces specifies which namespaces
+                                    the labelSelector applies to (matches against);
+                                    null or empty list means "this pod's namespace"
+                                  items:
+                                    type: string
+                                  type: array
+                                topologyKey:
+                                  description: This pod should be co-located (affinity)
+                                    or not co-located (anti-affinity) with the pods
+                                    matching the labelSelector in the specified namespaces,
+                                    where co-located is defined as running on a node
+                                    whose value of the label with key topologyKey
+                                    matches that of any node on which any of the selected
+                                    pods is running. Empty topologyKey is not allowed.
+                                  type: string
+                              required:
+                              - topologyKey
+                              type: object
+                            type: array
+                        type: object
+                      podAntiAffinity:
+                        description: Describes pod anti-affinity scheduling rules
+                          (e.g. avoid putting this pod in the same node, zone, etc.
+                          as some other pod(s)).
+                        properties:
+                          preferredDuringSchedulingIgnoredDuringExecution:
+                            description: The scheduler will prefer to schedule pods
+                              to nodes that satisfy the anti-affinity expressions
+                              specified by this field, but it may choose a node that
+                              violates one or more of the expressions. The node that
+                              is most preferred is the one with the greatest sum of
+                              weights, i.e. for each node that meets all of the scheduling
+                              requirements (resource request, requiredDuringScheduling
+                              anti-affinity expressions, etc.), compute a sum by iterating
+                              through the elements of this field and adding "weight"
+                              to the sum if the node has pods which matches the corresponding
+                              podAffinityTerm; the node(s) with the highest sum are
+                              the most preferred.
+                            items:
+                              description: The weights of all of the matched WeightedPodAffinityTerm
+                                fields are added per-node to find the most preferred
+                                node(s)
+                              properties:
+                                podAffinityTerm:
+                                  description: Required. A pod affinity term, associated
+                                    with the corresponding weight.
+                                  properties:
+                                    labelSelector:
+                                      description: A label query over a set of resources,
+                                        in this case pods.
+                                      properties:
+                                        matchExpressions:
+                                          description: matchExpressions is a list
+                                            of label selector requirements. The requirements
+                                            are ANDed.
+                                          items:
+                                            description: A label selector requirement
+                                              is a selector that contains values,
+                                              a key, and an operator that relates
+                                              the key and values.
+                                            properties:
+                                              key:
+                                                description: key is the label key
+                                                  that the selector applies to.
+                                                type: string
+                                              operator:
+                                                description: operator represents a
+                                                  key's relationship to a set of values.
+                                                  Valid operators are In, NotIn, Exists
+                                                  and DoesNotExist.
+                                                type: string
+                                              values:
+                                                description: values is an array of
+                                                  string values. If the operator is
+                                                  In or NotIn, the values array must
+                                                  be non-empty. If the operator is
+                                                  Exists or DoesNotExist, the values
+                                                  array must be empty. This array
+                                                  is replaced during a strategic merge
+                                                  patch.
+                                                items:
+                                                  type: string
+                                                type: array
+                                            required:
+                                            - key
+                                            - operator
+                                            type: object
+                                          type: array
+                                        matchLabels:
+                                          additionalProperties:
+                                            type: string
+                                          description: matchLabels is a map of {key,value}
+                                            pairs. A single {key,value} in the matchLabels
+                                            map is equivalent to an element of matchExpressions,
+                                            whose key field is "key", the operator
+                                            is "In", and the values array contains
+                                            only "value". The requirements are ANDed.
+                                          type: object
+                                      type: object
+                                    namespaces:
+                                      description: namespaces specifies which namespaces
+                                        the labelSelector applies to (matches against);
+                                        null or empty list means "this pod's namespace"
+                                      items:
+                                        type: string
+                                      type: array
+                                    topologyKey:
+                                      description: This pod should be co-located (affinity)
+                                        or not co-located (anti-affinity) with the
+                                        pods matching the labelSelector in the specified
+                                        namespaces, where co-located is defined as
+                                        running on a node whose value of the label
+                                        with key topologyKey matches that of any node
+                                        on which any of the selected pods is running.
+                                        Empty topologyKey is not allowed.
+                                      type: string
+                                  required:
+                                  - topologyKey
+                                  type: object
+                                weight:
+                                  description: weight associated with matching the
+                                    corresponding podAffinityTerm, in the range 1-100.
+                                  format: int32
+                                  type: integer
+                              required:
+                              - podAffinityTerm
+                              - weight
+                              type: object
+                            type: array
+                          requiredDuringSchedulingIgnoredDuringExecution:
+                            description: If the anti-affinity requirements specified
+                              by this field are not met at scheduling time, the pod
+                              will not be scheduled onto the node. If the anti-affinity
+                              requirements specified by this field cease to be met
+                              at some point during pod execution (e.g. due to a pod
+                              label update), the system may or may not try to eventually
+                              evict the pod from its node. When there are multiple
+                              elements, the lists of nodes corresponding to each podAffinityTerm
+                              are intersected, i.e. all terms must be satisfied.
+                            items:
+                              description: Defines a set of pods (namely those matching
+                                the labelSelector relative to the given namespace(s))
+                                that this pod should be co-located (affinity) or not
+                                co-located (anti-affinity) with, where co-located
+                                is defined as running on a node whose value of the
+                                label with key <topologyKey> matches that of any node
+                                on which a pod of the set of pods is running
+                              properties:
+                                labelSelector:
+                                  description: A label query over a set of resources,
+                                    in this case pods.
+                                  properties:
+                                    matchExpressions:
+                                      description: matchExpressions is a list of label
+                                        selector requirements. The requirements are
+                                        ANDed.
+                                      items:
+                                        description: A label selector requirement
+                                          is a selector that contains values, a key,
+                                          and an operator that relates the key and
+                                          values.
+                                        properties:
+                                          key:
+                                            description: key is the label key that
+                                              the selector applies to.
+                                            type: string
+                                          operator:
+                                            description: operator represents a key's
+                                              relationship to a set of values. Valid
+                                              operators are In, NotIn, Exists and
+                                              DoesNotExist.
+                                            type: string
+                                          values:
+                                            description: values is an array of string
+                                              values. If the operator is In or NotIn,
+                                              the values array must be non-empty.
+                                              If the operator is Exists or DoesNotExist,
+                                              the values array must be empty. This
+                                              array is replaced during a strategic
+                                              merge patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                    matchLabels:
+                                      additionalProperties:
+                                        type: string
+                                      description: matchLabels is a map of {key,value}
+                                        pairs. A single {key,value} in the matchLabels
+                                        map is equivalent to an element of matchExpressions,
+                                        whose key field is "key", the operator is
+                                        "In", and the values array contains only "value".
+                                        The requirements are ANDed.
+                                      type: object
+                                  type: object
+                                namespaces:
+                                  description: namespaces specifies which namespaces
+                                    the labelSelector applies to (matches against);
+                                    null or empty list means "this pod's namespace"
+                                  items:
+                                    type: string
+                                  type: array
+                                topologyKey:
+                                  description: This pod should be co-located (affinity)
+                                    or not co-located (anti-affinity) with the pods
+                                    matching the labelSelector in the specified namespaces,
+                                    where co-located is defined as running on a node
+                                    whose value of the label with key topologyKey
+                                    matches that of any node on which any of the selected
+                                    pods is running. Empty topologyKey is not allowed.
+                                  type: string
+                              required:
+                              - topologyKey
+                              type: object
+                            type: array
+                        type: object
+                    type: object
+                  annotations:
+                    additionalProperties:
+                      type: string
+                    description: 'annotations are unstructured key value maps stored
+                      with the resource and may be set by external tools to store
+                      and retrieve arbitrary metadata. They are not queryable and
+                      should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations.'
+                    type: object
+                  envVars:
+                    description: 'envVars contain environment variables to be injected
+                      into containers. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container.'
+                    items:
+                      description: EnvVar represents an environment variable present
+                        in a Container.
+                      properties:
+                        name:
+                          description: Name of the environment variable. Must be a
+                            C_IDENTIFIER.
+                          type: string
+                        value:
+                          description: 'Variable references $(VAR_NAME) are expanded
+                            using the previous defined environment variables in the
+                            container and any service environment variables. If a
+                            variable cannot be resolved, the reference in the input
+                            string will be unchanged. The $(VAR_NAME) syntax can be
+                            escaped with a double $$, ie: $$(VAR_NAME). Escaped references
+                            will never be expanded, regardless of whether the variable
+                            exists or not. Defaults to "".'
+                          type: string
+                        valueFrom:
+                          description: Source for the environment variable's value.
+                            Cannot be used if value is not empty.
+                          properties:
+                            configMapKeyRef:
+                              description: Selects a key of a ConfigMap.
+                              properties:
+                                key:
+                                  description: The key to select.
+                                  type: string
+                                name:
+                                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind,
+                                    uid?'
+                                  type: string
+                                optional:
+                                  description: Specify whether the ConfigMap or its
+                                    key must be defined
+                                  type: boolean
+                              required:
+                              - key
+                              type: object
+                            fieldRef:
+                              description: 'Selects a field of the pod: supports metadata.name,
+                                metadata.namespace, metadata.labels, metadata.annotations,
+                                spec.nodeName, spec.serviceAccountName, status.hostIP,
+                                status.podIP, status.podIPs.'
+                              properties:
+                                apiVersion:
+                                  description: Version of the schema the FieldPath
+                                    is written in terms of, defaults to "v1".
+                                  type: string
+                                fieldPath:
+                                  description: Path of the field to select in the
+                                    specified API version.
+                                  type: string
+                              required:
+                              - fieldPath
+                              type: object
+                            resourceFieldRef:
+                              description: 'Selects a resource of the container: only
+                                resources limits and requests (limits.cpu, limits.memory,
+                                limits.ephemeral-storage, requests.cpu, requests.memory
+                                and requests.ephemeral-storage) are currently supported.'
+                              properties:
+                                containerName:
+                                  description: 'Container name: required for volumes,
+                                    optional for env vars'
+                                  type: string
+                                divisor:
+                                  anyOf:
+                                  - type: integer
+                                  - type: string
+                                  description: Specifies the output format of the
+                                    exposed resources, defaults to "1"
+                                  pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                  x-kubernetes-int-or-string: true
+                                resource:
+                                  description: 'Required: resource to select'
+                                  type: string
+                              required:
+                              - resource
+                              type: object
+                            secretKeyRef:
+                              description: Selects a key of a secret in the pod's
+                                namespace
+                              properties:
+                                key:
+                                  description: The key of the secret to select from.  Must
+                                    be a valid secret key.
+                                  type: string
+                                name:
+                                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind,
+                                    uid?'
+                                  type: string
+                                optional:
+                                  description: Specify whether the Secret or its key
+                                    must be defined
+                                  type: boolean
+                              required:
+                              - key
+                              type: object
+                          type: object
+                      required:
+                      - name
+                      type: object
+                    type: array
+                  labels:
+                    additionalProperties:
+                      type: string
+                    description: 'labels are maps of string keys and values that can
+                      be used to organize and categorize (scope and select) objects.
+                      More info: http://kubernetes.io/docs/user-guide/labels.'
+                    type: object
+                  podSecurityContext:
+                    description: PodSecurityContext holds pod-level security attributes
+                      and common container settings. Some fields are also present
+                      in container.securityContext.  Field values of container.securityContext
+                      take precedence over field values of PodSecurityContext.
+                    properties:
+                      fsGroup:
+                        description: "A special supplemental group that applies to
+                          all containers in a pod. Some volume types allow the Kubelet
+                          to change the ownership of that volume to be owned by the
+                          pod: \n 1. The owning GID will be the FSGroup 2. The setgid
+                          bit is set (new files created in the volume will be owned
+                          by FSGroup) 3. The permission bits are OR'd with rw-rw----
+                          \n If unset, the Kubelet will not modify the ownership and
+                          permissions of any volume."
+                        format: int64
+                        type: integer
+                      fsGroupChangePolicy:
+                        description: 'fsGroupChangePolicy defines behavior of changing
+                          ownership and permission of the volume before being exposed
+                          inside Pod. This field will only apply to volume types which
+                          support fsGroup based ownership(and permissions). It will
+                          have no effect on ephemeral volume types such as: secret,
+                          configmaps and emptydir. Valid values are "OnRootMismatch"
+                          and "Always". If not specified defaults to "Always".'
+                        type: string
+                      runAsGroup:
+                        description: The GID to run the entrypoint of the container
+                          process. Uses runtime default if unset. May also be set
+                          in SecurityContext.  If set in both SecurityContext and
+                          PodSecurityContext, the value specified in SecurityContext
+                          takes precedence for that container.
+                        format: int64
+                        type: integer
+                      runAsNonRoot:
+                        description: Indicates that the container must run as a non-root
+                          user. If true, the Kubelet will validate the image at runtime
+                          to ensure that it does not run as UID 0 (root) and fail
+                          to start the container if it does. If unset or false, no
+                          such validation will be performed. May also be set in SecurityContext.  If
+                          set in both SecurityContext and PodSecurityContext, the
+                          value specified in SecurityContext takes precedence.
+                        type: boolean
+                      runAsUser:
+                        description: The UID to run the entrypoint of the container
+                          process. Defaults to user specified in image metadata if
+                          unspecified. May also be set in SecurityContext.  If set
+                          in both SecurityContext and PodSecurityContext, the value
+                          specified in SecurityContext takes precedence for that container.
+                        format: int64
+                        type: integer
+                      seLinuxOptions:
+                        description: The SELinux context to be applied to all containers.
+                          If unspecified, the container runtime will allocate a random
+                          SELinux context for each container.  May also be set in
+                          SecurityContext.  If set in both SecurityContext and PodSecurityContext,
+                          the value specified in SecurityContext takes precedence
+                          for that container.
+                        properties:
+                          level:
+                            description: Level is SELinux level label that applies
+                              to the container.
+                            type: string
+                          role:
+                            description: Role is a SELinux role label that applies
+                              to the container.
+                            type: string
+                          type:
+                            description: Type is a SELinux type label that applies
+                              to the container.
+                            type: string
+                          user:
+                            description: User is a SELinux user label that applies
+                              to the container.
+                            type: string
+                        type: object
+                      supplementalGroups:
+                        description: A list of groups applied to the first process
+                          run in each container, in addition to the container's primary
+                          GID.  If unspecified, no groups will be added to any container.
+                        items:
+                          format: int64
+                          type: integer
+                        type: array
+                      sysctls:
+                        description: Sysctls hold a list of namespaced sysctls used
+                          for the pod. Pods with unsupported sysctls (by the container
+                          runtime) might fail to launch.
+                        items:
+                          description: Sysctl defines a kernel parameter to be set
+                          properties:
+                            name:
+                              description: Name of a property to set
+                              type: string
+                            value:
+                              description: Value of a property to set
+                              type: string
+                          required:
+                          - name
+                          - value
+                          type: object
+                        type: array
+                      windowsOptions:
+                        description: The Windows specific settings applied to all
+                          containers. If unspecified, the options within a container's
+                          SecurityContext will be used. If set in both SecurityContext
+                          and PodSecurityContext, the value specified in SecurityContext
+                          takes precedence.
+                        properties:
+                          gmsaCredentialSpec:
+                            description: GMSACredentialSpec is where the GMSA admission
+                              webhook (https://github.com/kubernetes-sigs/windows-gmsa)
+                              inlines the contents of the GMSA credential spec named
+                              by the GMSACredentialSpecName field.
+                            type: string
+                          gmsaCredentialSpecName:
+                            description: GMSACredentialSpecName is the name of the
+                              GMSA credential spec to use.
+                            type: string
+                          runAsUserName:
+                            description: The UserName in Windows to run the entrypoint
+                              of the container process. Defaults to the user specified
+                              in image metadata if unspecified. May also be set in
+                              PodSecurityContext. If set in both SecurityContext and
+                              PodSecurityContext, the value specified in SecurityContext
+                              takes precedence.
+                            type: string
+                        type: object
+                    type: object
+                  priorityClassName:
+                    description: priorityClassName specifies the priority class for
+                      the pod (if any).
+                    minLength: 1
+                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                    type: string
+                  probe:
+                    description: probe contains the fields for standard Kubernetes
+                      readiness/liveness probe configuration.
+                    properties:
+                      liveness:
+                        description: liveness configures the Kubernetes probe settings.
+                          The changes will override the existing default configuration.
+                        properties:
+                          failureThreshold:
+                            description: failureThreshold is the minimum consecutive
+                              failures for the probe to be considered failed. Confluent
+                              Platform components come with the right configuration,
+                              and this setting is not required to change most of the
+                              time.
+                            format: int32
+                            type: integer
+                          initialDelaySeconds:
+                            description: initialDelaySeconds is the number of seconds
+                              after the container has started and before probes are
+                              initiated. Confluent Platform components come with the
+                              right configuration, and this setting is not required
+                              to change most of the time.
+                            format: int32
+                            type: integer
+                          periodSeconds:
+                            description: periodSeconds specifies how often to perform
+                              the probe. Confluent Platform components come with the
+                              right configuration, and this setting is not required
+                              to change most of the time.
+                            format: int32
+                            type: integer
+                          successThreshold:
+                            description: successThreshold is the minimum consecutive
+                              successes for the probe to be considered successful
+                              after having failed. The default values is `1`. Must
+                              be `1` for liveness and startup. The minimum value is
+                              `1`.
+                            format: int32
+                            type: integer
+                          timeoutSeconds:
+                            description: timeoutSeconds is the number of seconds after
+                              which the probe times out. Confluent Platform components
+                              come with the right configuration, and this setting
+                              is not required to change most of the time.
+                            format: int32
+                            type: integer
+                        type: object
+                      readiness:
+                        description: readiness configures the Kubernetes probe setting.
+                          The changes will override the existing default configuration.
+                        properties:
+                          failureThreshold:
+                            description: failureThreshold is the minimum consecutive
+                              failures for the probe to be considered failed. Confluent
+                              Platform components come with the right configuration,
+                              and this setting is not required to change most of the
+                              time.
+                            format: int32
+                            type: integer
+                          initialDelaySeconds:
+                            description: initialDelaySeconds is the number of seconds
+                              after the container has started and before probes are
+                              initiated. Confluent Platform components come with the
+                              right configuration, and this setting is not required
+                              to change most of the time.
+                            format: int32
+                            type: integer
+                          periodSeconds:
+                            description: periodSeconds specifies how often to perform
+                              the probe. Confluent Platform components come with the
+                              right configuration, and this setting is not required
+                              to change most of the time.
+                            format: int32
+                            type: integer
+                          successThreshold:
+                            description: successThreshold is the minimum consecutive
+                              successes for the probe to be considered successful
+                              after having failed. The default values is `1`. Must
+                              be `1` for liveness and startup. The minimum value is
+                              `1`.
+                            format: int32
+                            type: integer
+                          timeoutSeconds:
+                            description: timeoutSeconds is the number of seconds after
+                              which the probe times out. Confluent Platform components
+                              come with the right configuration, and this setting
+                              is not required to change most of the time.
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
+                  resources:
+                    description: resources describe the compute resource requirements.
+                    properties:
+                      limits:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Limits describes the maximum amount of compute
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                        type: object
+                      requests:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Requests describes the minimum amount of compute
+                          resources required. If Requests is omitted for a container,
+                          it defaults to Limits if that is explicitly specified, otherwise
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                        type: object
+                    type: object
+                  serviceAccountName:
+                    description: 'ServiceAccountName is the name of the service account
+                      used to run this pod. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account.'
+                    type: string
+                  terminationGracePeriodSeconds:
+                    description: terminationGracePeriodSeconds is the grace period
+                      before the pod is deleted.
+                    format: int64
+                    type: integer
+                  tolerations:
+                    description: tolerations specify the pods to schedule onto the
+                      nodes with matching taints, using the triple `<key,value,effect>`
+                      and the matching operator `<operator>`.
+                    items:
+                      description: The pod this Toleration is attached to tolerates
+                        any taint that matches the triple <key,value,effect> using
+                        the matching operator <operator>.
+                      properties:
+                        effect:
+                          description: Effect indicates the taint effect to match.
+                            Empty means match all taint effects. When specified, allowed
+                            values are NoSchedule, PreferNoSchedule and NoExecute.
+                          type: string
+                        key:
+                          description: Key is the taint key that the toleration applies
+                            to. Empty means match all taint keys. If the key is empty,
+                            operator must be Exists; this combination means to match
+                            all values and all keys.
+                          type: string
+                        operator:
+                          description: Operator represents a key's relationship to
+                            the value. Valid operators are Exists and Equal. Defaults
+                            to Equal. Exists is equivalent to wildcard for value,
+                            so that a pod can tolerate all taints of a particular
+                            category.
+                          type: string
+                        tolerationSeconds:
+                          description: TolerationSeconds represents the period of
+                            time the toleration (which must be of effect NoExecute,
+                            otherwise this field is ignored) tolerates the taint.
+                            By default, it is not set, which means tolerate the taint
+                            forever (do not evict). Zero and negative values will
+                            be treated as 0 (evict immediately) by the system.
+                          format: int64
+                          type: integer
+                        value:
+                          description: Value is the taint value the toleration matches
+                            to. If the operator is Exists, the value should be empty,
+                            otherwise just a regular string.
+                          type: string
+                      type: object
+                    type: array
+                  topologySpreadConstraints:
+                    description: topologySpreadConstraints describe how a group of
+                      pods ought to spread across topology domains. Scheduler will
+                      schedule pods based on the constraints. All topologySpreadConstraints
+                      are ANDed.
+                    items:
+                      description: TopologySpreadConstraint specifies how to spread
+                        matching pods among the given topology.
+                      properties:
+                        labelSelector:
+                          description: LabelSelector is used to find matching pods.
+                            Pods that match this label selector are counted to determine
+                            the number of pods in their corresponding topology domain.
+                          properties:
+                            matchExpressions:
+                              description: matchExpressions is a list of label selector
+                                requirements. The requirements are ANDed.
+                              items:
+                                description: A label selector requirement is a selector
+                                  that contains values, a key, and an operator that
+                                  relates the key and values.
+                                properties:
+                                  key:
+                                    description: key is the label key that the selector
+                                      applies to.
+                                    type: string
+                                  operator:
+                                    description: operator represents a key's relationship
+                                      to a set of values. Valid operators are In,
+                                      NotIn, Exists and DoesNotExist.
+                                    type: string
+                                  values:
+                                    description: values is an array of string values.
+                                      If the operator is In or NotIn, the values array
+                                      must be non-empty. If the operator is Exists
+                                      or DoesNotExist, the values array must be empty.
+                                      This array is replaced during a strategic merge
+                                      patch.
+                                    items:
+                                      type: string
+                                    type: array
+                                required:
+                                - key
+                                - operator
+                                type: object
+                              type: array
+                            matchLabels:
+                              additionalProperties:
+                                type: string
+                              description: matchLabels is a map of {key,value} pairs.
+                                A single {key,value} in the matchLabels map is equivalent
+                                to an element of matchExpressions, whose key field
+                                is "key", the operator is "In", and the values array
+                                contains only "value". The requirements are ANDed.
+                              type: object
+                          type: object
+                        maxSkew:
+                          description: 'MaxSkew describes the degree to which pods
+                            may be unevenly distributed. It''s the maximum permitted
+                            difference between the number of matching pods in any
+                            two topology domains of a given topology type. For example,
+                            in a 3-zone cluster, MaxSkew is set to 1, and pods with
+                            the same labelSelector spread as 1/1/0: | zone1 | zone2
+                            | zone3 | |   P   |   P   |       | - if MaxSkew is 1,
+                            incoming pod can only be scheduled to zone3 to become
+                            1/1/1; scheduling it onto zone1(zone2) would make the
+                            ActualSkew(2-0) on zone1(zone2) violate MaxSkew(1). -
+                            if MaxSkew is 2, incoming pod can be scheduled onto any
+                            zone. It''s a required field. Default value is 1 and 0
+                            is not allowed.'
+                          format: int32
+                          type: integer
+                        topologyKey:
+                          description: TopologyKey is the key of node labels. Nodes
+                            that have a label with this key and identical values are
+                            considered to be in the same topology. We consider each
+                            <key, value> as a "bucket", and try to put balanced number
+                            of pods into each bucket. It's a required field.
+                          type: string
+                        whenUnsatisfiable:
+                          description: 'WhenUnsatisfiable indicates how to deal with
+                            a pod if it doesn''t satisfy the spread constraint. -
+                            DoNotSchedule (default) tells the scheduler not to schedule
+                            it - ScheduleAnyway tells the scheduler to still schedule
+                            it It''s considered as "Unsatisfiable" if and only if
+                            placing incoming pod on any topology violates "MaxSkew".
+                            For example, in a 3-zone cluster, MaxSkew is set to 1,
+                            and pods with the same labelSelector spread as 3/1/1:
+                            | zone1 | zone2 | zone3 | | P P P |   P   |   P   | If
+                            WhenUnsatisfiable is set to DoNotSchedule, incoming pod
+                            can only be scheduled to zone2(zone3) to become 3/2/1(3/1/2)
+                            as ActualSkew(2-1) on zone2(zone3) satisfies MaxSkew(1).
+                            In other words, the cluster can still be imbalanced, but
+                            scheduler won''t make it *more* imbalanced. It''s a required
+                            field.'
+                          type: string
+                      required:
+                      - maxSkew
+                      - topologyKey
+                      - whenUnsatisfiable
+                      type: object
+                    type: array
+                type: object
+              replicas:
+                description: replicas is the desired number of replicas. A change
+                  to this setting will roll the cluster.
+                format: int32
+                type: integer
+              telemetry:
+                description: telemetry specifies the Confluent telemetry reporter
+                  configuration.
+                properties:
+                  global:
+                    description: global allows disabling telemetry configuration.
+                      If CFK is deployed with telemetry, this field is only used to
+                      disable telemetry. The default value is `true` if telemetry
+                      is enabled at the global level.
+                    type: boolean
+                type: object
+              tls:
+                description: tls specifies the global-level TLS configuration.
+                properties:
+                  autoGeneratedCerts:
+                    description: autoGeneratedCerts specifies that the certificates
+                      are auto-generated based on the CA key pair provided.
+                    type: boolean
+                  directoryPathInContainer:
+                    description: directoryPathInContainer specifies the directory
+                      path in the container where `keystore.jks`, `truststore.jks`,
+                      and `jksPassword.txt` keys are mounted. `truststore.jks` is
+                      not configured and can be ignored when the `ignoreTrustStoreConfig`
+                      field is set to `true`.
+                    minLength: 1
+                    type: string
+                  ignoreTrustStoreConfig:
+                    description: ignoreTrustStoreConfig indicates whether to ignore
+                      the truststore configuration for the Confluent component.
+                    type: boolean
+                  jksPassword:
+                    description: jksPassword references the secret containing the
+                      JKS password.
+                    properties:
+                      secretRef:
+                        description: 'secretRef references the name of the secret
+                          containing the JKS password. More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                        maxLength: 30
+                        minLength: 1
+                        pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                        type: string
+                    required:
+                    - secretRef
+                    type: object
+                  secretRef:
+                    description: 'secretRef references the secret containing the certificates.
+                      More info: https://docs.confluent.io/operator/current/co-network-encryption.html#configure-user-provided-tls-certificates'
+                    maxLength: 30
+                    minLength: 1
+                    pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                    type: string
+                type: object
+              valueConverterType:
+                description: valueConverterType specifies the supported value converters
+                  package for the Confluent Platform. For the supported converter
+                  types, see https://docs.confluent.io/current/connect/concepts.html#connect-converters.
+                  The default value is `org.apache.kafka.connect.json.JsonConverter`.
+                minLength: 1
+                type: string
+            required:
+            - image
+            - replicas
+            type: object
+          status:
+            description: status defines the observed state of the Connect cluster.
+            properties:
+              authorizationType:
+                description: authorizationType is the authorization type for this
+                  Confluent component.
+                type: string
+              clusterName:
+                description: clusterName is the name of the Confluent Platform component
+                  cluster.
+                type: string
+              clusterNamespace:
+                description: clusterNamespace is the namespace where the Confluent
+                  Platform component cluster is running.
+                type: string
+              conditions:
+                description: conditions specify the latest available observations
+                  of the current state.
+                items:
+                  description: Condition represent the latest available observations
+                    of the current state.
+                  properties:
+                    lastProbeTime:
+                      description: lastProbeTime shows the last time the condition
+                        was evaluated.
+                      format: date-time
+                      type: string
+                    lastTransitionTime:
+                      description: lastTransitionTime shows the last time the condition
+                        was transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: message shows a human-readable message with details
+                        about the transition.
+                      type: string
+                    reason:
+                      description: reason shows the reason for the last transition
+                        of the condition.
+                      type: string
+                    status:
+                      description: status shows the status of the condition, one of
+                        `True`, `False`, or `Unknown`.
+                      type: string
+                    type:
+                      description: type shows the condition type.
+                      type: string
+                  type: object
+                type: array
+              connectorPlugins:
+                description: connectorPlugins are the installed connector plugins.
+                items:
+                  description: ConnectorPluginStatus defines the state of the connector
+                    plugin.
+                  properties:
+                    class:
+                      description: class specifies the class name of the connector
+                        plugin.
+                      type: string
+                    type:
+                      description: type is the connector plugin type, which can be
+                        `SOURCE`, `SINK` or `UNKNOWN`.
+                      type: string
+                    version:
+                      description: version is the current version of the connector
+                        plugin.
+                      type: string
+                  required:
+                  - class
+                  type: object
+                type: array
+              connectorTLSFilePaths:
+                description: connectorTLSFilePaths are the connector TLS file paths.
+                items:
+                  description: CustomTLSFilePathStatus specifies the file paths of
+                    the custom TLS certificates.
+                  properties:
+                    jksPasswordPath:
+                      description: jksPasswordPath contains the absolute path of the
+                        `jksPassword.txt` file.
+                      type: string
+                    keyStorePath:
+                      description: keyStorePath contains the absolute path of the
+                        keystore file, `.jks` or `.p12`.
+                      type: string
+                    trustStorePath:
+                      description: trustStorePath contains the absolute path of the
+                        truststore file, `.jks` or `.p12`.
+                      type: string
+                  type: object
+                type: array
+              currentReplicas:
+                description: currentReplicas is the number of currently running replicas.
+                format: int32
+                type: integer
+              groupId:
+                description: groupId is the group id of the Connect cluster.
+                type: string
+              internalSecrets:
+                description: internalSecrets are internal secrets created by CFK for
+                  this Confluent component.
+                items:
+                  type: string
+                type: array
+              internalTopicNames:
+                description: internalTopicNames are the topics used by the component
+                  for internal use.
+                items:
+                  type: string
+                type: array
+              kafka:
+                description: kafka is the Kafka client side status for the Connect
+                  cluster.
+                properties:
+                  authenticationType:
+                    description: authenticationType describes the authentication method
+                      for the Kafka cluster.
+                    type: string
+                  bootstrapEndpoint:
+                    description: bootstrapEndpoint specifies the Kafka bootstrap endpoint.
+                    type: string
+                  tls:
+                    description: tls indicates whether TLS is enabled for the Kafka
+                      dependency.
+                    type: boolean
+                type: object
+              operatorVersion:
+                description: operatorVersion is the internal version of CFK.
+                type: string
+              phase:
+                description: phase describes the state of the Confluent Platform component.
+                type: string
+              rbac:
+                description: rbac contains the RBAC-related status when RBAC is enabled.
+                properties:
+                  clusterId:
+                    description: clusterId specifies the id of the cluster.
+                    type: string
+                  internalRolebindings:
+                    description: internalRolebindings specifies the internal rolebindings.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              readyReplicas:
+                description: readyReplicas is the number of currently ready replicas.
+                format: int32
+                type: integer
+              replicas:
+                description: replicas is the number of replicas.
+                format: int32
+                type: integer
+              restConfig:
+                description: restConfig is the REST configuration of the Connect cluster.
+                properties:
+                  advertisedExternalEndpoints:
+                    description: advertisedExternalEndpoints specifies other advertised
+                      endpoints used, especially for Kafka.
+                    items:
+                      type: string
+                    type: array
+                  authenticationType:
+                    description: authenticationType shows the authentication type
+                      configured by the listener.
+                    type: string
+                  externalAccessType:
+                    description: externalAccessType shows the external access type
+                      used for the listener.
+                    type: string
+                  externalEndpoint:
+                    description: externalEndpoint specifies the external endpoint
+                      to connect to the Confluent component cluster.
+                    type: string
+                  internalEndpoint:
+                    description: internalEndpoint specifies the internal endpoint
+                      to connect to the Confluent component cluster.
+                    type: string
+                  tls:
+                    description: tls shows whether TLS is configured for the listener.
+                    type: boolean
+                type: object
+              selector:
+                description: selector gets the label selector of the child pod. The
+                  Horizontal Pod Autoscaler(HPA) will scale using the label selector
+                  of the child pod.
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      scale:
+        labelSelectorPath: .status.selector
+        specReplicasPath: .spec.replicas
+        statusReplicasPath: .status.replicas
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+

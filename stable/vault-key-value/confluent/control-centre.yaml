@@ -36,8 +36,7 @@ spec:
     kafka:
       bootstrapEndpoint: kafka:9071
       authentication:
-        jaasConfig:
-          $patch: delete
+        jaasConfig: null
         type: plain
         jaasConfigPassThrough:
           directoryPathInContainer: /vault/secrets

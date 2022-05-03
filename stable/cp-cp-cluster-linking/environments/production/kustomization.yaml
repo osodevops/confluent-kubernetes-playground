@@ -6,5 +6,7 @@ resources:
   - ../base
   - cluster-link-rest-class.yaml
   - demo-topic.yaml
+  - serviceaccount.yaml
+  - 1-producer-tls
 patchesStrategicMerge:
   - kafka.yaml

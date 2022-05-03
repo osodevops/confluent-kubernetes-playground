@@ -1,10 +1,10 @@
 namespace: sandbox
 resources:
   - namespace.yaml
-  - ../../base/operator
-  - ../../base/cfk-components/confluent-rbac
-  - ../../resources/producers/4-producers-tls
+  - ../../base/cfk-components/confluent-no-auth-no-tls
+  - ../../resources/producers/4-producers-no-tls
   - grafana
   - prometheus
+
 
 

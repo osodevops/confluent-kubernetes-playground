@@ -27,7 +27,7 @@ usage: |-
     * [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 
 # Example usage
-Examples: |-
+examples: |-
 
   All Examples will require the steps mentioned in [GETTING_STARTED.md](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/GETTING_STARTED.md) run prior to deploying the example 
 

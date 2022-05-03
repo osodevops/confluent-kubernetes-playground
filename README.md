@@ -51,6 +51,22 @@ You will need a Kubernetes cluster version 1.16 or newer and kubectl version 1.1
 
 
 
+## Examples
+
+
+All Examples will require the steps mentioned in [GETTING_STARTED.md](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/GETTING_STARTED.md) run prior to deploying the example 
+
+### Stable CFK Deployments
+  * [Vault PKI integration with dynamic SSL](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/basic-pki-vault)
+  * [Basic CFK install with auto generated certificates](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/basic)
+  * [Kafka Connect GCP Spanner in CFK](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/custom-connect-gcp-connectors)
+  * [Kafka Connect SQL Server in CFK](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/custom-connect-sql)
+  * [Monitoring Kakfa CFK with JMX Prometheus and Grafana](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/elk-logging)
+  * [RBAC enabled CFK cluster wth OpenLDAP](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/rbac)
+  * [Cloud to Cloud replication using Confluent replicator in CFK](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/replicator)
+  * [User provided mTLS for Kafka in CFK](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/userprovided-mtls)
+  * [Vault enabled secrets store for Kafka](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/examples/vault-key-value)
+
 
 
 

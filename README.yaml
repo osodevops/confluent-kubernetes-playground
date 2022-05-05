@@ -42,6 +42,7 @@ examples: |-
     * [Monitoring Kakfa CFK with JMX Prometheus and Grafana](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/stable/grafana-prometheus)
     * [User provided mTLS for Kafka in CFK](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/stable/external-mtls)
     * [Vault enabled secrets store for Kafka](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/stable/vault-key-value)
+    * [Confluent Schema CRD to declaratively create, read, and delete schemas](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/stable/schema)
 
   ### Broken / WIP Deployments
     * [Vault PKI integration with dynamic SSL](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/broken/pki-vault--waiting-for-kafka-2.7)

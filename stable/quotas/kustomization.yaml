@@ -4,6 +4,4 @@ namespace: sandbox
 resources:
 - namespace.yaml
 - ../../base/cfk-components/confluent-rbac
-- client
-patchesStrategicMerge:
-  - confluent/kafka.yaml
+

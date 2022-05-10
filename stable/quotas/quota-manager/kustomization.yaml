@@ -1,4 +1,15 @@
 namespace: sandbox
 resources:
-- demo-topic.yaml
 - quota-manager.yaml
+configMapGenerator:
+- name: oso-quota-example
+  files:
+  - ./definition/quotas.yaml
+- name: config-properties
+  files:
+  - ./definition/kafka.properties
+- name: apply-quota-script
+  files:
+  - ./definition/apply-quotas-script.sh
+generatorOptions:
+  disableNameSuffixHash: true

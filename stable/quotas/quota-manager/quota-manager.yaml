@@ -18,9 +18,11 @@ spec:
     spec:
       containers:
         - name: quota-manager
-          image: sandbox-kafka-client:latest
+          image: quota-manager:latest
           imagePullPolicy: Never
           command:
+#            - "sleep"
+#            - "10000000"
             - /tmp/quotas/apply-quotas-script.sh
           resources:
             requests:
@@ -28,48 +30,26 @@ spec:
               cpu: 500m # 1000m
           volumeMounts:
             - mountPath: /tmp/quotas
-              name: apply-quotas-script
+              name: apply-quota-script
+            - mountPath: /tmp/quota-definition
+              name: oso-quota-example
+            - mountPath: /tmp/config-properties
+              name: config-properties
             - mountPath: /mnt/sslcerts
               name: sslcerts
       volumes:
-        - name: apply-quotas-script
+        - name: config-properties
           configMap:
             defaultMode: 0777
-            name: apply-quotas-script
+            name: config-properties
+        - name: oso-quota-example
+          configMap:
+            defaultMode: 0777
+            name: oso-quota-example
+        - name: apply-quota-script
+          configMap:
+            defaultMode: 0777
+            name: apply-quota-script
         - name: sslcerts
           secret:
             secretName: kafka-generated-jks
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: quota-manager
-  namespace: sandbox
-spec:
-  clusterIP: None
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: apply-quotas-script
-data:
-  apply-quotas-script.sh: |-
-    #!/bin/bash
-    populate_properties() {
-    tee -a /tmp/command.properties <<EOF
-    security.protocol=SSL
-    ssl.truststore.location=/mnt/sslcerts/truststore.jks
-    ssl.truststore.password=mystorepassword
-    ssl.keystore.location=/mnt/sslcerts/keystore.jks
-    ssl.keystore.password=mystorepassword
-    EOF
-    }
-    populate_properties
-
-    kafka-configs \
-      --bootstrap-server kafka:9071 \
-      --alter \
-      --entity-type users \
-      --entity-name quota \
-      --command-config /tmp/command.properties \
-      --add-config 'producer_byte_rate=10240,consumer_byte_rate=20480' 

@@ -4,12 +4,12 @@ resources:
 configMapGenerator:
 - name: oso-quota-example
   files:
-  - ./definition/quotas.yaml
+  - ./default/quotas.yaml
 - name: config-properties
   files:
-  - ./definition/kafka.properties
+  - ./default/kafka.properties
 - name: apply-quota-script
   files:
-  - ./definition/apply-quotas-script.sh
+  - ./default/apply-quotas-script.sh
 generatorOptions:
   disableNameSuffixHash: true

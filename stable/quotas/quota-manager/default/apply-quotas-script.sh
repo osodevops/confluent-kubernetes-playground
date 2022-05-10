@@ -1,7 +1,5 @@
 #!/bin/bash
-
 quota_definition="/tmp/quota-definition/quotas.yaml"
-
 for i in $(yq '.platform.quotas | keys' < $quota_definition); do
   principal="${i:0}"
   if [[ "$principal" != "-" ]]; then
@@ -20,16 +18,25 @@ for i in $(yq '.platform.quotas | keys' < $quota_definition); do
     fi
     # Removes white space and the last trailing comma
     config=$(echo $config_string | tr -d " \t\n\r" | rev | cut -c 2- | rev)
-    set -x
     echo $config
-
-    kafka-configs \
-    --bootstrap-server kafka:9071 \
-    --alter \
-    --entity-type users \
-    --entity-name $principal \
-    --command-config /tmp/config-properties/kafka.properties \
-    --add-config "$config"
+    set -x
+    if [[ "$principal" == "global" ]]; then
+      kafka-configs \
+      --bootstrap-server kafka:9071 \
+      --alter \
+      --entity-type users \
+      --entity-default \
+      --command-config /tmp/config-properties/kafka.properties \
+      --add-config "$config"
+    else
+      kafka-configs \
+      --bootstrap-server kafka:9071 \
+      --alter \
+      --entity-type users \
+      --entity-name $principal \
+      --command-config /tmp/config-properties/kafka.properties \
+      --add-config "$config"
+    fi
     set +x
   fi
 done

@@ -1,29 +1,26 @@
 ---
-apiVersion: apps/v1
-kind: StatefulSet
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: quota-manager
   namespace: sandbox
 spec:
-  serviceName: quota-manager
-  podManagementPolicy: OrderedReady
-  replicas: 1
-  selector:
-    matchLabels:
-      app: quota-manager
+
   template:
     metadata:
       labels:
         app: quota-manager
     spec:
+      restartPolicy: OnFailure
       containers:
         - name: quota-manager
           image: quota-manager:latest
           imagePullPolicy: Never
           command:
+            - /tmp/quotas/apply-quotas-script.sh
 #            - "sleep"
 #            - "10000000"
-            - /tmp/quotas/apply-quotas-script.sh
+
           resources:
             requests:
               memory: 512Mi # 768Mi

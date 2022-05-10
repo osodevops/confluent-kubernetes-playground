@@ -3,13 +3,7 @@ kind: Kustomization
 namespace: sandbox
 resources:
 - namespace.yaml
-- ../../base/cfk-components/confluent-no-auth-tls
-- ./schema-config.yaml
-- ./schema.yaml
-
-configMapGenerator:
-  - name: oso-schema-config
-    files:
-      - schema=new_customer.avsc
-    options:
-      disableNameSuffixHash: true
+- ../../base/cfk-components/confluent-rbac
+- client
+patchesStrategicMerge:
+  - confluent/kafka.yaml

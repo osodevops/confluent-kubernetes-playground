@@ -7,5 +7,3 @@ spec:
   partitionCount: 4
   configs:
     cleanup.policy: "delete"
-  kafkaRestClassRef:
-    name: production-kafka-rest

@@ -1,0 +1,4 @@
+namespace: sandbox
+resources:
+- demo-topic.yaml
+- quota-manager.yaml

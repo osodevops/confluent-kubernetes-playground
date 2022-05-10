@@ -1,0 +1,75 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: quota-manager
+  namespace: sandbox
+spec:
+  serviceName: quota-manager
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quota-manager
+  template:
+    metadata:
+      labels:
+        app: quota-manager
+    spec:
+      containers:
+        - name: quota-manager
+          image: sandbox-kafka-client:latest
+          imagePullPolicy: Never
+          command:
+            - /tmp/quotas/apply-quotas-script.sh
+          resources:
+            requests:
+              memory: 512Mi # 768Mi
+              cpu: 500m # 1000m
+          volumeMounts:
+            - mountPath: /tmp/quotas
+              name: apply-quotas-script
+            - mountPath: /mnt/sslcerts
+              name: sslcerts
+      volumes:
+        - name: apply-quotas-script
+          configMap:
+            defaultMode: 0777
+            name: apply-quotas-script
+        - name: sslcerts
+          secret:
+            secretName: kafka-generated-jks
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quota-manager
+  namespace: sandbox
+spec:
+  clusterIP: None
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apply-quotas-script
+data:
+  apply-quotas-script.sh: |-
+    #!/bin/bash
+    populate_properties() {
+    tee -a /tmp/command.properties <<EOF
+    security.protocol=SSL
+    ssl.truststore.location=/mnt/sslcerts/truststore.jks
+    ssl.truststore.password=mystorepassword
+    ssl.keystore.location=/mnt/sslcerts/keystore.jks
+    ssl.keystore.password=mystorepassword
+    EOF
+    }
+    populate_properties
+
+    kafka-configs \
+      --bootstrap-server kafka:9071 \
+      --alter \
+      --entity-type users \
+      --entity-name quota \
+      --command-config /tmp/command.properties \
+      --add-config 'producer_byte_rate=10240,consumer_byte_rate=20480' 

@@ -37,7 +37,12 @@ Minikube:source:schemaregistry:9081 -> localhost:9082
 
 ```shell
 
-kubectl port-forward kafka-0 9071:9071 --namespace source
+nohup kubectl port-forward schemaregistry-0 8081:8081 --namespace master \
+&& \
+nohup kubectl port-forward schemaregistry-0 8082:8081 --namespace dogs \
+&& \
+nohup kubectl port-forward schemaregistry-0 8083:8081 --namespace cats 
+
 ```
 kubectl port-forward \
 $(kubectl get pods -n source -l statefulset.kubernetes.io/pod-name:kafka-0 -o name) \

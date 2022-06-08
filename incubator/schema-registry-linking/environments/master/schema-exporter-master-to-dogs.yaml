@@ -1,0 +1,16 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: SchemaExporter
+metadata:
+  name: schema-exporter-master-to-b
+spec:
+  sourceCluster:
+    schemaRegistryRest:
+      endpoint: http://schemaregistry.master.svc.cluster.local:8081
+  destinationCluster:
+    schemaRegistryRest:
+      endpoint: http://schemaregistry.dogs.svc.cluster.local:8081
+  contextType: NONE
+#  subjects:               --- [5]
+#  subjectRenameFormat:    --- [6]
+#  contextName:            --- [8]
+#  configs:                --- [9]

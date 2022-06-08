@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: cats
+resources:
+  - namespace.yaml
+  - ../../../../base/cfk-components/confluent-no-auth-no-tls
+  - sr-linking-topic-demo.yaml
+  - schema-registry.yaml
+  - cats-rest-class.yaml
+patchesStrategicMerge:
+  - kafka.yaml
+  - zookeeper.yaml
+  - control-center.yaml

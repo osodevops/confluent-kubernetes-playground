@@ -9,8 +9,8 @@ spec:
   destinationCluster:
     schemaRegistryRest:
       endpoint: http://schemaregistry.cats.svc.cluster.local:8081
-  contextType: NONE
+  contextType: AUTO
 #  subjects:               --- [5]
 #  subjectRenameFormat:    --- [6]
-#  contextName:            --- [8]
+#  contextName:
 #  configs:                --- [9]

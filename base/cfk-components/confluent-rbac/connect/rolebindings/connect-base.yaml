@@ -8,7 +8,7 @@ spec:
   principal:
     name: kafka
     type: user
-  role: SecurityAdmin
+  role: ClusterAdmin
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding

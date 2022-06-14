@@ -1,0 +1,9 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestClass
+metadata:
+  name: master-kafka-rest
+spec:
+  kafkaClusterRef:
+    name: kafka
+  kafkaRest:
+    endpoint: http://kafka.master.svc.cluster.local:8090

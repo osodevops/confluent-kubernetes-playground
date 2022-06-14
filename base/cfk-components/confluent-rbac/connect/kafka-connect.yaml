@@ -28,3 +28,5 @@ spec:
         type: bearer
         bearer:
           secretRef: credential
+      tls:
+        enabled: true

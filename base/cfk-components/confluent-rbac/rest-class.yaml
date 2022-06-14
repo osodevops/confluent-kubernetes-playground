@@ -6,5 +6,5 @@ spec:
   kafkaRest:
     authentication:
       type: bearer
-      bearer:
+      basic:
         secretRef: credential

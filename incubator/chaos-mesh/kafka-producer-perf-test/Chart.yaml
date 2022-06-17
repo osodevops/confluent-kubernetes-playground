@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for kafka-producer-perf-test
+name: kafka-producer-perf-test
+version: 0.1.0

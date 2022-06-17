@@ -1,0 +1,12 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: alpha-topic3
+spec:
+  replicas: 2
+  partitionCount: 5
+  kafkaRest:
+    endpoint: http://kafka.master.svc.cluster.local:8090
+  configs:
+    cleanup.policy: "delete"

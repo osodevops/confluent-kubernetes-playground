@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-config
+data:
+  client.properties: |-
+    bootstrap.servers=bootstrap.egdp-dev.aws.away.black:9092
+    acks=all
+    batch.size=300000
+    linger.ms=10
+    ssl.endpoint.identification.algorithm=
+    security.protocol=SSL
+    ssl.truststore.location=/opt/kafka.client.truststore.jks
+    ssl.keystore.location=/opt/kafka.client.keystore.jks
+    ssl.truststore.password=expedia1qaz!QAZ
+    ssl.keystore.password=rCEIQDvvEMZswtQLaQ8Q

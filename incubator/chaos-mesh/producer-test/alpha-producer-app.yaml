@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: alpha-console-producer
+spec:
+  serviceName: alpha-console-producer
+  podManagementPolicy: Parallel
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpha-console-producer
+  template:
+    metadata:
+      labels:
+        app: alpha-console-producer
+    spec:
+      containers:
+        - name: alpha-console-producer
+          image: confluentinc/cp-kafka:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              kafka-producer-perf-test \
+                --topic alpha-topic3 \
+                --record-size 1500 \
+                --throughput -1 \
+                --producer.config /mnt/kafka.properties \
+                --num-records 10000000
+          volumeMounts:
+            - name: kafka-properties
+              mountPath: /mnt
+          resources:
+            requests:
+              memory: 512Mi # 768Mi
+              cpu: 500m # 1000m
+      volumes:
+        - name: kafka-properties # Create secret with name `kafka-client-config` with client configurations
+          secret:
+            secretName: kafka-client-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alpha-console-producer
+spec:
+  clusterIP: None

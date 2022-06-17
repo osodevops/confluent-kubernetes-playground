@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: basic-avro-schema-body
+data:
+  schema: |
+    {
+      "namespace": "io.confluent.examples.clients.basicavro",
+      "type": "record",
+      "name": "Payment",
+      "fields": [
+        {"name": "id", "type": "string"},
+        {"name": "amount", "type": "double"},
+        {"name": "email", "type": "string"}
+      ]
+    }
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Schema
+metadata:
+  name: basic-avro-schema-value
+spec:
+  data:
+    configRef: basic-avro-schema-body
+    format: avro
+  schemaReferences:
+    - subject: basic-avro-schema-value
+      version: 1
+      format: avro
+      avro:
+        avro: basic.avro.schema.fqdn
+  schemaRegistryClusterRef:
+    name: schemaregistry
+#  schemaRegistryRest:
+#    endpoint: http://schemaregistry:8081
+#  name: If not set, the Schema CR name is used as the schema name.  Use this property to define schema with context.

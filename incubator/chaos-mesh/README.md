@@ -25,9 +25,6 @@ NOTE:
 Once the pod named 'chaos-dashboard-RANDOMNUMBER' is up and running, you can port forward port 2333 to your local machine and access the Chaos Mesh Dashboard
 
 
-
-
-
 ### Deploy Chaos Tests 
 ```shell
 kubectl apply -k ./experiments
@@ -71,14 +68,3 @@ Observed Behaviour:
 `Failed to apply chaos: rpc error: code = Unknown desc = Error loading cgroup v2 manager: cgroups: invalid group path`
 
 Ran JVM exception - it threw a bunch of errors into Kafka pods, but showing as `Failed to apply chaos: rpc error: code = Unknown desc = com.sun.tools.attach.AttachNotSupportedException` in Chaos mesh
-
-
-
-
-GOING forward
-
-Caputre behavior of Kafka Producer 100k /200k 
-
-Comparing differences between replicator and cluster linking  -- What is the impact of cluster linking and replicator on threads - 
-
-Replication vs Cluster linking in a high volume 

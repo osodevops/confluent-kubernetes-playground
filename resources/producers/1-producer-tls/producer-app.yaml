@@ -26,9 +26,9 @@ spec:
               kafka-producer-perf-test \
                 --topic cfk-playground-producer-topic  \
                 --record-size 1024 \
-                --throughput 5 \
+                --throughput -1 \
                 --producer.config /mnt/kafka.properties \
-                --num-records 100000
+                --num-records 10000000
           volumeMounts:
             - name: kafka-properties
               mountPath: /mnt

@@ -7,5 +7,6 @@ spec:
   partitionCount: 4
   configs:
     cleanup.policy: "delete"
+    retention.bytes: "10737418240"
   kafkaRestClassRef:
     name: master-kafka-rest

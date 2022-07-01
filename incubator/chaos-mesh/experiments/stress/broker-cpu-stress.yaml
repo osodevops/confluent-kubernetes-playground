@@ -9,11 +9,11 @@ spec:
       - 'master'
       - 'default'
     labelSelectors:
-#      "statefulset.kubernetes.io/pod-name": "kafka-0"
-       "app": "ldap"
+      "statefulset.kubernetes.io/pod-name": "kafka-0"
+#       "app": "kafka"
   stressors:
     cpu:
       workers: 10
       load: 100
       options: ["--cpu 4", "--timeout 600", "--hdd 1"]
-  duration: "30s"
+  duration: "100m"

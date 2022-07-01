@@ -2,7 +2,7 @@
 apiVersion: platform.confluent.io/v1beta1
 kind: KafkaTopic
 metadata:
-  name: alpha-topic3
+  name: alpha-topic
 spec:
   replicas: 2
   partitionCount: 5
@@ -10,3 +10,5 @@ spec:
     endpoint: http://kafka.master.svc.cluster.local:8090
   configs:
     cleanup.policy: "delete"
+    compression.type: "lz4"
+    retention.bytes: "10737418240"

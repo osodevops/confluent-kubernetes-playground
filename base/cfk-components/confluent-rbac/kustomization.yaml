@@ -5,6 +5,8 @@ resources:
   - secrets
   - zookeeper.yaml
   - kafka.yaml
+  - schema-registry
   - control-centre.yaml
   - rest-class.yaml
+  - control-centre-testadmin-rb.yaml
 

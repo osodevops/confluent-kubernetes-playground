@@ -1,0 +1,15 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+spec:
+  configOverrides:
+    server:
+      - confluent.schema.registry.url=https://schemaregistry:8081
+  listeners:
+    external:
+      externalAccess:
+        type: nodePort
+        nodePort:
+          host: myoperator2.cluster.local
+          nodePortOffset: 30000

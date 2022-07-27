@@ -4,7 +4,8 @@ namespace: uk-dc-1
 resources:
 - namespace.yaml
 - ../../../base/cfk-components/confluent-rbac
-#- ../../base/cfk-components/confluent-rbac/connect
-#- ../../base/cfk-components/confluent-rbac/ksqldb
-#- ../../base/cfk-components/confluent-rbac/schema-registry
+#- ../../../base/cfk-components/confluent-rbac/connect
+#- ../../../base/cfk-components/confluent-rbac/schema-registry
 
+patchesStrategicMerge:
+  - confluent/kafka.yaml

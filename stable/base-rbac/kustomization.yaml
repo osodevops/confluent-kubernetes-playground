@@ -6,5 +6,7 @@ resources:
 - ../../base/cfk-components/confluent-rbac
 #- ../../base/cfk-components/confluent-rbac/connect
 #- ../../base/cfk-components/confluent-rbac/ksqldb
-#- ../../base/cfk-components/confluent-rbac/schema-registry
+- ../../base/cfk-components/confluent-rbac/schema-registry
+- ../../base/cfk-components/confluent-rbac/control-centre-testadmin-rb.yaml
+- ../../base/cfk-components/confluent-rbac/control-centre.yaml
 

@@ -31,7 +31,8 @@ helm search repo confluent --versions
 helm template confluentinc/confluent-for-kubernetes --version $CHART_VERSION --include-crds --set namespaced=false --output-dir .
 mkdir -p ../base/cfk-base/$APP_VERSION/crds
 mkdir -p ../base/cfk-base/$APP_VERSION/templates
-ln -s ./$APP_VERSION ../base/cfk-base/latest
+#FIX need to remove old sym link before creating new one
+rm ../base/cfk-base/latest && ln -s ./$APP_VERSION ../base/cfk-base/latest
 
 mv confluent-for-kubernetes/crds/* ../base/cfk-base/$APP_VERSION/crds
 mv confluent-for-kubernetes/templates/* ../base/cfk-base/$APP_VERSION/templates

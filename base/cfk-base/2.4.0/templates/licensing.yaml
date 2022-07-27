@@ -10,7 +10,6 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "confluent-operator"
     helm.sh/chart: confluent-for-kubernetes-0.517.12
-  namespace: default
   name: confluent-operator-licensing
 type: Opaque
 data:

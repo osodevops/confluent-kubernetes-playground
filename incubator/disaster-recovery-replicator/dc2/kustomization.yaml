@@ -7,7 +7,6 @@ resources:
 - connect-replicator.yaml
 - connector-replicator-spec.yaml
 - connect-rbac.yaml
-#- ../../../base/cfk-components/confluent-rbac/connect
 patchesStrategicMerge:
   - kafka.yaml
   - zookeeper.yaml

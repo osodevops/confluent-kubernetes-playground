@@ -7,8 +7,13 @@ spec:
   taskMax: 4
   connectClusterRef:
     name: replicator
+  connectRest:
+      authentication:
+         type: bearer
+         bearer:
+            secretRef: credential
   configs:
-     topic.whitelist: "replicator-producer-topic"
+     topic.whitelist: "replicator-dummy-topic"
      key.converter: "io.confluent.connect.replicator.util.ByteArrayConverter"
      value.converter: "io.confluent.connect.replicator.util.ByteArrayConverter"
      src.kafka.sasl.mechanism: "PLAIN"

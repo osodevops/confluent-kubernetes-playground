@@ -1,9 +1,7 @@
 {
-  "CN": "test.dc2.com",
+  "CN": "kafka.dc1.com",
   "hosts": [
-    "*.dc2.com",
-    "*.zookeeper.dc2.com",
-    "*.kafka.dc2.com"
+    "*.dc1.com"
   ],
   "key": {
     "algo": "rsa",

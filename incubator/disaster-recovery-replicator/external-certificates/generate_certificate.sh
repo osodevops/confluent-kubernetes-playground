@@ -29,15 +29,15 @@ openssl x509 -in sensitive-dc2.pem -text -noout
 
 ## CREATE KUBERNETES SECRETS
 # DC1 Certificates
-kubectl create secret generic dc1-tls --dry-run=client \
+kubectl create secret generic custom-tls --dry-run=client \
 --from-file=fullchain.pem=./sensitive-dc1.pem \
 --from-file=privkey.pem=./sensitive-dc1-key.pem \
---from-file=cacerts.pem=./sensitive-ca.pem -o yaml > ./dc1-tls.yaml
+--from-file=cacerts.pem=./sensitive-ca.pem -o yaml > ../dc1/custom-tls.yaml
 # DC2 Certificates
-kubectl create secret generic dc2-tls --dry-run=client \
+kubectl create secret generic custom-tls --dry-run=client \
 --from-file=fullchain.pem=./sensitive-dc2.pem \
 --from-file=privkey.pem=./sensitive-dc2-key.pem \
---from-file=cacerts.pem=./sensitive-ca.pem -o yaml > ./dc2-tls.yaml
+--from-file=cacerts.pem=./sensitive-ca.pem -o yaml > ../dc2/custom-tls.yaml
 
 # This is required for 'auto-generated' example
 kubectl create secret tls ca-pair-sslcerts \

@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dc1
+resources:
+- ./custom-tls.yaml
+- ../../../base/cfk-components/confluent-rbac
+#- ../../../base/cfk-components/confluent-rbac/connect
+patchesStrategicMerge:
+  - kafka.yaml
+  - zookeeper.yaml
+#  - schema-registry.yaml
+#  - control-center.yaml

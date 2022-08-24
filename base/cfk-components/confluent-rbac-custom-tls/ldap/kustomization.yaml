@@ -1,7 +1,4 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- dc1-namespace.yaml
-- dc2-namespace.yaml
-- dc1
-- dc2
+  - ldap.yaml

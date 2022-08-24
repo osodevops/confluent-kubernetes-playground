@@ -1,0 +1,11 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: connect-cluster-base
+spec:
+  clustersScopeByIds:
+    connectClusterId: dc2.replicator
+  principal:
+    name: kafka
+    type: user
+  role: ClusterAdmin

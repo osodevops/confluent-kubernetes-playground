@@ -4,9 +4,11 @@ namespace: dc2
 resources:
 - ./custom-tls.yaml
 - ../../../base/cfk-components/confluent-rbac
-- ../../../base/cfk-components/confluent-rbac/connect
+- connect-replicator.yaml
+- connector-replicator-spec.yaml
+- connect-rbac.yaml
+#- ../../../base/cfk-components/confluent-rbac/connect
 patchesStrategicMerge:
   - kafka.yaml
   - zookeeper.yaml
-  - schema-registry.yaml
   - control-center.yaml

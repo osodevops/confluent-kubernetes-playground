@@ -9,11 +9,20 @@ spec:
   image:
     application: confluentinc/cp-enterprise-replicator:7.2.0
     init: confluentinc/confluent-init-container:2.4.0
+  authorization:
+    type: rbac
   podTemplate:
     resources:
       requests:
         cpu: 2
         memory: 4Gi
+    envVars:
+      # The  Confluent Replicator Monitoring Extension allows for detailed metrics from Replicator tasks to be
+      # collected using an exposed REST API.
+      # You'll need to update the version string in replicate-test-extension-<version>.jar based on what
+      # CP version you are using
+      - name: CLASSPATH
+        value: /usr/share/java/kafka-connect-replicator/replicator-rest-extension-7.2.0.jar
   configOverrides:
     # When the Connect distributed cluster hosting Replicator has a REST endpoint with SSL encryption
     # enabled, you must configure security properties for the SSL keystore and truststore used by the
@@ -23,14 +32,27 @@ spec:
       - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.jks
       - -Djavax.net.ssl.trustStorePassword=mystorepassword
     server:
-      - rest.extension.classes=io.confluent.connect.replicator.monitoring.ReplicatorMonitoringExtension
       - connector.class=io.confluent.connect.replicator.ReplicatorSourceConnector
+      - offset.storage.replication.factor=1
+      - confluent.topic.replication.factor=1
+      - config.storage.replication.factor=1
+      - status.storage.replication.factor=1
   dependencies:
     kafka:
       bootstrapEndpoint: kafka:9071
       authentication:
         type: plain
         jaasConfig:
+          secretRef: credential
+      tls:
+        enabled: true
+    mds:
+      endpoint: https://kafka:8090
+      tokenKeyPair:
+        secretRef: credential
+      authentication:
+        type: bearer
+        bearer:
           secretRef: credential
       tls:
         enabled: true

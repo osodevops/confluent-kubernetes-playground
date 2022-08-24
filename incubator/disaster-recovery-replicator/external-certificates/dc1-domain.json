@@ -1,0 +1,19 @@
+{
+  "CN": "test.dc1.com",
+  "hosts": [
+    "*.dc1.com",
+    "*.zookeeper.dc1.com",
+    "*.kafka.dc1.com"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "Universe",
+      "ST": "Pangea",
+      "L": "Earth"
+    }
+  ]
+}

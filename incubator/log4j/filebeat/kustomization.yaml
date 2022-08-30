@@ -1,0 +1,8 @@
+namespace: sandbox
+resources:
+  - clusterrole.yaml
+  - clusterrolebinding.yaml
+  - configmap.yaml
+  - daemonset.yaml
+  - serviceaccount.yaml
+

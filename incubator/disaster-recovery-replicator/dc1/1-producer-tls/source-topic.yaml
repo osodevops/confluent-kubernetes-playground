@@ -3,8 +3,8 @@ kind: KafkaTopic
 metadata:
   name: replicator-dummy-topic
 spec:
-  replicas: 3
-  partitionCount: 4
+  replicas: 1
+  partitionCount: 1
   kafkaRest:
     authentication:
       type: bearer

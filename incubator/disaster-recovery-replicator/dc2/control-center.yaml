@@ -10,15 +10,15 @@ spec:
       - confluent.controlcenter.command.topic.replication=1
       - confluent.monitoring.interceptor.topic.replication=1
       - confluent.metrics.topic.replication=1
-  monitoringKafkaClusters:
-    - name: dc1
-      bootstrapEndpoint: kafka.dc1.svc.cluster.local:9071
-      authentication:
-        type: oauthbearer
-        oauthbearer:
-          secretRef: credential
-      tls:
-        enabled: true
+#  monitoringKafkaClusters:
+#    - name: dc1
+#      bootstrapEndpoint: kafka.dc1.svc.cluster.local:9092
+#      authentication:
+#        type: plain
+#        jaasConfig:
+#          secretRef: credential
+#      tls:
+#        enabled: true
   dependencies:
     connect:
       - name: replicator

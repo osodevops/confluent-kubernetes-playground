@@ -1,0 +1,1186 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dc1
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dc2
+---
+apiVersion: v1
+data:
+  0_groups.ldif: |-
+    dn: ou=groups,dc=test,dc=com
+    objectClass: organizationalUnit
+    objectClass: top
+    ou: groups
+  0_users.ldif: |-
+    dn: ou=users,dc=test,dc=com
+    objectClass: organizationalUnit
+    objectClass: top
+    ou: users
+  1_alice.ldif: |-
+    dn: cn=alice,ou=users,dc=test,dc=com
+    userPassword: alice-secret
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    description: Alice is great at changing perspectives, but sometimes chases down rabbit holes
+    cn: alice
+  1_c3-test.ldif: |-
+    dn: cn=testadmin,ou=users,dc=test,dc=com
+    userPassword: testadmin
+    description: testadmin user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: testadmin
+  1_c3.ldif: |-
+    dn: cn=c3,ou=users,dc=test,dc=com
+    userPassword: c3-secret
+    description: control center user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: c3
+  1_connect.ldif: |-
+    dn: cn=connect,ou=users,dc=test,dc=com
+    userPassword: connect-secret
+    description: connect user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: connect
+  1_developers.ldif: |-
+    dn: cn=developers,ou=groups,dc=test,dc=com
+    objectClass: top
+    objectClass: groupOfNames
+    description: A group of software developers and the apps they are responsible for
+    cn: developers
+    member: cn=alice,ou=users,dc=test,dc=com
+  1_emmy.ldif: |-
+    dn: cn=emmy,ou=users,dc=test,dc=com
+    userPassword: emmy-secret
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    description: Interested in action and conservation. If you like it, you should put a Noetherian Ring on it.
+    cn: emmy
+  1_erp.ldif: |-
+    dn: cn=erp,ou=users,dc=test,dc=com
+    userPassword: erp-secret
+    description: erp user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: erp
+  1_kafka.ldif: |-
+    dn: cn=kafka,ou=users,dc=test,dc=com
+    userPassword: kafka-secret
+    description: kafka user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: kafka
+  1_ksql.ldif: |-
+    dn: cn=ksql,ou=users,dc=test,dc=com
+    userPassword: ksql-secret
+    description: ksql user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: ksql
+  1_replicator.ldif: |-
+    dn: cn=replicator,ou=users,dc=test,dc=com
+    userPassword: replicator-secret
+    description: replicator user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: replicator
+  1_sr.ldif: |-
+    dn: cn=sr,ou=users,dc=test,dc=com
+    userPassword: sr-secret
+    description: schema registry user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: sr
+kind: ConfigMap
+metadata:
+  name: ldap-ldifs
+  namespace: dc1
+---
+apiVersion: v1
+data:
+  0_groups.ldif: |-
+    dn: ou=groups,dc=test,dc=com
+    objectClass: organizationalUnit
+    objectClass: top
+    ou: groups
+  0_users.ldif: |-
+    dn: ou=users,dc=test,dc=com
+    objectClass: organizationalUnit
+    objectClass: top
+    ou: users
+  1_alice.ldif: |-
+    dn: cn=alice,ou=users,dc=test,dc=com
+    userPassword: alice-secret
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    description: Alice is great at changing perspectives, but sometimes chases down rabbit holes
+    cn: alice
+  1_c3-test.ldif: |-
+    dn: cn=testadmin,ou=users,dc=test,dc=com
+    userPassword: testadmin
+    description: testadmin user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: testadmin
+  1_c3.ldif: |-
+    dn: cn=c3,ou=users,dc=test,dc=com
+    userPassword: c3-secret
+    description: control center user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: c3
+  1_connect.ldif: |-
+    dn: cn=connect,ou=users,dc=test,dc=com
+    userPassword: connect-secret
+    description: connect user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: connect
+  1_developers.ldif: |-
+    dn: cn=developers,ou=groups,dc=test,dc=com
+    objectClass: top
+    objectClass: groupOfNames
+    description: A group of software developers and the apps they are responsible for
+    cn: developers
+    member: cn=alice,ou=users,dc=test,dc=com
+  1_emmy.ldif: |-
+    dn: cn=emmy,ou=users,dc=test,dc=com
+    userPassword: emmy-secret
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    description: Interested in action and conservation. If you like it, you should put a Noetherian Ring on it.
+    cn: emmy
+  1_erp.ldif: |-
+    dn: cn=erp,ou=users,dc=test,dc=com
+    userPassword: erp-secret
+    description: erp user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: erp
+  1_kafka.ldif: |-
+    dn: cn=kafka,ou=users,dc=test,dc=com
+    userPassword: kafka-secret
+    description: kafka user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: kafka
+  1_ksql.ldif: |-
+    dn: cn=ksql,ou=users,dc=test,dc=com
+    userPassword: ksql-secret
+    description: ksql user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: ksql
+  1_replicator.ldif: |-
+    dn: cn=replicator,ou=users,dc=test,dc=com
+    userPassword: replicator-secret
+    description: replicator user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: replicator
+  1_sr.ldif: |-
+    dn: cn=sr,ou=users,dc=test,dc=com
+    userPassword: sr-secret
+    description: schema registry user
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    cn: sr
+kind: ConfigMap
+metadata:
+  name: ldap-ldifs
+  namespace: dc2
+---
+apiVersion: v1
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURtRENDQW9DZ0F3SUJBZ0lVSEZEYWdiZ0Y4bTg0NzhoUEJpTktGOGI5MHVzd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1pERVJNQThHQTFVRUJoTUlWVzVwZG1WeWMyVXhEekFOQmdOVkJBZ1RCbEJoYm1kbFlURU9NQXdHQTFVRQpCeE1GUldGeWRHZ3hEVEFMQmdOVkJBb1RCRUZqYldVeERqQU1CZ05WQkFzVEJVMTVUM0puTVE4d0RRWURWUVFECkV3WlVaWE4wUTBFd0hoY05NakV3T0RFMk1USXhPREF3V2hjTk1qWXdPREUxTVRJeE9EQXdXakJrTVJFd0R3WUQKVlFRR0V3aFZibWwyWlhKelpURVBNQTBHQTFVRUNCTUdVR0Z1WjJWaE1RNHdEQVlEVlFRSEV3VkZZWEowYURFTgpNQXNHQTFVRUNoTUVRV050WlRFT01Bd0dBMVVFQ3hNRlRYbFBjbWN4RHpBTkJnTlZCQU1UQmxSbGMzUkRRVENDCkFTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBSzZ6NzJNbithSElYZ1RkODVqdi8rMm4KT0daQU9ITWhOQ2J2V1Y1cWVlTlgwaXZIZVhtRkF4TmFSc2ZKbGhOUllpTVRLRTRoUjZreTdEUWxFbVZLQ1g0cwpnaExYZ28wU3pUV3BhNkltcmFIbnplQWhob1gyaWxFdjRvUVVxMVFDdHhRd0NhVmxLYXhCM1pLNExzVVFuZlRqClBFL3JtQURwd2UxSjlteWxLeDJuNEl1V2NNRjE5dlBFdjc4dTdXU0FDNUQzdXVjTUwwRzByZys3K0srTXRQV1EKSk9UcWp2MHR6RGt4UXg0NmVlL042eFI0czdKbVRHc29SeC9KRDVOVUozNTJYYTFrNHhSUVltRnJ0U0V4UTBPUgpWSVNhYnQ2ZzA5L1NqQ0JrQTRWb0NoazBXL0o0K0k1VGR0clh0ZUpaTVBrWlhKMkxvS3hXM0NCVW0vRG9xUXNDCkF3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0VHTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3SFFZRFZSME8KQkJZRUZOSFRzcEFlcURDVFUwMDB5SGU0ZzlEMURrcXNNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUF3VFErOApzTExxbURpV2RSeTZrOThyWWpPR3RXVW10ZWVSNDhNRWxQR3RSZ3BLWFhjcTBaSnd5ZHd3VTVZKzhuL3lyYW5UCmQzUWxEOWR5MDlZNHhYbDFkR2FhbWw0ZXE4cFZWQm04WE9kVkNaWnR3WjNHQ0I1NFdrQ2RHdnFIS3hnclVzb1IKMC9UYU15TVNXbmZMdk9XNHhLOXpQanAxYUc1eDdGeFJybW5OVjRUTHE5UFpOa3krK3Y2Y2dyNTF4OXdPOVNHaQpGTHBJOE9yTkdVeWxuZGhVMGFYSzRnZUFwZXh2cEJDNjdqY1Y4Nmo4emxKNkJaMnRRQXA0ZDFBeGVVQjROdmVsCmg3TFRCS0toemRER2lWUTFWYStoR1pGaE1GeXUxTzUrbVhzaUFwOTc1UEZ2S1pLMWJaeC90WjdMZjRSdXZpUjgKRHBQRUpMT2c1TXpQb2FFLwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBcnJQdll5ZjVvY2hlQk4zem1PLy83YWM0WmtBNGN5RTBKdTlaWG1wNTQxZlNLOGQ1CmVZVURFMXBHeDhtV0UxRmlJeE1vVGlGSHFUTHNOQ1VTWlVvSmZpeUNFdGVDalJMTk5hbHJvaWF0b2VmTjRDR0cKaGZhS1VTL2loQlNyVkFLM0ZEQUpwV1VwckVIZGtyZ3V4UkNkOU9NOFQrdVlBT25CN1VuMmJLVXJIYWZnaTVadwp3WFgyODhTL3Z5N3RaSUFMa1BlNjV3d3ZRYlN1RDd2NHI0eTA5WkFrNU9xTy9TM01PVEZESGpwNTc4M3JGSGl6CnNtWk1heWhISDhrUGsxUW5mblpkcldUakZGQmlZV3UxSVRGRFE1RlVoSnB1M3FEVDM5S01JR1FEaFdnS0dUUmIKOG5qNGpsTjIydGUxNGxrdytSbGNuWXVnckZiY0lGU2I4T2lwQ3dJREFRQUJBb0lCQUg1T2pTYXRRaWdiaXc0Tgp3ZzZ5aGVBMlkrcFpSL2JFN01XeGluVmVtZDBxSTBPUHBsMmJNd3dNMnR1YS9TdmVUUXQ2MEVzY2VJajF6aHd0CktVMmQ1NXNYWnJ0a29IaUtQVjhzckNyQnVBczBZbjVHL3RGZjI4U3kwQndhTFh4QnNrZWdLM2t1MktBM3hwQkwKSlZWSW5FcnU5eTM0OFI3SDRuTkNaQzFNaFEyY25SeFluc0Y0c2JxYWtvVHhMa08waTh3OXIwSXIwKzZIK0tJLwpjeUFWaWJuUi80L2VxODh0UDRhT0RrazZ0cUsweTk2S2ZqTEdpbGdsWW9CemUyK1AvNHhrSHlJYXZHd3ZCdllNCkgrc042OGhNbnhXbzg0cVp1RENROWJkOTA3MFV2d1NOc2ZNNkRBL3NBYWVTb0VSeHE4Z0xpSlhXZVZXQ3JNKzEKMFdrQTZJRUNnWUVBNXR4dStTZk0ra2NtM1hoMitKUWlIeERVNC9oankvYlBpV2k2d3ZjR2tFVksvRGQxZHlWQwprYUVjT05oblBFNytCZ21YbWVQdno3dG9nTmtrK2FncGY4L1JQVmFvNUQxemZSNkZESGU5QnBWWjRxUDdzYzk4CjFHRC9vVzFDaWVvUmVyQVlMM1BVWktIZ0g1a0ltR21ZR3owSUVxa0ZzeHl5bG4vVkc1T2ZoT0VDZ1lFQXdib0QKOUJKWGwxK3dUVHdPRE9KclFzZlFUc0lxR1pzZUtMYlM3cGwvT29mUWxCd0ZYN0VrV0RFejE4ZjV1MUEvUnhaSApCeUNTY2tiZW5GbXhFR0Zpa2Foc05EaGhzRWw3blpveDlDcWJFWXJwY08rUWRTTmlSSDBralpLdTladnd6VERxCmhMclV4b2Irbm5WdFFqenZCNmYrZThCc052UkJIY1hxUkhQZy8yc0NnWUFmaHY4SXU2eThpVGIvaTlJRGhJZGMKWXJvUUgvM1Evdlc4dURhNUpXOGFDTHlDMFRnVGUxMHA4aXllZnI4cWQwY3RuK1c2T0d5cG05aGJzRXZpWkZxMgpmN1Q5Z1hZekpVaytUd3F3ZHpHelVuWWlBMjcrQzIzcXV3eHVDVFBMRGRJeFJSY29jOU1Qb3lPdWJRSEZmcll0CkVocW1JYnNMaU9IQ3Q5WnNtNjV2UVFLQmdEa0tyWmxUUVVsSUdxQlRPNHZkcTFtSmZqT0NobVR0d0s2YVRuZUUKNk9weURSOWZOTkhkVmVkRjdZN3V5Z0MyZXp0U091M0ZVSG1ubG1xUkdrckpjZjJUaXZEQlhUcE1HTUxxSVNWVQoyajRMR2Z0di9xZ1BHQ00wZWV2WnNmeU53eFNYLzZXL1lXRm5aRmVDR2Y2ejlHbmJ0Rm41NmFNd3ZtK20wL2o5CjZkVXJBb0dCQUt2a0UrcnQ4MldRbjQydTNaei9aa3RMNHhLM3FKU3lDR0kycnpPQUtDTm92M1FPWlpiVVdqTDAKaTBYeVA5dFRDMnJYRDhZelVUblYzbUM5YjlGUkI5UFZ4OHY0OTllQjJaYTNiY29CRERpVU9VT0NsTlc5VElqWgpFNnFCSm5aY21QTllqZXl3UFE3aFFhbU1NUnA1MWlOeUVZYTVGOXFuU3hhcUN1cjRsaUN6Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+kind: Secret
+metadata:
+  name: ca-pair-sslcerts
+  namespace: dc1
+type: kubernetes.io/tls
+---
+apiVersion: v1
+data:
+  basic.txt: dXNlcm5hbWU9a2Fma2EKcGFzc3dvcmQ9a2Fma2Etc2VjcmV0Cg==
+  bearer.txt: dXNlcm5hbWU9a2Fma2EKcGFzc3dvcmQ9a2Fma2Etc2VjcmV0Cg==
+  digest-users.json: ewogICJrYWZrYSI6ICJrYWZrYS1zZWNyZXQiCn0K
+  digest.txt: dXNlcm5hbWU9ImthZmthIgpwYXNzd29yZD0ia2Fma2Etc2VjcmV0Ig==
+  ldap.txt: dXNlcm5hbWU9Y249bWRzLGRjPXRlc3QsZGM9Y29tCnBhc3N3b3JkPURldmVsb3BlciEK
+  mdsPublicKey.pem: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF3TXlqblA0cWZkVEtoQ1M1c1BiVgpxaVhWeVExNXdyZVZBc0VxRXNuTUZ0Mkp0TUwxM0VMT1Eyc3pXbjU3V3p1NzgyYnlFdFlGbEYzVG9WVzNjbDRkCk9KUnphU0VRNnhlMTBSL2k3VG5lSXRFUWZwSnIvMkw0YnVidVFSR05lL0tyTE1FMGl2cjl1NElFYmJSUytsdHUKNkE5Z2d6R2NhRFN4Vi9leUtNTlBhZEhRL0FONEJaaWpBZUtaY0RUano2YkhqSjZFUTNZTmdxeW44NDZyZVFrOQpUb0habDhiR0hPaHo1Qzd5b0lmc3haZ1lIbG54NkpHc2lVWjVQMzZXR2MzOFpJQi9tNDVvOGN2NGlmVVZQVUIwCklRUTlBaFlJNVp1TXJ4RHNSUERYMkdHNkU1YlcydnFEV3lxWE9ZN2NTb0k3QWlrRmR3QVRXNFJ2N2V1RUpVeXoKTndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t
+  mdsTokenKeyPair.pem: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBd015am5QNHFmZFRLaENTNXNQYlZxaVhWeVExNXdyZVZBc0VxRXNuTUZ0Mkp0TUwxCjNFTE9RMnN6V241N1d6dTc4MmJ5RXRZRmxGM1RvVlczY2w0ZE9KUnphU0VRNnhlMTBSL2k3VG5lSXRFUWZwSnIKLzJMNGJ1YnVRUkdOZS9LckxNRTBpdnI5dTRJRWJiUlMrbHR1NkE5Z2d6R2NhRFN4Vi9leUtNTlBhZEhRL0FONApCWmlqQWVLWmNEVGp6NmJIako2RVEzWU5ncXluODQ2cmVRazlUb0habDhiR0hPaHo1Qzd5b0lmc3haZ1lIbG54CjZKR3NpVVo1UDM2V0djMzhaSUIvbTQ1bzhjdjRpZlVWUFVCMElRUTlBaFlJNVp1TXJ4RHNSUERYMkdHNkU1YlcKMnZxRFd5cVhPWTdjU29JN0Fpa0Zkd0FUVzRSdjdldUVKVXl6TndJREFRQUJBb0lCQVFDS3pJaFpoSTE0cTFIawprai93eTdNRTNGb3RkUHNjbUdlNVpQRHlONzhyRXZDSlp2WHpUVkVMTGtqNU5DZUFoZCtJbXF0WnJpUzBMRndvClFQcGhacW5veXM3UGQ1T2pmQjFUNFgzUVJTSEx0UEVIL2tlcncwZVJKOFdNcUtOUUFXTUVSRStjWXBkNmYxN0sKejlBUkZ2UWdNcm5MbVZLOW5ubXlGOHQyRnkyN3dxVVZCbVlYWC9tK25lLysyUzRQTzhac1BkM3dZMlk5UjhMVgp1ZmJIQytIMkV4QThuRTR6dGVmZzl6UHluMXdNaS9HTVVnMVdpQ1QzQjJ1M0Nac1dhWkp6Vkl0VDZ0N3FuQVpKClh6a2dOcElIbjltV3V3aDhreGdNZDZzeERSQU9ENWlQZDZhOWkwb0xTYVMzLzBMRGV6VUxDMFZoVFB5M0cyb1IKQTBBSmVPblJBb0dCQVBWMXV6MXBQSkF0ZW1yOHdMaUtoUU9lOGpBc3h0blN6VjhGcWQxMXFKWWduaWh3YWkrWQprNDRoT0ovMDIvNnd5cTQ5RmhNR21reUZXdjVkVURFUkdWN01jWFA2YkVmWTVjMVArUGRSVUFtNUg1bmVmMzd6Ck5SOWY3b2lmVjNqKzQ5dXkyVmZVUUNyL2grVCt5d3pBb2MwaVp5WUdhSTF3aktYUXIzKzFvNTV2QW9HQkFNa1UKQnEySWFJRHdvbUJnUUNLUWpDeS9BTmpRMzJ5TUFHSGYvbUUzMlJURnB1NVNaRUxlOXlyR1FyM3hIRnRROWFRTApWdjVQMDl3WmZiNElPZHAvM3d3SE1xRmpOak5kRzhzdzdSeU5TK3dmUUd1OHYxR2ZZc3N1QnVYaTl2MFhHWEZICldlbk5RRVVQYmliUmJvY0o5Mk9KVEpLNFAvczV2djEzMkhEUi9wdTVBb0dCQUorWThTbTQ1endIbGZWQ2FqeVQKTkhGcVE2YTNOb1FpNEkzTUxPcGx1andDOFZMeDVOa1ZwN3RlTm1jcTJtLzdtNDAzQXNkVUg3ZHBiZ1M5djRwbgp4OHN2dXdUaDZzMjhaWTdkVk0vWit1U1hqY2lLTnZQZ1JzWWpwZ0VIT2VUZU5tRi9KSHBLODM0QnIrWmhGTDB4Cjh3SmlRQmNsUzQzTGhHZThES0JKQmgzWkFvR0FONWJIdWRYS1BrdElPS2lqVW1ydnRiY2dQdENQMCt4b2RxWjgKSnRoUHRVUm5QOStiUkRscnozRjhKaEt3S2phWmtqNW9VR28xUWRYeVEwVDI2WWNNWE1Eb3FHRkxMS3dDOFF1WApvWnNXY0RLN2xvMVp2dkQzV1FCaWU4OWhSTnJMOTlzbjZsRUtBWTJnZ0M3S0JaOGx1MmpMdUl3amRBcWsyR0gzCmZra3Z3RkVDZ1lBeVhqNXo2Q09QSURKMUUxVkxySml3MVlCWGFhN1pMazVFcHczUXZDTTdoVEtTRmJ1U053c3AKRXVMbU03Zzh3TVBaQWJ6cy9SUU9hZjlJaEUveDUzZE8ySW1rNVBBUmFvRXNTRmpORDRkcFZIYUtlbTJjQm9tdAp4NXEwU3FVVnE2eHY0MjIxM2dsQlFNREo0cVFYVHJzRUJkcE55bnY3b1ZlWFh3Y2FPVFVhQnc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQ==
+  plain-jaas.conf: c2FzbC5qYWFzLmNvbmZpZz1vcmcuYXBhY2hlLmthZmthLmNvbW1vbi5zZWN1cml0eS5wbGFpbi5QbGFpbkxvZ2luTW9kdWxlIHJlcXVpcmVkIHVzZXJuYW1lPSJrYWZrYSIgcGFzc3dvcmQ9ImthZmthLXNlY3JldCI7
+  plain.txt: dXNlcm5hbWU9ImthZmthIgpwYXNzd29yZD0ia2Fma2Etc2VjcmV0Ig==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: credential
+  namespace: dc1
+---
+apiVersion: v1
+data:
+  kafka.properties: Ym9vdHN0cmFwLnNlcnZlcnM9a2Fma2E6OTA3MQpzYXNsLmphYXMuY29uZmlnPW9yZy5hcGFjaGUua2Fma2EuY29tbW9uLnNlY3VyaXR5LnBsYWluLlBsYWluTG9naW5Nb2R1bGUgcmVxdWlyZWQgdXNlcm5hbWU9a2Fma2EgcGFzc3dvcmQ9a2Fma2Etc2VjcmV0OwpzYXNsLm1lY2hhbmlzbT1QTEFJTgpzZWN1cml0eS5wcm90b2NvbD1TQVNMX1NTTApzc2wudHJ1c3RzdG9yZS5sb2NhdGlvbj0vbW50L3NzbGNlcnRzL3RydXN0c3RvcmUuamtzCnNzbC50cnVzdHN0b3JlLnBhc3N3b3JkPW15c3RvcmVwYXNzd29yZA==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: kafka-client-config
+  namespace: dc1
+---
+apiVersion: v1
+data:
+  mdsPublicKey.pem: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF3TXlqblA0cWZkVEtoQ1M1c1BiVgpxaVhWeVExNXdyZVZBc0VxRXNuTUZ0Mkp0TUwxM0VMT1Eyc3pXbjU3V3p1NzgyYnlFdFlGbEYzVG9WVzNjbDRkCk9KUnphU0VRNnhlMTBSL2k3VG5lSXRFUWZwSnIvMkw0YnVidVFSR05lL0tyTE1FMGl2cjl1NElFYmJSUytsdHUKNkE5Z2d6R2NhRFN4Vi9leUtNTlBhZEhRL0FONEJaaWpBZUtaY0RUano2YkhqSjZFUTNZTmdxeW44NDZyZVFrOQpUb0habDhiR0hPaHo1Qzd5b0lmc3haZ1lIbG54NkpHc2lVWjVQMzZXR2MzOFpJQi9tNDVvOGN2NGlmVVZQVUIwCklRUTlBaFlJNVp1TXJ4RHNSUERYMkdHNkU1YlcydnFEV3lxWE9ZN2NTb0k3QWlrRmR3QVRXNFJ2N2V1RUpVeXoKTndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: mds-public
+  namespace: dc1
+---
+apiVersion: v1
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURtRENDQW9DZ0F3SUJBZ0lVSEZEYWdiZ0Y4bTg0NzhoUEJpTktGOGI5MHVzd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1pERVJNQThHQTFVRUJoTUlWVzVwZG1WeWMyVXhEekFOQmdOVkJBZ1RCbEJoYm1kbFlURU9NQXdHQTFVRQpCeE1GUldGeWRHZ3hEVEFMQmdOVkJBb1RCRUZqYldVeERqQU1CZ05WQkFzVEJVMTVUM0puTVE4d0RRWURWUVFECkV3WlVaWE4wUTBFd0hoY05NakV3T0RFMk1USXhPREF3V2hjTk1qWXdPREUxTVRJeE9EQXdXakJrTVJFd0R3WUQKVlFRR0V3aFZibWwyWlhKelpURVBNQTBHQTFVRUNCTUdVR0Z1WjJWaE1RNHdEQVlEVlFRSEV3VkZZWEowYURFTgpNQXNHQTFVRUNoTUVRV050WlRFT01Bd0dBMVVFQ3hNRlRYbFBjbWN4RHpBTkJnTlZCQU1UQmxSbGMzUkRRVENDCkFTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBSzZ6NzJNbithSElYZ1RkODVqdi8rMm4KT0daQU9ITWhOQ2J2V1Y1cWVlTlgwaXZIZVhtRkF4TmFSc2ZKbGhOUllpTVRLRTRoUjZreTdEUWxFbVZLQ1g0cwpnaExYZ28wU3pUV3BhNkltcmFIbnplQWhob1gyaWxFdjRvUVVxMVFDdHhRd0NhVmxLYXhCM1pLNExzVVFuZlRqClBFL3JtQURwd2UxSjlteWxLeDJuNEl1V2NNRjE5dlBFdjc4dTdXU0FDNUQzdXVjTUwwRzByZys3K0srTXRQV1EKSk9UcWp2MHR6RGt4UXg0NmVlL042eFI0czdKbVRHc29SeC9KRDVOVUozNTJYYTFrNHhSUVltRnJ0U0V4UTBPUgpWSVNhYnQ2ZzA5L1NqQ0JrQTRWb0NoazBXL0o0K0k1VGR0clh0ZUpaTVBrWlhKMkxvS3hXM0NCVW0vRG9xUXNDCkF3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0VHTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3SFFZRFZSME8KQkJZRUZOSFRzcEFlcURDVFUwMDB5SGU0ZzlEMURrcXNNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUF3VFErOApzTExxbURpV2RSeTZrOThyWWpPR3RXVW10ZWVSNDhNRWxQR3RSZ3BLWFhjcTBaSnd5ZHd3VTVZKzhuL3lyYW5UCmQzUWxEOWR5MDlZNHhYbDFkR2FhbWw0ZXE4cFZWQm04WE9kVkNaWnR3WjNHQ0I1NFdrQ2RHdnFIS3hnclVzb1IKMC9UYU15TVNXbmZMdk9XNHhLOXpQanAxYUc1eDdGeFJybW5OVjRUTHE5UFpOa3krK3Y2Y2dyNTF4OXdPOVNHaQpGTHBJOE9yTkdVeWxuZGhVMGFYSzRnZUFwZXh2cEJDNjdqY1Y4Nmo4emxKNkJaMnRRQXA0ZDFBeGVVQjROdmVsCmg3TFRCS0toemRER2lWUTFWYStoR1pGaE1GeXUxTzUrbVhzaUFwOTc1UEZ2S1pLMWJaeC90WjdMZjRSdXZpUjgKRHBQRUpMT2c1TXpQb2FFLwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBcnJQdll5ZjVvY2hlQk4zem1PLy83YWM0WmtBNGN5RTBKdTlaWG1wNTQxZlNLOGQ1CmVZVURFMXBHeDhtV0UxRmlJeE1vVGlGSHFUTHNOQ1VTWlVvSmZpeUNFdGVDalJMTk5hbHJvaWF0b2VmTjRDR0cKaGZhS1VTL2loQlNyVkFLM0ZEQUpwV1VwckVIZGtyZ3V4UkNkOU9NOFQrdVlBT25CN1VuMmJLVXJIYWZnaTVadwp3WFgyODhTL3Z5N3RaSUFMa1BlNjV3d3ZRYlN1RDd2NHI0eTA5WkFrNU9xTy9TM01PVEZESGpwNTc4M3JGSGl6CnNtWk1heWhISDhrUGsxUW5mblpkcldUakZGQmlZV3UxSVRGRFE1RlVoSnB1M3FEVDM5S01JR1FEaFdnS0dUUmIKOG5qNGpsTjIydGUxNGxrdytSbGNuWXVnckZiY0lGU2I4T2lwQ3dJREFRQUJBb0lCQUg1T2pTYXRRaWdiaXc0Tgp3ZzZ5aGVBMlkrcFpSL2JFN01XeGluVmVtZDBxSTBPUHBsMmJNd3dNMnR1YS9TdmVUUXQ2MEVzY2VJajF6aHd0CktVMmQ1NXNYWnJ0a29IaUtQVjhzckNyQnVBczBZbjVHL3RGZjI4U3kwQndhTFh4QnNrZWdLM2t1MktBM3hwQkwKSlZWSW5FcnU5eTM0OFI3SDRuTkNaQzFNaFEyY25SeFluc0Y0c2JxYWtvVHhMa08waTh3OXIwSXIwKzZIK0tJLwpjeUFWaWJuUi80L2VxODh0UDRhT0RrazZ0cUsweTk2S2ZqTEdpbGdsWW9CemUyK1AvNHhrSHlJYXZHd3ZCdllNCkgrc042OGhNbnhXbzg0cVp1RENROWJkOTA3MFV2d1NOc2ZNNkRBL3NBYWVTb0VSeHE4Z0xpSlhXZVZXQ3JNKzEKMFdrQTZJRUNnWUVBNXR4dStTZk0ra2NtM1hoMitKUWlIeERVNC9oankvYlBpV2k2d3ZjR2tFVksvRGQxZHlWQwprYUVjT05oblBFNytCZ21YbWVQdno3dG9nTmtrK2FncGY4L1JQVmFvNUQxemZSNkZESGU5QnBWWjRxUDdzYzk4CjFHRC9vVzFDaWVvUmVyQVlMM1BVWktIZ0g1a0ltR21ZR3owSUVxa0ZzeHl5bG4vVkc1T2ZoT0VDZ1lFQXdib0QKOUJKWGwxK3dUVHdPRE9KclFzZlFUc0lxR1pzZUtMYlM3cGwvT29mUWxCd0ZYN0VrV0RFejE4ZjV1MUEvUnhaSApCeUNTY2tiZW5GbXhFR0Zpa2Foc05EaGhzRWw3blpveDlDcWJFWXJwY08rUWRTTmlSSDBralpLdTladnd6VERxCmhMclV4b2Irbm5WdFFqenZCNmYrZThCc052UkJIY1hxUkhQZy8yc0NnWUFmaHY4SXU2eThpVGIvaTlJRGhJZGMKWXJvUUgvM1Evdlc4dURhNUpXOGFDTHlDMFRnVGUxMHA4aXllZnI4cWQwY3RuK1c2T0d5cG05aGJzRXZpWkZxMgpmN1Q5Z1hZekpVaytUd3F3ZHpHelVuWWlBMjcrQzIzcXV3eHVDVFBMRGRJeFJSY29jOU1Qb3lPdWJRSEZmcll0CkVocW1JYnNMaU9IQ3Q5WnNtNjV2UVFLQmdEa0tyWmxUUVVsSUdxQlRPNHZkcTFtSmZqT0NobVR0d0s2YVRuZUUKNk9weURSOWZOTkhkVmVkRjdZN3V5Z0MyZXp0U091M0ZVSG1ubG1xUkdrckpjZjJUaXZEQlhUcE1HTUxxSVNWVQoyajRMR2Z0di9xZ1BHQ00wZWV2WnNmeU53eFNYLzZXL1lXRm5aRmVDR2Y2ejlHbmJ0Rm41NmFNd3ZtK20wL2o5CjZkVXJBb0dCQUt2a0UrcnQ4MldRbjQydTNaei9aa3RMNHhLM3FKU3lDR0kycnpPQUtDTm92M1FPWlpiVVdqTDAKaTBYeVA5dFRDMnJYRDhZelVUblYzbUM5YjlGUkI5UFZ4OHY0OTllQjJaYTNiY29CRERpVU9VT0NsTlc5VElqWgpFNnFCSm5aY21QTllqZXl3UFE3aFFhbU1NUnA1MWlOeUVZYTVGOXFuU3hhcUN1cjRsaUN6Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+kind: Secret
+metadata:
+  name: ca-pair-sslcerts
+  namespace: dc2
+type: kubernetes.io/tls
+---
+apiVersion: v1
+data:
+  basic.txt: dXNlcm5hbWU9a2Fma2EKcGFzc3dvcmQ9a2Fma2Etc2VjcmV0Cg==
+  bearer.txt: dXNlcm5hbWU9a2Fma2EKcGFzc3dvcmQ9a2Fma2Etc2VjcmV0Cg==
+  digest-users.json: ewogICJrYWZrYSI6ICJrYWZrYS1zZWNyZXQiCn0K
+  digest.txt: dXNlcm5hbWU9ImthZmthIgpwYXNzd29yZD0ia2Fma2Etc2VjcmV0Ig==
+  ldap.txt: dXNlcm5hbWU9Y249bWRzLGRjPXRlc3QsZGM9Y29tCnBhc3N3b3JkPURldmVsb3BlciEK
+  mdsPublicKey.pem: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF3TXlqblA0cWZkVEtoQ1M1c1BiVgpxaVhWeVExNXdyZVZBc0VxRXNuTUZ0Mkp0TUwxM0VMT1Eyc3pXbjU3V3p1NzgyYnlFdFlGbEYzVG9WVzNjbDRkCk9KUnphU0VRNnhlMTBSL2k3VG5lSXRFUWZwSnIvMkw0YnVidVFSR05lL0tyTE1FMGl2cjl1NElFYmJSUytsdHUKNkE5Z2d6R2NhRFN4Vi9leUtNTlBhZEhRL0FONEJaaWpBZUtaY0RUano2YkhqSjZFUTNZTmdxeW44NDZyZVFrOQpUb0habDhiR0hPaHo1Qzd5b0lmc3haZ1lIbG54NkpHc2lVWjVQMzZXR2MzOFpJQi9tNDVvOGN2NGlmVVZQVUIwCklRUTlBaFlJNVp1TXJ4RHNSUERYMkdHNkU1YlcydnFEV3lxWE9ZN2NTb0k3QWlrRmR3QVRXNFJ2N2V1RUpVeXoKTndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t
+  mdsTokenKeyPair.pem: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBd015am5QNHFmZFRLaENTNXNQYlZxaVhWeVExNXdyZVZBc0VxRXNuTUZ0Mkp0TUwxCjNFTE9RMnN6V241N1d6dTc4MmJ5RXRZRmxGM1RvVlczY2w0ZE9KUnphU0VRNnhlMTBSL2k3VG5lSXRFUWZwSnIKLzJMNGJ1YnVRUkdOZS9LckxNRTBpdnI5dTRJRWJiUlMrbHR1NkE5Z2d6R2NhRFN4Vi9leUtNTlBhZEhRL0FONApCWmlqQWVLWmNEVGp6NmJIako2RVEzWU5ncXluODQ2cmVRazlUb0habDhiR0hPaHo1Qzd5b0lmc3haZ1lIbG54CjZKR3NpVVo1UDM2V0djMzhaSUIvbTQ1bzhjdjRpZlVWUFVCMElRUTlBaFlJNVp1TXJ4RHNSUERYMkdHNkU1YlcKMnZxRFd5cVhPWTdjU29JN0Fpa0Zkd0FUVzRSdjdldUVKVXl6TndJREFRQUJBb0lCQVFDS3pJaFpoSTE0cTFIawprai93eTdNRTNGb3RkUHNjbUdlNVpQRHlONzhyRXZDSlp2WHpUVkVMTGtqNU5DZUFoZCtJbXF0WnJpUzBMRndvClFQcGhacW5veXM3UGQ1T2pmQjFUNFgzUVJTSEx0UEVIL2tlcncwZVJKOFdNcUtOUUFXTUVSRStjWXBkNmYxN0sKejlBUkZ2UWdNcm5MbVZLOW5ubXlGOHQyRnkyN3dxVVZCbVlYWC9tK25lLysyUzRQTzhac1BkM3dZMlk5UjhMVgp1ZmJIQytIMkV4QThuRTR6dGVmZzl6UHluMXdNaS9HTVVnMVdpQ1QzQjJ1M0Nac1dhWkp6Vkl0VDZ0N3FuQVpKClh6a2dOcElIbjltV3V3aDhreGdNZDZzeERSQU9ENWlQZDZhOWkwb0xTYVMzLzBMRGV6VUxDMFZoVFB5M0cyb1IKQTBBSmVPblJBb0dCQVBWMXV6MXBQSkF0ZW1yOHdMaUtoUU9lOGpBc3h0blN6VjhGcWQxMXFKWWduaWh3YWkrWQprNDRoT0ovMDIvNnd5cTQ5RmhNR21reUZXdjVkVURFUkdWN01jWFA2YkVmWTVjMVArUGRSVUFtNUg1bmVmMzd6Ck5SOWY3b2lmVjNqKzQ5dXkyVmZVUUNyL2grVCt5d3pBb2MwaVp5WUdhSTF3aktYUXIzKzFvNTV2QW9HQkFNa1UKQnEySWFJRHdvbUJnUUNLUWpDeS9BTmpRMzJ5TUFHSGYvbUUzMlJURnB1NVNaRUxlOXlyR1FyM3hIRnRROWFRTApWdjVQMDl3WmZiNElPZHAvM3d3SE1xRmpOak5kRzhzdzdSeU5TK3dmUUd1OHYxR2ZZc3N1QnVYaTl2MFhHWEZICldlbk5RRVVQYmliUmJvY0o5Mk9KVEpLNFAvczV2djEzMkhEUi9wdTVBb0dCQUorWThTbTQ1endIbGZWQ2FqeVQKTkhGcVE2YTNOb1FpNEkzTUxPcGx1andDOFZMeDVOa1ZwN3RlTm1jcTJtLzdtNDAzQXNkVUg3ZHBiZ1M5djRwbgp4OHN2dXdUaDZzMjhaWTdkVk0vWit1U1hqY2lLTnZQZ1JzWWpwZ0VIT2VUZU5tRi9KSHBLODM0QnIrWmhGTDB4Cjh3SmlRQmNsUzQzTGhHZThES0JKQmgzWkFvR0FONWJIdWRYS1BrdElPS2lqVW1ydnRiY2dQdENQMCt4b2RxWjgKSnRoUHRVUm5QOStiUkRscnozRjhKaEt3S2phWmtqNW9VR28xUWRYeVEwVDI2WWNNWE1Eb3FHRkxMS3dDOFF1WApvWnNXY0RLN2xvMVp2dkQzV1FCaWU4OWhSTnJMOTlzbjZsRUtBWTJnZ0M3S0JaOGx1MmpMdUl3amRBcWsyR0gzCmZra3Z3RkVDZ1lBeVhqNXo2Q09QSURKMUUxVkxySml3MVlCWGFhN1pMazVFcHczUXZDTTdoVEtTRmJ1U053c3AKRXVMbU03Zzh3TVBaQWJ6cy9SUU9hZjlJaEUveDUzZE8ySW1rNVBBUmFvRXNTRmpORDRkcFZIYUtlbTJjQm9tdAp4NXEwU3FVVnE2eHY0MjIxM2dsQlFNREo0cVFYVHJzRUJkcE55bnY3b1ZlWFh3Y2FPVFVhQnc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQ==
+  plain-jaas.conf: c2FzbC5qYWFzLmNvbmZpZz1vcmcuYXBhY2hlLmthZmthLmNvbW1vbi5zZWN1cml0eS5wbGFpbi5QbGFpbkxvZ2luTW9kdWxlIHJlcXVpcmVkIHVzZXJuYW1lPSJrYWZrYSIgcGFzc3dvcmQ9ImthZmthLXNlY3JldCI7
+  plain.txt: dXNlcm5hbWU9ImthZmthIgpwYXNzd29yZD0ia2Fma2Etc2VjcmV0Ig==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: credential
+  namespace: dc2
+---
+apiVersion: v1
+data:
+  mdsPublicKey.pem: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF3TXlqblA0cWZkVEtoQ1M1c1BiVgpxaVhWeVExNXdyZVZBc0VxRXNuTUZ0Mkp0TUwxM0VMT1Eyc3pXbjU3V3p1NzgyYnlFdFlGbEYzVG9WVzNjbDRkCk9KUnphU0VRNnhlMTBSL2k3VG5lSXRFUWZwSnIvMkw0YnVidVFSR05lL0tyTE1FMGl2cjl1NElFYmJSUytsdHUKNkE5Z2d6R2NhRFN4Vi9leUtNTlBhZEhRL0FONEJaaWpBZUtaY0RUano2YkhqSjZFUTNZTmdxeW44NDZyZVFrOQpUb0habDhiR0hPaHo1Qzd5b0lmc3haZ1lIbG54NkpHc2lVWjVQMzZXR2MzOFpJQi9tNDVvOGN2NGlmVVZQVUIwCklRUTlBaFlJNVp1TXJ4RHNSUERYMkdHNkU1YlcydnFEV3lxWE9ZN2NTb0k3QWlrRmR3QVRXNFJ2N2V1RUpVeXoKTndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: mds-public
+  namespace: dc2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: console-producer
+  namespace: dc1
+spec:
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ldap
+  name: ldap
+  namespace: dc1
+spec:
+  clusterIP: None
+  ports:
+  - name: ldap
+    port: 389
+  - name: ldaps
+    port: 636
+  selector:
+    app: ldap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ldap
+  name: ldap
+  namespace: dc2
+spec:
+  clusterIP: None
+  ports:
+  - name: ldap
+    port: 389
+  - name: ldaps
+    port: 636
+  selector:
+    app: ldap
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: console-producer
+  namespace: dc1
+spec:
+  podManagementPolicy: Parallel
+  replicas: 1
+  selector:
+    matchLabels:
+      app: console-producer
+  serviceName: console-producer
+  template:
+    metadata:
+      labels:
+        app: console-producer
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - -c
+        - |
+          kafka-producer-perf-test \
+            --topic replicator-dummy-topic  \
+            --record-size 1024 \
+            --throughput 1024 \
+            --producer.config /mnt/kafka.properties \
+            --num-records 10000000
+        image: confluentinc/cp-kafka:latest
+        name: console-producer
+        resources:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+        volumeMounts:
+        - mountPath: /mnt
+          name: kafka-properties
+        - mountPath: /mnt/sslcerts
+          name: kafka-ssl-autogenerated
+      volumes:
+      - name: kafka-properties
+        secret:
+          secretName: kafka-client-config
+      - name: kafka-ssl-autogenerated
+        secret:
+          secretName: kafka-generated-jks
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: registry-base
+  namespace: dc1
+spec:
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_registry_sandbox
+  principal:
+    name: kafka
+    type: user
+  role: SecurityAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: registry-mds-client-resources-base
+  namespace: dc1
+spec:
+  principal:
+    name: kafka
+    type: user
+  resourcePatterns:
+  - name: _confluent-license
+    patternType: LITERAL
+    resourceType: Topic
+  - name: _schemas_schemaregistry_confluent
+    patternType: LITERAL
+    resourceType: Topic
+  - name: id_schemaregistry_sandbox
+    patternType: LITERAL
+    resourceType: Group
+  role: ResourceOwner
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: testadmin-rb
+  namespace: dc1
+spec:
+  principal:
+    name: testadmin
+    type: user
+  role: ClusterAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: testadmin-rb-sr
+  namespace: dc1
+spec:
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_registry_sandbox
+  principal:
+    name: testadmin
+    type: user
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: connect-cluster-base
+  namespace: dc2
+spec:
+  clustersScopeByIds:
+    connectClusterId: dc2.replicator
+  principal:
+    name: kafka
+    type: user
+  role: ClusterAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: registry-base
+  namespace: dc2
+spec:
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_registry_sandbox
+  principal:
+    name: kafka
+    type: user
+  role: SecurityAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: registry-mds-client-resources-base
+  namespace: dc2
+spec:
+  principal:
+    name: kafka
+    type: user
+  resourcePatterns:
+  - name: _confluent-license
+    patternType: LITERAL
+    resourceType: Topic
+  - name: _schemas_schemaregistry_confluent
+    patternType: LITERAL
+    resourceType: Topic
+  - name: id_schemaregistry_sandbox
+    patternType: LITERAL
+    resourceType: Group
+  role: ResourceOwner
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: testadmin-rb
+  namespace: dc2
+spec:
+  principal:
+    name: testadmin
+    type: user
+  role: ClusterAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: testadmin-rb-sr
+  namespace: dc2
+spec:
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_registry_sandbox
+  principal:
+    name: testadmin
+    type: user
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connect
+metadata:
+  name: replicator
+  namespace: dc2
+spec:
+  authorization:
+    type: rbac
+  configOverrides:
+    jvm:
+    - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.jks
+    - -Djavax.net.ssl.trustStorePassword=mystorepassword
+    server:
+    - connector.class=io.confluent.connect.replicator.ReplicatorSourceConnector
+    - offset.storage.replication.factor=1
+    - confluent.topic.replication.factor=1
+    - config.storage.replication.factor=1
+    - status.storage.replication.factor=1
+  dependencies:
+    interceptor:
+      enabled: true
+    kafka:
+      authentication:
+        jaasConfig:
+          secretRef: credential
+        type: plain
+      bootstrapEndpoint: kafka:9071
+      tls:
+        enabled: true
+    mds:
+      authentication:
+        bearer:
+          secretRef: credential
+        type: bearer
+      endpoint: https://kafka:8090
+      tls:
+        enabled: true
+      tokenKeyPair:
+        secretRef: credential
+  image:
+    application: confluentinc/cp-enterprise-replicator:7.2.0
+    init: confluentinc/confluent-init-container:2.4.0
+  podTemplate:
+    envVars:
+    - name: CLASSPATH
+      value: /usr/share/java/kafka-connect-replicator/replicator-rest-extension-7.2.0.jar
+    resources:
+      requests:
+        cpu: 2
+        memory: 4Gi
+  replicas: 2
+  tls:
+    autoGeneratedCerts: true
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: replicator
+  namespace: dc2
+spec:
+  class: io.confluent.connect.replicator.ReplicatorSourceConnector
+  configs:
+    confluent.license: ""
+    confluent.topic.replication.factor: "1"
+    dest.kafka.bootstrap.servers: kafka.dc2.svc.cluster.local:9071
+    dest.kafka.sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule
+      required username="kafka" password="kafka-secret";
+    dest.kafka.sasl.mechanism: PLAIN
+    dest.kafka.security.protocol: SASL_SSL
+    dest.kafka.ssl.truststore.location: /mnt/sslcerts/truststore.jks
+    dest.kafka.truststore.password: mystorepassword
+    key.converter: io.confluent.connect.replicator.util.ByteArrayConverter
+    src.consumer.confluent.monitoring.interceptor.bootstrap.servers: kafka.dc1.svc.cluster.local:9092
+    src.consumer.confluent.monitoring.interceptor.sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule
+      required username="kafka" password="kafka-secret";
+    src.consumer.confluent.monitoring.interceptor.sasl.mechanism: PLAIN
+    src.consumer.confluent.monitoring.interceptor.security.protocol: SASL_SSL
+    src.consumer.confluent.monitoring.interceptor.ssl.truststore.location: /mnt/sslcerts/truststore.jks
+    src.consumer.confluent.monitoring.interceptor.ssl.truststore.password: mystorepassword
+    src.consumer.group.id: replicator
+    src.consumer.interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
+    src.kafka.bootstrap.servers: kafka.dc1.svc.cluster.local:9071
+    src.kafka.sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule
+      required username="kafka" password="kafka-secret";
+    src.kafka.sasl.mechanism: PLAIN
+    src.kafka.security.protocol: SASL_SSL
+    src.kafka.ssl.truststore.location: /mnt/sslcerts/truststore.jks
+    src.kafka.truststore.password: mystorepassword
+    topic.whitelist: replicator-dummy-topic
+    value.converter: io.confluent.connect.replicator.util.ByteArrayConverter
+  connectClusterRef:
+    name: replicator
+  connectRest:
+    authentication:
+      bearer:
+        secretRef: credential
+      type: bearer
+  taskMax: 4
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ControlCenter
+metadata:
+  name: controlcenter
+  namespace: dc1
+spec:
+  authorization:
+    type: rbac
+  configOverrides:
+    server:
+    - confluent.controlcenter.internal.topics.replication=1
+    - confluent.controlcenter.command.topic.replication=1
+    - confluent.monitoring.interceptor.topic.replication=1
+    - confluent.metrics.topic.replication=1
+  dataVolumeCapacity: 10Gi
+  dependencies:
+    connect:
+    - name: connect
+      tls:
+        enabled: true
+      url: https://connect:8083
+    kafka:
+      authentication:
+        jaasConfig:
+          secretRef: credential
+        type: plain
+      bootstrapEndpoint: kafka:9071
+      tls:
+        enabled: true
+    ksqldb:
+    - name: ksqldb
+      tls:
+        enabled: true
+      url: https://ksqldb:8088
+    mds:
+      authentication:
+        bearer:
+          secretRef: credential
+        type: bearer
+      endpoint: https://kafka:8090
+      tls:
+        enabled: true
+      tokenKeyPair:
+        secretRef: credential
+    schemaRegistry:
+      tls:
+        enabled: true
+      url: https://schemaregistry:8081
+  image:
+    application: confluentinc/cp-enterprise-control-center:7.2.0
+    init: confluentinc/confluent-init-container:2.4.0
+  podTemplate:
+    probe:
+      liveness:
+        failureThreshold: 5
+        periodSeconds: 10
+        timeoutSeconds: 500
+  replicas: 1
+  tls:
+    autoGeneratedCerts: true
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ControlCenter
+metadata:
+  name: controlcenter
+  namespace: dc2
+spec:
+  authorization:
+    type: rbac
+  configOverrides:
+    server:
+    - confluent.controlcenter.internal.topics.replication=1
+    - confluent.controlcenter.command.topic.replication=1
+    - confluent.monitoring.interceptor.topic.replication=1
+    - confluent.metrics.topic.replication=1
+  dataVolumeCapacity: 10Gi
+  dependencies:
+    connect:
+    - name: replicator
+      tls:
+        enabled: true
+      url: https://replicator:8083
+    kafka:
+      authentication:
+        jaasConfig:
+          secretRef: credential
+        type: plain
+      bootstrapEndpoint: kafka:9071
+      tls:
+        enabled: true
+    ksqldb:
+    - name: ksqldb
+      tls:
+        enabled: true
+      url: https://ksqldb:8088
+    mds:
+      authentication:
+        bearer:
+          secretRef: credential
+        type: bearer
+      endpoint: https://kafka:8090
+      tls:
+        enabled: true
+      tokenKeyPair:
+        secretRef: credential
+    schemaRegistry:
+      tls:
+        enabled: true
+      url: https://schemaregistry:8081
+  image:
+    application: confluentinc/cp-enterprise-control-center:7.2.0
+    init: confluentinc/confluent-init-container:2.4.0
+  monitoringKafkaClusters:
+  - authentication:
+      oauthbearer:
+        secretRef: credential
+      type: oauthbearer
+    bootstrapEndpoint: kafka.dc1.svc.cluster.local:8090
+    name: dc1
+    tls:
+      enabled: true
+  podTemplate:
+    probe:
+      liveness:
+        failureThreshold: 5
+        periodSeconds: 10
+        timeoutSeconds: 500
+  replicas: 1
+  tls:
+    autoGeneratedCerts: true
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+  namespace: dc1
+spec:
+  authorization:
+    superUsers:
+    - User:kafka
+    type: rbac
+  configOverrides:
+    server:
+    - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+    - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+    - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+    - authorizer.class.name=io.confluent.kafka.security.authorizer.ConfluentServerAuthorizer
+    - confluent.authorizer.access.rule.providers=ZK_ACL,CONFLUENT
+    - confluent.schema.registry.url=https://schemaregistry:8081
+    - confluent.balancer.topic.replication.factor=1
+    - confluent.license.topic.replication.factor=1
+    - confluent.tier.metadata.replication.factor=1
+    - confluent.metadata.topic.replication.factor=1
+    - confluent.metrics.reporter.topic.replicas=1
+    - confluent.balancer.topic.replication.factor=1
+    - confluent.security.event.logger.exporter.kafka.topic.replicas=1
+    - default.replication.factor=1
+    - event.logger.exporter.kafka.topic.replicas=1
+    - offsets.topic.replication.factor=1
+  dataVolumeCapacity: 10Gi
+  dependencies:
+    kafkaRest:
+      authentication:
+        bearer:
+          secretRef: credential
+        type: bearer
+    zookeeper:
+      authentication:
+        jaasConfig:
+          secretRef: credential
+        type: digest
+      endpoint: zookeeper:2182
+      tls:
+        enabled: true
+  image:
+    application: confluentinc/cp-server:7.2.0
+    init: confluentinc/confluent-init-container:2.4.0
+  listeners:
+    external:
+      authentication:
+        jaasConfigPassThrough:
+          secretRef: credential
+        type: plain
+      tls:
+        enabled: true
+    internal:
+      authentication:
+        jaasConfigPassThrough:
+          secretRef: credential
+        type: plain
+      tls:
+        enabled: true
+  metricReporter:
+    authentication:
+      jaasConfigPassThrough:
+        secretRef: credential
+      type: plain
+    enabled: true
+    tls:
+      enabled: true
+  replicas: 1
+  services:
+    mds:
+      provider:
+        ldap:
+          address: ldap://ldap:389
+          authentication:
+            simple:
+              secretRef: credential
+            type: simple
+          configurations:
+            groupMemberAttribute: member
+            groupMemberAttributePattern: cn=(.*),ou=users,dc=test,dc=com
+            groupNameAttribute: cn
+            groupObjectClass: groupOfNames
+            groupSearchBase: ou=groups,dc=test,dc=com
+            userMemberOfAttributePattern: cn=(.*),ou=users,dc=test,dc=com
+            userNameAttribute: cn
+            userObjectClass: organizationalRole
+            userSearchBase: ou=users,dc=test,dc=com
+          tls:
+            enabled: true
+        type: ldap
+      tls:
+        enabled: true
+      tokenKeyPair:
+        secretRef: credential
+  tls:
+    autoGeneratedCerts: true
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+  namespace: dc2
+spec:
+  authorization:
+    superUsers:
+    - User:kafka
+    type: rbac
+  configOverrides:
+    server:
+    - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+    - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+    - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+    - authorizer.class.name=io.confluent.kafka.security.authorizer.ConfluentServerAuthorizer
+    - confluent.authorizer.access.rule.providers=ZK_ACL,CONFLUENT
+    - confluent.schema.registry.url=https://schemaregistry:8081
+    - confluent.balancer.topic.replication.factor=1
+    - confluent.license.topic.replication.factor=1
+    - confluent.tier.metadata.replication.factor=1
+    - confluent.metadata.topic.replication.factor=1
+    - confluent.metrics.reporter.topic.replicas=1
+    - confluent.balancer.topic.replication.factor=1
+    - confluent.security.event.logger.exporter.kafka.topic.replicas=1
+    - default.replication.factor=1
+    - event.logger.exporter.kafka.topic.replicas=1
+    - offsets.topic.replication.factor=1
+  dataVolumeCapacity: 10Gi
+  dependencies:
+    kafkaRest:
+      authentication:
+        bearer:
+          secretRef: credential
+        type: bearer
+    zookeeper:
+      authentication:
+        jaasConfig:
+          secretRef: credential
+        type: digest
+      endpoint: zookeeper:2182
+      tls:
+        enabled: true
+  image:
+    application: confluentinc/cp-server:7.2.0
+    init: confluentinc/confluent-init-container:2.4.0
+  listeners:
+    external:
+      authentication:
+        jaasConfigPassThrough:
+          secretRef: credential
+        type: plain
+      tls:
+        enabled: true
+    internal:
+      authentication:
+        jaasConfigPassThrough:
+          secretRef: credential
+        type: plain
+      tls:
+        enabled: true
+  metricReporter:
+    authentication:
+      jaasConfigPassThrough:
+        secretRef: credential
+      type: plain
+    enabled: true
+    tls:
+      enabled: true
+  replicas: 1
+  services:
+    mds:
+      provider:
+        ldap:
+          address: ldap://ldap:389
+          authentication:
+            simple:
+              secretRef: credential
+            type: simple
+          configurations:
+            groupMemberAttribute: member
+            groupMemberAttributePattern: cn=(.*),ou=users,dc=test,dc=com
+            groupNameAttribute: cn
+            groupObjectClass: groupOfNames
+            groupSearchBase: ou=groups,dc=test,dc=com
+            userMemberOfAttributePattern: cn=(.*),ou=users,dc=test,dc=com
+            userNameAttribute: cn
+            userObjectClass: organizationalRole
+            userSearchBase: ou=users,dc=test,dc=com
+          tls:
+            enabled: true
+        type: ldap
+      tls:
+        enabled: true
+      tokenKeyPair:
+        secretRef: credential
+  tls:
+    autoGeneratedCerts: true
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestClass
+metadata:
+  name: default
+  namespace: dc1
+spec:
+  kafkaRest:
+    authentication:
+      bearer:
+        secretRef: credential
+      type: bearer
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestClass
+metadata:
+  name: default
+  namespace: dc2
+spec:
+  kafkaRest:
+    authentication:
+      bearer:
+        secretRef: credential
+      type: bearer
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: replicator-dummy-topic
+  namespace: dc1
+spec:
+  configs:
+    cleanup.policy: delete
+  kafkaRest:
+    authentication:
+      bearer:
+        secretRef: credential
+      type: bearer
+  partitionCount: 1
+  replicas: 1
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: SchemaRegistry
+metadata:
+  name: schemaregistry
+  namespace: dc1
+spec:
+  authorization:
+    type: rbac
+  dependencies:
+    kafka:
+      authentication:
+        jaasConfig:
+          secretRef: credential
+        type: plain
+      bootstrapEndpoint: kafka:9071
+      tls:
+        enabled: true
+    mds:
+      authentication:
+        bearer:
+          secretRef: credential
+        type: bearer
+      endpoint: https://kafka:8090
+      tokenKeyPair:
+        secretRef: credential
+  image:
+    application: confluentinc/cp-schema-registry:7.2.0
+    init: confluentinc/confluent-init-container:2.4.0
+  replicas: 1
+  tls:
+    autoGeneratedCerts: true
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: SchemaRegistry
+metadata:
+  name: schemaregistry
+  namespace: dc2
+spec:
+  authorization:
+    type: rbac
+  dependencies:
+    kafka:
+      authentication:
+        jaasConfig:
+          secretRef: credential
+        type: plain
+      bootstrapEndpoint: kafka:9071
+      tls:
+        enabled: true
+    mds:
+      authentication:
+        bearer:
+          secretRef: credential
+        type: bearer
+      endpoint: https://kafka:8090
+      tokenKeyPair:
+        secretRef: credential
+  image:
+    application: confluentinc/cp-schema-registry:7.2.0
+    init: confluentinc/confluent-init-container:2.4.0
+  replicas: 1
+  tls:
+    autoGeneratedCerts: true
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Zookeeper
+metadata:
+  name: zookeeper
+  namespace: dc1
+spec:
+  authentication:
+    jaasConfig:
+      secretRef: credential
+    type: digest
+  dataVolumeCapacity: 10Gi
+  image:
+    application: confluentinc/cp-zookeeper:7.2.0
+    init: confluentinc/confluent-init-container:2.4.0
+  logVolumeCapacity: 10Gi
+  replicas: 1
+  tls:
+    autoGeneratedCerts: true
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Zookeeper
+metadata:
+  name: zookeeper
+  namespace: dc2
+spec:
+  authentication:
+    jaasConfig:
+      secretRef: credential
+    type: digest
+  dataVolumeCapacity: 10Gi
+  image:
+    application: confluentinc/cp-zookeeper:7.2.0
+    init: confluentinc/confluent-init-container:2.4.0
+  logVolumeCapacity: 10Gi
+  replicas: 1
+  tls:
+    autoGeneratedCerts: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: ldap
+    role: ldap
+  name: ldap
+  namespace: dc1
+spec:
+  containers:
+  - args:
+    - --copy-service
+    - --loglevel=debug
+    env:
+    - name: LDAP_ORGANISATION
+      value: Test Inc.
+    - name: LDAP_DOMAIN
+      value: test.com
+    - name: LDAP_ADMIN_PASSWORD
+      value: confluentrox
+    - name: LDAP_CONFIG_PASSWORD
+      value: confluentconfigrox
+    - name: LDAP_READONLY_USER
+      value: "True"
+    - name: LDAP_READONLY_USER_USERNAME
+      value: mds
+    - name: LDAP_READONLY_USER_PASSWORD
+      value: Developer!
+    - name: LDAP_TLS
+      value: "False"
+    image: osixia/openldap:1.3.0
+    livenessProbe:
+      initialDelaySeconds: 15
+      periodSeconds: 20
+      tcpSocket:
+        port: 389
+    name: ldap
+    ports:
+    - containerPort: 389
+      name: ldap
+    - containerPort: 636
+      name: ldaps
+    volumeMounts:
+    - mountPath: /container/service/slapd/assets/config/bootstrap/ldif/custom
+      name: customldif
+    - mountPath: /var/lib/ldap
+      name: ldap-data
+    - mountPath: /etc/ldap/slapd.d
+      name: ldap-config
+  restartPolicy: Always
+  volumes:
+  - configMap:
+      defaultMode: 420
+      name: ldap-ldifs
+    name: customldif
+  - emptyDir: {}
+    name: ldap-data
+  - emptyDir: {}
+    name: ldap-config
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: ldap
+    role: ldap
+  name: ldap
+  namespace: dc2
+spec:
+  containers:
+  - args:
+    - --copy-service
+    - --loglevel=debug
+    env:
+    - name: LDAP_ORGANISATION
+      value: Test Inc.
+    - name: LDAP_DOMAIN
+      value: test.com
+    - name: LDAP_ADMIN_PASSWORD
+      value: confluentrox
+    - name: LDAP_CONFIG_PASSWORD
+      value: confluentconfigrox
+    - name: LDAP_READONLY_USER
+      value: "True"
+    - name: LDAP_READONLY_USER_USERNAME
+      value: mds
+    - name: LDAP_READONLY_USER_PASSWORD
+      value: Developer!
+    - name: LDAP_TLS
+      value: "False"
+    image: osixia/openldap:1.3.0
+    livenessProbe:
+      initialDelaySeconds: 15
+      periodSeconds: 20
+      tcpSocket:
+        port: 389
+    name: ldap
+    ports:
+    - containerPort: 389
+      name: ldap
+    - containerPort: 636
+      name: ldaps
+    volumeMounts:
+    - mountPath: /container/service/slapd/assets/config/bootstrap/ldif/custom
+      name: customldif
+    - mountPath: /var/lib/ldap
+      name: ldap-data
+    - mountPath: /etc/ldap/slapd.d
+      name: ldap-config
+  restartPolicy: Always
+  volumes:
+  - configMap:
+      defaultMode: 420
+      name: ldap-ldifs
+    name: customldif
+  - emptyDir: {}
+    name: ldap-data
+  - emptyDir: {}
+    name: ldap-config

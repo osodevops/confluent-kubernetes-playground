@@ -1,0 +1,13 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: JVMChaos
+metadata:
+  name: jvm-stress-cpu
+spec:
+  action: stress
+  cpuCount: 2
+  mode: all
+  selector:
+    namespaces:
+      - master
+    labelSelectors:
+      "app": "kafka"

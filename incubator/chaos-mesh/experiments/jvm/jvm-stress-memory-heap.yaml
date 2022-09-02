@@ -1,0 +1,13 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: JVMChaos
+metadata:
+  name: jvm-stress-memory-heap
+spec:
+  action: stress
+  memType: heap
+  mode: all
+  selector:
+    namespaces:
+      - master
+    labelSelectors:
+      "app": "kafka"

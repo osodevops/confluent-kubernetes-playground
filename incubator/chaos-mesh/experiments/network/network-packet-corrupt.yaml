@@ -1,0 +1,16 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: network-packet-corruption
+spec:
+  action: corrupt
+  mode: all
+  selector:
+    namespaces:
+      - 'master'
+    labelSelectors:
+      "app": "kafka"
+  corrupt:
+    corrupt: "60"
+    correlation: "25"
+  duration: "30s"

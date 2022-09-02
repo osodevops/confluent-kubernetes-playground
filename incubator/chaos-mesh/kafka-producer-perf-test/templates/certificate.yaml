@@ -1,0 +1,39 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ template "fullname" . }}-tls
+spec:
+  commonName: s-egsp-canary-svc.egdp-dev.lcl
+  dnsNames:
+  - egdp-dev.aws.away.black
+  - egdp-dev.aws.away.lcl
+  - '*.egdp-dev.aws.away.black'
+  - '*.egdp-dev.lcl'
+  duration: 2160h0m0s
+  issuerRef:
+    kind: Issuer
+    name: {{ template "fullname" . }}-issuer
+  keystores:
+    jks:
+      create: true
+      passwordSecretRef:
+        key: password-key
+        name: jks-password-secret
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    rotationPolicy: Always
+    size: 2048
+  renewBefore: 720h0m0s
+  secretName: {{ template "fullname" . }}-tls
+  subject:
+    countries:
+    - US
+    localities:
+    - Seattle
+    organizationalUnits:
+    - StreamPlatform
+    organizations:
+    - Expedia Group, Inc.
+    provinces:
+    - WA

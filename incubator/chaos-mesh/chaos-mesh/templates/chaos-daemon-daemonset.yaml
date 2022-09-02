@@ -1,0 +1,108 @@
+---
+# Source: chaos-mesh/templates/chaos-daemon-daemonset.yaml
+# Copyright 2021 Chaos Mesh Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  namespace: "default"
+  name: chaos-daemon
+  labels:
+    app.kubernetes.io/component: chaos-daemon
+    helm.sh/chart: chaos-mesh-2.2.0
+    app.kubernetes.io/name: chaos-mesh
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: chaos-mesh
+    app.kubernetes.io/version: 2.2.0
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: chaos-mesh
+      app.kubernetes.io/instance: release-name
+      app.kubernetes.io/component: chaos-daemon
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: chaos-mesh-2.2.0
+        app.kubernetes.io/name: chaos-mesh
+        app.kubernetes.io/instance: release-name
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/part-of: chaos-mesh
+        app.kubernetes.io/version: 2.2.0
+        app.kubernetes.io/component: chaos-daemon
+      annotations:
+        rollme: "PqBJ7"
+    spec:
+      serviceAccountName: chaos-daemon
+      hostPID: true
+      containers:
+        - name: chaos-daemon
+          image: ghcr.io/chaos-mesh/chaos-daemon:v2.2.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - /usr/local/bin/chaos-daemon
+            - --runtime
+            - docker
+            - --http-port
+            - !!str 31766
+            - --grpc-port
+            - !!str 31767
+            - --pprof
+            - --ca
+            - /etc/chaos-daemon/cert/ca.crt
+            - --cert
+            - /etc/chaos-daemon/cert/tls.crt
+            - --key
+            - /etc/chaos-daemon/cert/tls.key
+            - --runtime-socket-path
+            - /host-run/docker.sock
+          env:
+            - name: TZ
+              value: UTC
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - SYS_PTRACE
+          volumeMounts:
+            - name: socket-path
+              mountPath: /host-run
+            - name: sys-path
+              mountPath: /host-sys
+            - name: lib-modules
+              mountPath: /lib/modules
+            - name: chaos-daemon-cert
+              mountPath: /etc/chaos-daemon/cert
+              readOnly: true
+          ports:
+            - name: grpc
+              containerPort: 31767
+            - name: http
+              containerPort: 31766
+      volumes:
+        - name: socket-path
+          hostPath:
+            path: /var/run
+        - name: sys-path
+          hostPath:
+            path: /sys
+        - name: lib-modules
+          hostPath:
+            path: /lib/modules
+        - name: chaos-daemon-cert
+          secret:
+            secretName:  chaos-mesh-daemon-certs

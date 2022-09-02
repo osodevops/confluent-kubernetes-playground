@@ -1,0 +1,15 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: JVMChaos
+metadata:
+  name: exception
+spec:
+  action: exception
+  class: org.apache.kafka.common.network.Selector
+  method: poll
+  exception: java.io.IOException("BOOM")
+  mode: all
+  selector:
+    namespaces:
+      - master
+    labelSelectors:
+      "app": "kafka"

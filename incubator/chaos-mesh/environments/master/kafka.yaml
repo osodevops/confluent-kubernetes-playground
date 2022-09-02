@@ -1,0 +1,18 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+spec:
+  replicas: 3
+  podTemplate:
+    resources:
+      limits:
+        cpu: "2"
+        memory: "3Gi"
+      requests:
+        cpu: "1"
+        memory: "1Gi"
+
+
+
+

@@ -1,0 +1,14 @@
+[
+    {
+      "host": "%%host%%",
+      "port":"8999",
+      "max_returned_metrics": 30000,
+      "namespace": "kafka-benchmark-test",
+      "tags": [
+        "service_name:kafka-benchmark-test",
+        "egstreaming-kafka-env:egdp-dev",
+        "egstreaming-kafka-region:us-east-1",
+        "egstreaming-kafka-cluster:kafka-benchmark-test"
+      ]
+    }
+  ]

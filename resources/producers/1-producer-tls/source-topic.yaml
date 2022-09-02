@@ -10,6 +10,5 @@ spec:
       type: bearer
       bearer:
         secretRef: credential
-    endpoint: https://kafka:8090
   configs:
     cleanup.policy: "delete"

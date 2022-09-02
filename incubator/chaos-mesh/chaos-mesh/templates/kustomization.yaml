@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+ - cert-manager-certs.yaml
+ - chaos-daemon-daemonset.yaml
+ - chaos-daemon-rbac.yaml
+ - chaos-daemon-service.yaml
+ - chaos-dashboard-deployment.yaml
+ - chaos-dashboard-pvc.yaml
+ - chaos-dashboard-rbac.yaml
+ - controller-manager-deployment.yaml
+ - controller-manager-rbac.yaml
+ - controller-manager-service.yaml
+ - dns-configmap.yaml
+ - dns-deployment.yaml
+ - dns-rbac.yaml
+ - dns-service.yaml
+ - ingress.yaml
+ - mutating-admission-webhooks.yaml
+ - prometheus-configmap.yaml
+ - prometheus-deployment.yaml
+ - prometheus-rbac.yaml
+ - prometheus-service.yaml
+ - secrets-configuration.yaml
+ - validating-admission-webhooks.yaml
+

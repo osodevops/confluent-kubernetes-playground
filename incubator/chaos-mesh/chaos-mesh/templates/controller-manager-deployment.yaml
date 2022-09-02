@@ -1,0 +1,164 @@
+---
+# Source: chaos-mesh/templates/controller-manager-deployment.yaml
+# Copyright 2021 Chaos Mesh Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: "default"
+  name: chaos-controller-manager
+  labels:
+    helm.sh/chart: chaos-mesh-2.2.0
+    app.kubernetes.io/name: chaos-mesh
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: chaos-mesh
+    app.kubernetes.io/version: 2.2.0
+    app.kubernetes.io/component: controller-manager
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: chaos-mesh
+      app.kubernetes.io/instance: release-name
+      app.kubernetes.io/component: controller-manager
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: chaos-mesh-2.2.0
+        app.kubernetes.io/name: chaos-mesh
+        app.kubernetes.io/instance: release-name
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/part-of: chaos-mesh
+        app.kubernetes.io/version: 2.2.0
+        app.kubernetes.io/component: controller-manager
+      annotations:
+        rollme: "uAoUI"
+    spec:
+      serviceAccountName: chaos-controller-manager
+      containers:
+      - name: chaos-mesh
+        image: ghcr.io/chaos-mesh/chaos-mesh:v2.2.0
+        imagePullPolicy: IfNotPresent
+        resources:
+            limits: {}
+            requests:
+              cpu: 25m
+              memory: 256Mi
+        command:
+          - /usr/local/bin/chaos-controller-manager
+        env:
+          - name: METRICS_PORT
+            value: "10080"
+          - name: WEBHOOK_PORT
+            value: "9443"
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: TEMPLATE_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: ALLOW_HOST_NETWORK_TESTING
+            value: "false"
+          - name: TARGET_NAMESPACE
+            value: "chaos-testing"
+          - name: CLUSTER_SCOPED
+            value: "true"
+          - name: TZ
+            value: UTC
+          - name: CHAOS_DAEMON_SERVICE_PORT
+            value: !!str 31767
+          - name: BPFKI_PORT
+            value: !!str 50051
+          - name: ENABLED_CONTROLLERS
+            value: "*"
+          - name: ENABLED_WEBHOOKS
+            value: "*"
+          - name: TEMPLATE_LABELS
+            value: "app.kubernetes.io/component:template"
+          - name: CONFIGMAP_LABELS
+            value: "app.kubernetes.io/component:webhook"
+          - name: ENABLE_FILTER_NAMESPACE
+            value: "false"
+          - name: PPROF_ADDR
+            value: ":10081"
+          - name: CTRL_ADDR
+            value: ":10082"
+          - name: CHAOS_DNS_SERVICE_NAME
+            value: chaos-mesh-dns-server
+          - name: CHAOS_DNS_SERVICE_PORT
+            value: !!str 9288
+          - name: SECURITY_MODE
+            value: "false"
+          - name: CHAOSD_SECURITY_MODE
+            value: "true"
+          - name: CHAOS_DAEMON_CLIENT_CERT
+            value: /etc/chaos-daemon/cert/tls.crt
+          - name: CHAOS_DAEMON_CLIENT_KEY
+            value: /etc/chaos-daemon/cert/tls.key
+          - name: CHAOS_MESH_CA_CERT
+            value: /etc/chaos-daemon/cert/ca.crt
+          - name: QPS
+            value: "30"
+          - name: BURST
+            value: "50"
+          - name: CHAOSD_CA_CERT
+            value: /etc/chaosd/cert/ca.crt
+          - name: CHAOSD_CLIENT_CERT
+            value: /etc/chaosd/cert/tls.crt
+          - name: CHAOSD_CLIENT_KEY
+            value: /etc/chaosd/cert/tls.key
+          - name: POD_FAILURE_PAUSE_IMAGE
+            value: gcr.io/google-containers/pause:latest
+          - name: ENABLE_LEADER_ELECTION
+            value: "true"
+          - name: LEADER_ELECT_LEASE_DURATION
+            value: "15s"
+          - name: LEADER_ELECT_RENEW_DEADLINE
+            value: "10s"
+          - name: LEADER_ELECT_RETRY_PERIOD
+            value: "2s"
+        volumeMounts:
+          - name: webhook-certs
+            mountPath: /etc/webhook/certs
+            readOnly: true
+          - name: chaos-daemon-client-cert
+            mountPath: /etc/chaos-daemon/cert
+            readOnly: true
+          - name: chaosd-client-cert
+            mountPath: /etc/chaosd/cert
+            readOnly: true
+        ports:
+          - name: webhook
+            containerPort: 9443
+          - name: http
+            containerPort: 10080
+          - name: pprof
+            containerPort: 10081
+          - name: ctrl
+            containerPort: 10082
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: chaos-mesh-webhook-certs
+        - name: chaos-daemon-client-cert
+          secret:
+            secretName: chaos-mesh-daemon-client-certs
+        - name: chaosd-client-cert
+          secret:
+            secretName: chaos-mesh-chaosd-client-certs

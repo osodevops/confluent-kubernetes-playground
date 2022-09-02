@@ -1,0 +1,21 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: IOChaos
+metadata:
+  name: broker-disk-data-folder-failure
+  namespace: master
+spec:
+  action: mistake
+  mode: one
+  selector:
+    labelSelectors:
+      "app": "kafka"
+  volumePath: /mnt/data/data0
+  mistake:
+    filling: zero
+    maxOccurrences: 10
+    maxLength: 50
+  methods:
+    - READ
+    - WRITE
+  percent: 10
+  duration: '1m'

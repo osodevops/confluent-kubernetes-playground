@@ -4,5 +4,7 @@ namespace: sandbox
 resources:
 - namespace.yaml
 - ../../base/cfk-components/confluent-no-auth-tls
+patchesStrategicMerge:
+  - kafka.yaml
 
 

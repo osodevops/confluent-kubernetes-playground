@@ -1,0 +1,17 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: SchemaRegistry
+metadata:
+  name: schemaregistry
+spec:
+  replicas: 0
+  image:
+    application: confluentinc/cp-schema-registry:7.1.0
+    init: confluentinc/confluent-init-container:2.3.0
+  configOverrides:
+    server:
+      - leader.eligibility=false
+      - schema.registry.group.id=id_schemaregistry_master
+      - kafkastore.topic=_schemas
+  dependencies:
+    kafka:
+      bootstrapEndpoint: http://kafka.master.svc.cluster.local:9071

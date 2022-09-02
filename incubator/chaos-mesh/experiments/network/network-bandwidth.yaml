@@ -1,0 +1,16 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: bandwidth
+spec:
+  action: bandwidth
+  mode: all
+  selector:
+    namespaces:
+      - master
+    labelSelectors:
+      'app': 'kafka'
+  bandwidth:
+    rate: '100kbps'
+    limit: 20971520
+    buffer: 10000

@@ -1,0 +1,104 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kafka-producer
+  template:
+    metadata:
+      labels:
+        app: kafka-producer
+        app.kubernetes.io/name: kafka-producer
+        release: {{ .Release.Name | quote }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+      annotations:
+        ad.datadoghq.com/producer.check_names: '["confluent_platform"]'
+        ad.datadoghq.com/producer.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
+        ad.datadoghq.com/producer.instances: '[{"host": "%%host%%","port":"8999","max_returned_metrics": 30000,"namespace": "kafka-benchmark-test","tags": ["service_name:kafka-benchmark-test","egstreaming-kafka-env:egdp-dev","egstreaming-kafka-region:us-east-1","egstreaming-kafka-cluster:kafka-benchmark-test"]}]'
+    spec:
+      volumes:
+      - name: config-volume
+        configMap:
+          name: {{ template "fullname" . }}
+      - name: keystore
+        secret:
+          secretName: {{ template "fullname" . }}-tls
+          items:
+          - key: keystore.jks
+            path: kafka.client.keystore.jks
+      - name: config
+        configMap:
+          name: client-config
+      - name: log4j-config
+        configMap:
+          name: log4j-config
+      - name: truststore
+        secret:
+          secretName: truststore-tls
+          items:
+          - key: truststore.jks
+            path: kafka.client.truststore.jks
+      containers:
+      - name: producer
+        image: "{{if .Values.image.registry}}{{.Values.image.registry}}/{{end}}{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: COMPONENT
+          value: "kafka-producer-perf-test"
+        - name: JMX_PORT
+          value: {{ .Values.jmxPort | quote }}
+        - name: KAFKA_OPTS
+          value: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.rmi.port={{.Values.jmxPort}} -Dlog4j.configuration=file:/opt/tools-log4j.properties" 
+        - name: KAFKA_HEAP_OPTS
+          value: {{.Values.heapOpts}}
+        command:
+        - sh
+        - -c
+        - |
+          set -x
+          CONFDIR=/opt/kafka-producer-perf-test/conf
+          kafka-producer-perf-test \
+            --print-metrics \
+            --topic $(cat $CONFDIR/topic) \
+            --num-records $(cat $CONFDIR/num-records) \
+            --record-size $(cat $CONFDIR/record-size) \
+            --throughput $(cat $CONFDIR/throughput) \
+            --producer.config /opt/client.properties \
+            $(cat $CONFDIR/extra-opts)
+        volumeMounts:
+        - mountPath: /opt/kafka-producer-perf-test/conf
+          name: config-volume
+        - mountPath: "/opt/kafka.client.keystore.jks"
+          name: keystore
+          subPath: kafka.client.keystore.jks
+          readOnly: true
+        - mountPath: "/opt/kafka.client.truststore.jks"
+          name: truststore
+          subPath: kafka.client.truststore.jks
+          readOnly: true
+        - name: config
+          mountPath: /opt/client.properties
+          subPath: client.properties
+        - name: log4j-config
+          mountPath: /opt/tools-log4j.properties
+          subPath: tools-log4j.properties
+        resources:
+            limits:
+              cpu: 4
+              memory: 8Gi
+            requests:
+              cpu: 4
+              memory: 8Gi
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - {key: nodeGroup, operator: In, values: [producers-1c]}

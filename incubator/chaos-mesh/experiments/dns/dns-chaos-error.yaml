@@ -1,0 +1,17 @@
+# https://chaos-mesh.org/docs/simulate-dns-chaos-on-kubernetes/
+apiVersion: chaos-mesh.org/v1alpha1
+kind: DNSChaos
+metadata:
+  name: dns-chaos-error
+spec:
+  action: random
+  mode: all
+  patterns:
+    - kafka.master.svc.cluster.local
+    - kafka
+    - kafka.*
+    - kafka*
+  selector:
+    namespaces:
+      - master
+  duration: "3m"

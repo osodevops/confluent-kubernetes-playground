@@ -1,0 +1,445 @@
+# Default values for kafka-producer-perf-test.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+name: producer
+replicaCount: 1
+image:
+  repository: confluentinc/cp-kafka
+  tag: 3.0.0
+  pullPolicy: IfNotPresent
+resources:
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+jmxPort: "8999"
+heapOpts: "-Xmx512M"
+config:
+  extra-opts: ""
+  topic: ""
+  num-records: "2147483647"
+  record-size: "100"
+  throughput: "100"
+  producer-props: ""
+  # producer-props: "bootstrap.servers=kafka1:9092,kafka2:9092,kafka3:9092 client.id=producer max.in.flight.requests.per.connection=1 retries=2147483647 acks=1 block.on.buffer.full=true batch.size=100"
+collocatedProxy:
+  image:
+    repository: mumoshu/kube-collocated-pod-proxy
+    tag: kube-1.3.6
+    pullPolicy: IfNotPresent
+  port: "8125"
+  namespace: datadog
+  selector: "app=datadog"
+datadog:
+  apiKey: ""
+jmxfetch:
+  enabled: true
+  image:
+    repository: everpeace/jmxfetch
+    tag: latest
+    pullPolicy: IfNotPresent
+  config:
+    kafka.yaml: |
+      instances:
+          - host: localhost
+            port: 8999
+      init_config:
+          is_jmx: true
+          # Metrics collected by this check. You should not have to modify this.
+          conf:
+            # v0.9.0.x Producers
+            - include:
+                domain: 'kafka.producer'
+                bean_regex: 'kafka\.producer:type=producer-metrics,client-id=.*'
+                attribute:
+                  response-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.response_rate
+            - include:
+                domain: 'kafka.producer'
+                bean_regex: 'kafka\.producer:type=producer-metrics,client-id=.*'
+                attribute:
+                  request-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.request_rate
+            - include:
+                domain: 'kafka.producer'
+                bean_regex: 'kafka\.producer:type=producer-metrics,client-id=.*'
+                attribute:
+                  request-latency-avg:
+                    metric_type: gauge
+                    alias: kafka.producer.request_latency_avg
+            - include:
+                domain: 'kafka.producer'
+                bean_regex: 'kafka\.producer:type=producer-metrics,client-id=.*'
+                attribute:
+                  outgoing-byte-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.bytes_out
+            - include:
+                domain: 'kafka.producer'
+                bean_regex: 'kafka\.producer:type=producer-metrics,client-id=.*'
+                attribute:
+                  io-wait-time-ns-avg:
+                    metric_type: gauge
+                    alias: kafka.producer.io_wait
+
+            # v0.9.0.x Consumers
+            - include:
+                domain: 'kafka.consumer'
+                bean_regex: 'kafka\.consumer:type=consumer-fetch-manager-metrics,client-id=.*'
+                attribute:
+                  bytes-consumed-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer.bytes_in
+            - include:
+                domain: 'kafka.consumer'
+                bean_regex: 'kafka\.consumer:type=consumer-fetch-manager-metrics,client-id=.*'
+                attribute:
+                  records-consumed-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer.messages_in
+
+            # Common monitoring metrics for producer/consumer/connect
+            - include:
+                domain: 'kafka.producer'
+                bean_regex: 'kafka\.producer:type=producer-metrics,client-id=([-.\w]+)'
+                attribute:
+                  connection-close-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.connection_close_rate
+                  connection-creation-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.connection_creation_rate
+                  network-io-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.network_io_rate
+                  outgoing-byte-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.outgoing_byte_rate
+                  request-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.request_rate
+                  request-size-avg:
+                    metric_type: gauge
+                    alias: kafka.producer.request_size_avg
+                  request-size-max:
+                    metric_type: gauge
+                    alias: kafka.producer.request_size_max
+                  incoming-byte-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.incoming_byte_rate
+                  response-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.response_rate
+                  select-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.select_rate
+                  io-wait-time-ns-avg:
+                    metric_type: gauge
+                    alias: kafka.producer.io_wait_time_ns_avg
+                  io-wait-ratio:
+                    metric_type: gauge
+                    alias: kafka.producer.io_wait_ratio
+                  io-time-ns-avg:
+                    metric_type: gauge
+                    alias: kafka.producer.io_time_ns_avg
+                  io-ratio:
+                    metric_type: gauge
+                    alias: kafka.producer.io_ratio
+                  connection-count:
+                    metric_type: counter
+                    alias: kafka.producer.connection_count
+            - include:
+                domain: 'kafka.consumer'
+                bean_regex: 'kafka\.consumer:type=consumer-metrics,client-id=([-.\w]+)'
+                attribute:
+                  connection-close-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer.connection_close_rate
+                  connection-creation-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer.connection_creation_rate
+                  network-io-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer.network_io_rate
+                  outgoing-byte-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer.outgoing_byte_rate
+                  request-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer.request_rate
+                  request-size-avg:
+                    metric_type: gauge
+                    alias: kafka.consumer.request_size_avg
+                  request-size-max:
+                    metric_type: gauge
+                    alias: kafka.consumer.request_size_max
+                  incoming-byte-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer.incoming_byte_rate
+                  response-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer.response_rate
+                  select-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer.select_rate
+                  io-wait-time-ns-avg:
+                    metric_type: gauge
+                    alias: kafka.consumer.io_wait_time_ns_avg
+                  io-wait-ratio:
+                    metric_type: gauge
+                    alias: kafka.consumer.io_wait_ratio
+                  io-time-ns-avg:
+                    metric_type: gauge
+                    alias: kafka.consumer.io_time_ns_avg
+                  io-ratio:
+                    metric_type: gauge
+                    alias: kafka.consumer.io_ratio
+                  connection-count:
+                    metric_type: counter
+                    alias: kafka.consumer.connection_count
+            - include:
+                domain: 'kafka.connect'
+                bean_regex: 'kafka\.connect:type=connect-metrics,client-id=([-.\w]+)'
+                attribute:
+                  connection-close-rate:
+                    metric_type: gauge
+                    alias: kafka.connect.connection_close_rate
+                  connection-creation-rate:
+                    metric_type: gauge
+                    alias: kafka.connect.connection_creation_rate
+                  network-io-rate:
+                    metric_type: gauge
+                    alias: kafka.connect.network_io_rate
+                  outgoing-byte-rate:
+                    metric_type: gauge
+                    alias: kafka.connect.outgoing_byte_rate
+                  request-rate:
+                    metric_type: gauge
+                    alias: kafka.connect.request_rate
+                  request-size-avg:
+                    metric_type: gauge
+                    alias: kafka.connect.request_size_avg
+                  request-size-max:
+                    metric_type: gauge
+                    alias: kafka.connect.request_size_max
+                  incoming-byte-rate:
+                    metric_type: gauge
+                    alias: kafka.connect.incoming_byte_rate
+                  response-rate:
+                    metric_type: gauge
+                    alias: kafka.connect.response_rate
+                  select-rate:
+                    metric_type: gauge
+                    alias: kafka.connect.select_rate
+                  io-wait-time-ns-avg:
+                    metric_type: gauge
+                    alias: kafka.connect.io_wait_time_ns_avg
+                  io-wait-ratio:
+                    metric_type: gauge
+                    alias: kafka.connect.io_wait_ratio
+                  io-time-ns-avg:
+                    metric_type: gauge
+                    alias: kafka.connect.io_time_ns_avg
+                  io-ratio:
+                    metric_type: gauge
+                    alias: kafka.connect.io_ratio
+                  connection-count:
+                    metric_type: counter
+                    alias: kafka.connect.connection_count
+
+            # Producer monitoring
+            - include:
+                domain: 'kafka.producer'
+                bean_regex: 'kafka\.producer:type=producer-metrics,client-id=([-.\w]+)'
+                attribute:
+                  waiting-threads:
+                    metric_type: gauge
+                    alias: kafka.producer.waiting_threads
+                  buffer-total-bytes:
+                    metric_type: gauge
+                    alias: kafka.producer.buffer_total_bytes
+                  buffer-available-bytes:
+                    metric_type: gauge
+                    alias: kafka.producer.buffer_available_bytes
+                  bufferpool-wait-time:
+                    metric_type: gauge
+                    alias: kafka.producer.bufferpool_wait_time
+                  batch-size-avg:
+                    metric_type: gauge
+                    alias: kafka.producer.batch_size_avg
+                  batch-size-max:
+                    metric_type: gauge
+                    alias: kafka.producer.batch_size_max
+                  compression-rate-avg:
+                    metric_type: gauge
+                    alias: kafka.producer.compression_rate_avg
+                  record-queue-time-avg:
+                    metric_type: gauge
+                    alias: kafka.producer.record_queue_time_avg
+                  record-queue-time-max:
+                    metric_type: gauge
+                    alias: kafka.producer.record_queue_time_max
+                  request-latency-avg:
+                    metric_type: gauge
+                    alias: kafka.producer.request_latency_avg
+                  request-latency-max:
+                    metric_type: gauge
+                    alias: kafka.producer.request_latency_max
+                  record-send-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.record_send_rate
+                  records-per-request-avg:
+                    metric_type: gauge
+                    alias: kafka.producer.records_per_request_avg
+                  record-retry-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.record_retry_rate
+                  record-error-rate:
+                    metric_type: gauge
+                    alias: kafka.producer.record_error_rate
+                  record-size-max:
+                    metric_type: gauge
+                    alias: kafka.producer.record_size_max
+                  record-size-avg:
+                    metric_type: gauge
+                    alias: kafka.producer.record_size_avg
+                  requests-in-flight:
+                    metric_type: gauge
+                    alias: kafka.producer.requests_in_flight
+                  metadata-age:
+                    metric_type: gauge
+                    alias: kafka.producer.metadata_age
+            - include:
+                domain: 'kafka.producer_topic'
+                bean_regex: 'kafka\.producer:type=producer-topic-metrics,client-id=([-.\w]+),topic=([-.\w]+)'
+                attribute:
+                  record-send-rate:
+                    metric_type: gauge
+                    alias: kafka.producer_topic.record_send_rate
+                  byte-rate:
+                    metric_type: gauge
+                    alias: kafka.producer_topic.byte_rate
+                  compression-rate:
+                    metric_type: gauge
+                    alias: kafka.producer_topic.compression_rate
+                  record-retry-rate:
+                    metric_type: gauge
+                    alias: kafka.producer_topic.record_retry_rate
+                  record-error-rate:
+                    metric_type: gauge
+                    alias: kafka.producer_topic.record_error_rate
+                  produce-throttle-time-max:
+                    metric_type: gauge
+                    alias: kafka.producer_topic.produce_throttle_time_max
+                  produce-throttle-time-avg:
+                    metric_type: gauge
+                    alias: kafka.producer_topic.produce_throttle_time_avg
+
+            # Consumer Group Metrics
+            - include:
+                domain: 'kafka.consumer_group'
+                bean_regex: 'kafka\.consumer:type=consumer-coordinator-metrics,client-id=([-.\w]+)'
+                attribute:
+                  commit-latency-avg:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.commit_latency_avg
+                  commit-latency-max:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.commit_latency_max
+                  commit-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.commit_rate
+                  assigned-partitions:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.assigned_partitions
+                  heartbeat-response-time-max:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.heartbeat_response_time_max
+                  heartbeat-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.heartbeat_rate
+                  join-time-avg:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.join_time_avg
+                  join-time-max:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.join_time_max
+                  join-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.join_rate
+                  sync-time-avg:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.sync_time_avg
+                  sync-time-max:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.sync_time_max
+                  sync-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.sync_rate
+                  last-heartbeat-seconds-ago:
+                    metric_type: gauge
+                    alias: kafka.consumer_group.last_heartbeat_seconds_ago
+
+            # Consumer Fetch Metrics
+            - include:
+                domain: 'kafka.consumer_fetch'
+                bean_regex: 'kafka\.consumer:type=consumer-fetch-manager-metrics,client-id=([-.\w]+)'
+                attribute:
+                  fetch-size-avg:
+                    metric_type: gauge
+                    alias: kafka.consumer_fetch.fetch_size_avg
+                  fetch-size-max:
+                    metric_type: gauge
+                    alias: kafka.consumer_fetch.fetch_size_max
+                  bytes-consumed-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer_fetch.bytes_consumed_rate
+                  records-per-request-avg:
+                    metric_type: gauge
+                    alias: kafka.consumer_fetch.records_per_request_avg
+                  records-consumed-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer_fetch.records_consumed_rate
+                  fetch-latency-avg:
+                    metric_type: gauge
+                    alias: kafka.consumer_fetch.fetch_latency_avg
+                  fetch-latency-max:
+                    metric_type: gauge
+                    alias: kafka.consumer_fetch.fetch_latency_max
+                  fetch-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer_fetch.fetch_rate
+                  records-lag-max:
+                    metric_type: gauge
+                    alias: kafka.consumer_fetch.records_lag_max
+                  fetch-throttle-time-avg:
+                    metric_type: gauge
+                    alias: kafka.consumer_fetch.fetch_throttle_time_avg
+                  fetch-throttle-time-max:
+                    metric_type: gauge
+                    alias: kafka.consumer_fetch.fetch_throttle_time_max
+
+            # Topic-level Fetch Metrics
+            - include:
+                domain: 'kafka.consumer_topic'
+                bean_regex: 'kafka\.consumer:type=consumer-fetch-manager-metrics,client-id=([-.\w]+),topic=([-.\w]+)'
+                attribute:
+                  fetch-size-avg:
+                    metric_type: gauge
+                    alias: kafka.consumer_topic.fetch_size_avg
+                  fetch-size-max:
+                    metric_type: gauge
+                    alias: kafka.consumer_topic.fetch_size_max
+                  bytes-consumed-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer_topic.bytes_consumed_rate
+                  records-per-request-avg:
+                    metric_type: gauge
+                    alias: kafka.consumer_topic.records_per_request_avg
+                  records-consumed-rate:
+                    metric_type: gauge
+                    alias: kafka.consumer_topic.records_consumed_rate

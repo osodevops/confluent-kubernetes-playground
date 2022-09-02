@@ -1,0 +1,12 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: basic-avro-schema
+spec:
+  replicas: 1
+  partitionCount: 4
+  configs:
+    cleanup.policy: "delete"
+    retention.bytes: "10737418240"
+  kafkaRestClassRef:
+    name: master-kafka-rest

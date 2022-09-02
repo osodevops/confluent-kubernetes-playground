@@ -1,0 +1,19 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: StressChaos
+metadata:
+  name: broker-cpu-stress
+spec:
+  mode: one
+  selector:
+    namespaces:
+      - 'master'
+      - 'default'
+    labelSelectors:
+      "statefulset.kubernetes.io/pod-name": "kafka-0"
+#       "app": "kafka"
+  stressors:
+    cpu:
+      workers: 10
+      load: 100
+      options: ["--cpu 4", "--timeout 600", "--hdd 1"]
+  duration: "100m"

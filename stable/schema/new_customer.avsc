@@ -1,0 +1,14 @@
+{
+  "type": "record",
+  "namespace": "sh.oso.examples.customer",
+  "name": "Customer",
+  "doc": "OSO customer event format 1_0",
+  "version": "1",
+  "fields": [
+    {"name": "name", "type": "string"},
+    {"name": "email", "type": "string", "default": "NONE"},
+    {"name": "eventID", "type": "string", "default": "NONE"},
+    {"name": "eventDateTime", "type":"long", "logicalType": "timestamp-millis"},
+    {"name": "publishedDateTime", "type":"long", "logicalType": "timestamp-millis"}
+  ]
+}

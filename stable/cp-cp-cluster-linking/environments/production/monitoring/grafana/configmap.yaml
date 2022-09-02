@@ -1,0 +1,24 @@
+---
+# Source: grafana/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oso-grafana-envvars
+  namespace: default
+  labels:
+    app.kubernetes.io/name: grafana
+    helm.sh/chart: grafana-6.1.11
+    app.kubernetes.io/instance: oso
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: grafana
+data:
+  GF_SECURITY_ADMIN_USER: "admin"
+  GF_INSTALL_PLUGINS: ""
+  GF_PATHS_PLUGINS: "/opt/bitnami/grafana/data/plugins"
+  GF_AUTH_LDAP_ENABLED: "false"
+  GF_AUTH_LDAP_CONFIG_FILE: "/opt/bitnami/grafana/conf/ldap.toml"
+  GF_AUTH_LDAP_ALLOW_SIGN_UP: "false"
+  GF_PATHS_PROVISIONING: "/opt/bitnami/grafana/conf/provisioning"
+  GF_PATHS_CONFIG: "/opt/bitnami/grafana/conf/grafana.ini"
+  GF_PATHS_DATA: "/opt/bitnami/grafana/data"
+  GF_PATHS_LOGS: "/opt/bitnami/grafana/logs"

@@ -1,0 +1,4 @@
+namespace: sandbox
+resources:
+  - deployment.yaml
+  - service.yaml

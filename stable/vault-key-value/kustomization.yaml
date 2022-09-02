@@ -1,6 +1,6 @@
 namespace: sandbox
 resources:
-  - ../../base/operator
+  - namespace.yaml
   - ../../base/cfk-components/confluent-rbac
   - vault
 patchesStrategicMerge:

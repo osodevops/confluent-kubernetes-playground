@@ -1,0 +1,24 @@
+{
+<<<<<<<< HEAD:stable/argo-cd/environments/base/tls/controlcenter-server-domain.json
+  "CN": "c3",
+  "hosts": [
+    "c3",
+    "controlcenter.sandbox.svc.cluster.local"
+========
+  "CN": "kafka.dc1.com",
+  "hosts": [
+    "*.dc1.com"
+>>>>>>>> main:incubator/disaster-recovery-replicator/external-certificates-2dcs/dc1-domain.json
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "Universe",
+      "ST": "Pangea",
+      "L": "Earth"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Schema
+metadata:
+  name: customer-schema
+spec:
+  data:
+    configRef: oso-schema-config
+    format: avro

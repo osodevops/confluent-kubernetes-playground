@@ -1,0 +1,19 @@
+---
+# Source: grafana/templates/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: oso-grafana
+  namespace: default
+  labels:
+    app.kubernetes.io/name: grafana
+    helm.sh/chart: grafana-6.1.11
+    app.kubernetes.io/instance: oso
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: grafana
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "10Gi"

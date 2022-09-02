@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: production
+resources:
+  - namespace.yaml
+  - ../base
+  - cluster-link-rest-class.yaml
+  - demo-topic.yaml
+  - serviceaccount.yaml
+  - 1-producer-tls
+patchesStrategicMerge:
+  - kafka.yaml

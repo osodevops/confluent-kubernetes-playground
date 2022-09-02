@@ -1,0 +1,9 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: SchemaRegistry
+metadata:
+  name: schemaregistry
+spec:
+  replicas: 1
+  image:
+    application: confluentinc/cp-schema-registry:7.2.0
+    init: confluentinc/confluent-init-container:2.4.0

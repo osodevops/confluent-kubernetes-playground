@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: master
+resources:
+  - ../../../../base/cfk-components/confluent-no-auth-no-tls
+  - namespace.yaml
+  - schema-exporter-master-to-cats.yaml
+  - schema-exporter-master-to-dogs.yaml
+  - sr-linking-topic-demo.yaml
+  - master-rest-class.yaml
+  - password-encoder-secret.yaml
+  - schema-registry.yaml
+  - schemas
+patchesStrategicMerge:
+  - kafka.yaml
+  - zookeeper.yaml
+  - control-center.yaml

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-exporter
+spec:
+  selector:
+    matchLabels:
+      app: kafka-exporter
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: "server"
+        app: kafka-exporter
+    spec:
+      enableServiceLinks: true
+      serviceAccountName: oso-prometheus-server
+      containers:
+        - name: kafka-exporter
+          image: "danielqsj/kafka-exporter:latest"
+          imagePullPolicy: Always
+          args:
+            - --kafka.server=kafka:9092
+            - --sasl.enabled
+            - --sasl.mechanism=plain
+            - --sasl.username=kafka
+            - --sasl.password=kafka-secret
+            - --tls.enabled
+            - --tls.insecure-skip-tls-verify
+            - --verbosity=10
+          ports:
+            - name: "kexporter"
+              containerPort: 9308
+              protocol: TCP

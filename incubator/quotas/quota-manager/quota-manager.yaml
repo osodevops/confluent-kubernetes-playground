@@ -1,0 +1,52 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: quota-manager
+  namespace: sandbox
+spec:
+
+  template:
+    metadata:
+      labels:
+        app: quota-manager
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: quota-manager
+          image: quota-manager:latest
+          imagePullPolicy: Never
+          command:
+            - /tmp/quotas/apply-quotas-script.sh
+#            - "sleep"
+#            - "10000000"
+
+          resources:
+            requests:
+              memory: 512Mi # 768Mi
+              cpu: 500m # 1000m
+          volumeMounts:
+            - mountPath: /tmp/quotas
+              name: apply-quota-script
+            - mountPath: /tmp/quota-definition
+              name: oso-quota-example
+            - mountPath: /tmp/config-properties
+              name: config-properties
+            - mountPath: /mnt/sslcerts
+              name: sslcerts
+      volumes:
+        - name: config-properties
+          configMap:
+            defaultMode: 0777
+            name: config-properties
+        - name: oso-quota-example
+          configMap:
+            defaultMode: 0777
+            name: oso-quota-example
+        - name: apply-quota-script
+          configMap:
+            defaultMode: 0777
+            name: apply-quota-script
+        - name: sslcerts
+          secret:
+            secretName: kafka-generated-jks

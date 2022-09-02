@@ -1,0 +1,3 @@
+---
+# Source: filebeat/templates/deployment.yaml
+# Deploy singleton instance in the whole cluster for some unique data sources, like aws input

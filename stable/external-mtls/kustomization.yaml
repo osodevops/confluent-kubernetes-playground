@@ -1,0 +1,13 @@
+namespace: sandbox
+resources:
+  - ../../base/cfk-components/confluent-rbac
+  - ../../base/cfk-components/confluent-rbac/schema-registry
+  - ../../base/cfk-components/confluent-rbac/rest-proxy
+  - namespace.yaml
+patchesStrategicMerge:
+  - confluent/kafka.yaml
+  - confluent/zookeeper.yaml
+  - confluent/restproxy.yaml
+  - tls-generation/ca-pair-sslcerts.yaml
+
+

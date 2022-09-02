@@ -1,0 +1,22 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: ClusterLink
+metadata:
+  name: clusterlink-demo
+  namespace: failover
+spec:
+  destinationKafkaCluster:
+    kafkaRestClassRef:
+      name: failover-kafka-rest
+      namespace: failover
+  sourceKafkaCluster:
+    bootstrapEndpoint: kafka.production.svc.cluster.local:9071
+    authentication:
+      type: mtls
+    tls:
+      enabled: true
+      secretRef: kafka-generated-jks
+    kafkaRestClassRef:
+      name: production-kafka-rest
+      namespace: production
+  mirrorTopics:
+  - name: oso-clusterlink-demo

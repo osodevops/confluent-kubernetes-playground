@@ -1,0 +1,19 @@
+---
+# Source: prometheus/templates/server/pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    component: "server"
+    app: prometheus
+    release: oso
+    chart: prometheus-14.6.0
+    heritage: Helm
+  name: oso-prometheus-server
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "8Gi"

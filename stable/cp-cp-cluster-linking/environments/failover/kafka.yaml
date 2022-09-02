@@ -1,0 +1,18 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+spec:
+  image:
+    application: confluentinc/cp-server:7.0.1
+    init: confluentinc/confluent-init-container:2.2.0
+  configOverrides:
+    server:
+      - confluent.cluster.link.enable=true
+      - password.encoder.secret=${file:/mnt/secrets/password-encoder-secret/password_encoder_secret:secret}
+      - confluent.schema.registry.url=https://schemaregistry:8081
+      - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
+      - authorizer.class.name=io.confluent.kafka.security.authorizer.ConfluentServerAuthorizer
+      - confluent.authorizer.access.rule.providers=ZK_ACL,CONFLUENT

@@ -1,0 +1,16 @@
+---
+platform:
+  quotas:
+    global:
+      producer_byte_rate: 1024
+      consumer_byte_rate: 1024
+      request_percentage: 50.0
+    app-0:
+      producer_byte_rate: 4096
+      consumer_byte_rate: 2048
+      request_percentage: 50.0
+    app-2:
+      producer_byte_rate: 2048
+      consumer_byte_rate: 2048
+    app-3:
+      request_percentage: 80.0

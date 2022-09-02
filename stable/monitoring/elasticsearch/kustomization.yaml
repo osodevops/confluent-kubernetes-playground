@@ -1,0 +1,5 @@
+namespace: sandbox
+resources:
+  - poddisruptionbudget.yaml
+  - service.yaml
+  - statefulset.yaml

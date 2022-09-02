@@ -4,6 +4,7 @@ kind: ControlCenter
 metadata:
   name: controlcenter
 spec:
+  replicas: 0
   configOverrides:
     server:
       - confluent.controlcenter.internal.topics.replication=1

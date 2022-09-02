@@ -22,31 +22,23 @@ spec:
       type: plain
       jaasConfigPassThrough:
         secretRef: credential
-    tls:
-      enabled: false
   listeners:
     internal:
       authentication:
         type: plain
         jaasConfigPassThrough:
           secretRef: credential
-      tls:
-        enabled: false
     external:
       authentication:
         type: plain
         jaasConfigPassThrough:
           secretRef: credential
-      tls:
-        enabled: false
   authorization:
     type: rbac
     superUsers:
       - User:kafka
   services:
     mds:
-      tls:
-        enabled: false
       tokenKeyPair:
         secretRef: credential
       provider:
@@ -57,8 +49,6 @@ spec:
             type: simple
             simple:
               secretRef: credential
-          tls:
-            enabled: false
           configurations:
             groupNameAttribute: cn
             groupObjectClass: groupOfNames
@@ -76,11 +66,9 @@ spec:
         bearer:
           secretRef: credential
     zookeeper:
-      endpoint: zookeeper:2182
+      endpoint: zookeeper:2181
       authentication:
         type: digest
         jaasConfig:
           secretRef: credential
-      tls:
-        enabled: false
 

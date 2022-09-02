@@ -28,11 +28,12 @@ spec:
     # enabled, you must configure security properties for the SSL keystore and truststore used by the
     # Replicator monitoring extension to communicate with other Connect nodes in the cluster.
     # `/mnt/sslcerts/truststore.jks` is the truststore location when auto-genarated certs are used.
-    jvm:
-      - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.jks
-      - -Djavax.net.ssl.trustStorePassword=mystorepassword
+#    jvm:
+#      - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.jks
+#      - -Djavax.net.ssl.trustStorePassword=mystorepassword
     server:
       - connector.class=io.confluent.connect.replicator.ReplicatorSourceConnector
+      - rest.extension.classes=io.confluent.connect.replicator.monitoring.ReplicatorMonitoringExtension
       - offset.storage.replication.factor=1
       - confluent.topic.replication.factor=1
       - config.storage.replication.factor=1
@@ -46,15 +47,15 @@ spec:
           secretRef: credential
       tls:
         enabled: true
-    mds:
-      endpoint: https://kafka:8090
-      tokenKeyPair:
-        secretRef: credential
-      authentication:
-        type: bearer
-        bearer:
-          secretRef: credential
-      tls:
-        enabled: true
+#    mds:
+#      endpoint: http://kafka:8090
+#      tokenKeyPair:
+#        secretRef: credential
+#      authentication:
+#        type: bearer
+#        bearer:
+#          secretRef: credential
+#      tls:
+#        enabled: true
     interceptor:
       enabled: true

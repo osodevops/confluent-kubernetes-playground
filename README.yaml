@@ -45,6 +45,10 @@ examples: |-
     * [Confluent Schema CRD to declaratively create, read, and delete schemas](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/stable/schema)
 
   ### Broken / WIP Deployments
+    * [Multi-Datacenter Schema Registry Deployment with Leader and Follower](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/incubator/tiered-storage)
+    * [Kafka Tiered Storage to reduce storage costs](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/incubator/tiered-storage)
+    * [Enforcing Kafka quotas by User or client Id](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/incubator/quotas)
+    * [Schema Registry linking across two Schema Registry clusters](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/incubator/schema-registry-linking)
     * [Vault PKI integration with dynamic SSL](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/broken/pki-vault--waiting-for-kafka-2.7)
     * [Cloud to Cloud replication using Confluent replicator in CFK](https://github.com/osodevops/confluent-kubernetes-playground/tree/main/broken/replicator)
 

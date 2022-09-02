@@ -1,0 +1,22 @@
+---
+# Source: filebeat/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: oso-filebeat-cluster-role
+  labels:
+    app: "oso-filebeat"
+    chart: "filebeat-7.14.0"
+    heritage: "Helm"
+    release: "oso"
+rules: 
+  - apiGroups:
+    - ""
+    resources:
+    - namespaces
+    - nodes
+    - pods
+    verbs:
+    - get
+    - list
+    - watch

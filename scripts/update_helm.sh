@@ -1,8 +1,11 @@
 #!/bin/bash
 
-
-export APP_VERSION=2.3.0
-export CHART_VERSION=0.435.11
+export APP_VERSION=2.4.1
+export CHART_VERSION=0.517.23
+#export APP_VERSION=2.4.0
+#export CHART_VERSION=0.517.12
+#export APP_VERSION=2.3.0
+#export CHART_VERSION=0.435.11
 #export APP_VERSION=2.2.1
 #export CHART_VERSION=0.304.17
 #export APP_VERSION=2.2.0
@@ -29,7 +32,8 @@ helm search repo confluent --versions
 helm template confluentinc/confluent-for-kubernetes --version $CHART_VERSION --include-crds --set namespaced=false --output-dir .
 mkdir -p ../base/cfk-base/$APP_VERSION/crds
 mkdir -p ../base/cfk-base/$APP_VERSION/templates
-ln -s ./$APP_VERSION ../base/cfk-base/latest
+#FIX need to remove old sym link before creating new one
+rm ../base/cfk-base/latest && ln -s ./$APP_VERSION ../base/cfk-base/latest
 
 mv confluent-for-kubernetes/crds/* ../base/cfk-base/$APP_VERSION/crds
 mv confluent-for-kubernetes/templates/* ../base/cfk-base/$APP_VERSION/templates

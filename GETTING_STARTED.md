@@ -14,7 +14,7 @@ Before you can deploy any of the deployment examples found in `./stable` and `./
 Unless otherwise started in the README.md of each example, it should be assumed that we will deploy the example by running
   ```shell
   export EXAMPLE=base-rbac
-  kubectl apply -kustomize ./stable/$EXAMPLE
+  kubectl apply -k ./stable/$EXAMPLE
   ```
 
 

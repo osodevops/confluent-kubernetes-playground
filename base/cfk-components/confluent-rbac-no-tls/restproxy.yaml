@@ -1,0 +1,33 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestProxy
+metadata:
+  name: kafkarestproxy
+spec:
+  replicas: 1
+  authentication:
+    type: basic
+    basic:
+      secretRef: credential
+  authorization:
+    type: rbac
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka:9071
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: credential
+    schemaRegistry:
+      url: https://schemaregistry:8081
+      authentication:
+        type: basic
+        basic:
+          secretRef: credential
+    mds:
+      endpoint: https://kafka:8090
+      authentication:
+        type: bearer
+        bearer:
+          secretRef: credential
+      tokenKeyPair:
+        secretRef: credential

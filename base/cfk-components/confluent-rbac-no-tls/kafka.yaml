@@ -4,13 +4,10 @@ metadata:
   name: kafka
 spec:
   replicas: 3
-  image:
-    application: confluentinc/cp-server:7.2.0
-    init: confluentinc/confluent-init-container:2.4.0
   dataVolumeCapacity: 10Gi
   configOverrides:
     server:
-      - confluent.schema.registry.url=http://schemaregistry:8081
+      - confluent.schema.registry.url=https://schemaregistry:8081
       - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
@@ -39,6 +36,8 @@ spec:
       - User:kafka
   services:
     mds:
+      tls:
+        enabled: true
       tokenKeyPair:
         secretRef: credential
       provider:
@@ -71,4 +70,5 @@ spec:
         type: digest
         jaasConfig:
           secretRef: credential
+
 

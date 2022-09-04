@@ -4,11 +4,13 @@ metadata:
   name: kafka
 spec:
   replicas: 3
-  image:
-    application: confluentinc/cp-server:7.2.0
-    init: confluentinc/confluent-init-container:2.4.0
   dataVolumeCapacity: 10Gi
+  configOverrides:
+    server:
+      - confluent.schema.registry.url=https://schemaregistry:8081
   metricReporter:
     enabled: true
-
+  dependencies:
+    zookeeper:
+      endpoint: zookeeper:2181
 

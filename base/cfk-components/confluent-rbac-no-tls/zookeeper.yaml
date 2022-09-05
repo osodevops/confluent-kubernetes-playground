@@ -4,9 +4,6 @@ metadata:
   name: zookeeper
 spec:
   replicas: 3
-  image:
-    application: confluentinc/cp-zookeeper:7.2.0
-    init: confluentinc/confluent-init-container:2.4.0
   dataVolumeCapacity: 10Gi
   logVolumeCapacity: 10Gi
   authentication:

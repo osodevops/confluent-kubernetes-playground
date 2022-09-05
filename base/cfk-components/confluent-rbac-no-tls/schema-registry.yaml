@@ -1,10 +1,9 @@
 apiVersion: platform.confluent.io/v1beta1
-kind: ControlCenter
+kind: SchemaRegistry
 metadata:
-  name: controlcenter
+  name: schemaregistry
 spec:
   replicas: 1
-  dataVolumeCapacity: 10Gi
   authorization:
     type: rbac
   dependencies:
@@ -15,21 +14,11 @@ spec:
         jaasConfig:
           secretRef: credential
     mds:
-      endpoint: https://kafka:8090
+      endpoint: http://kafka:8090
       tokenKeyPair:
         secretRef: credential
       authentication:
         type: bearer
         bearer:
           secretRef: credential
-    connect:
-      - name: connect
-        url: https://connect:8083
-    ksqldb:
-      - name: ksqldb
-        url: https://ksqldb:8088
-        tls:
-          enabled: true
-    schemaRegistry:
-      url: https://schemaregistry:8081
 

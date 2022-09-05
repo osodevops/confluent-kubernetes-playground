@@ -1,7 +1,7 @@
 apiVersion: platform.confluent.io/v1beta1
-kind: ControlCenter
+kind: KsqlDB
 metadata:
-  name: controlcenter
+  name: ksqldb
 spec:
   replicas: 1
   dataVolumeCapacity: 10Gi
@@ -26,19 +26,4 @@ spec:
         type: bearer
         bearer:
           secretRef: credential
-      tls:
-        enabled: true
-    connect:
-      - name: connect
-        url: https://connect:8083
-        tls:
-          enabled: true
-    ksqldb:
-      - name: ksqldb
-        url: https://ksqldb:8088
-        tls:
-          enabled: true
-    schemaRegistry:
-      url: https://schemaregistry:8081
-      tls:
-        enabled: true
+

@@ -1,0 +1,11 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: SchemaRegistry
+metadata:
+  name: schemaregistry
+spec:
+  replicas: 1
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka:9071
+
+

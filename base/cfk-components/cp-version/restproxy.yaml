@@ -4,6 +4,6 @@ metadata:
   name: kafkarestproxy
 spec:
   image:
-    application: confluentinc/cp-kafka-rest:7.2.0
+    application: confluentinc/cp-kafka-rest:7.2.1
     init: confluentinc/confluent-init-container:2.4.0
 

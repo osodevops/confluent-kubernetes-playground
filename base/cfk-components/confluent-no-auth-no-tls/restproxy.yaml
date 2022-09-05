@@ -8,5 +8,5 @@ spec:
     kafka:
       bootstrapEndpoint: kafka:9071
     schemaRegistry:
-      url: https://schemaregistry:8081
+      url: http://schemaregistry:8081
 

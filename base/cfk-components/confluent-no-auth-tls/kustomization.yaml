@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   - ../../../resources/application-secrets-rbac
   - ../cp-version
-  - rest-class.yaml
 patchesStrategicMerge:
   - control-centre.yaml
   - kafka.yaml

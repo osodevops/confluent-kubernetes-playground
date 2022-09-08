@@ -2,14 +2,8 @@
 apiVersion: platform.confluent.io/v1beta1
 kind: ControlCenter
 metadata:
-  name: dc2
+  name: controlcenter
 spec:
-  configOverrides:
-    server:
-      - confluent.controlcenter.internal.topics.replication=1
-      - confluent.controlcenter.command.topic.replication=1
-      - confluent.monitoring.interceptor.topic.replication=1
-      - confluent.metrics.topic.replication=1
   monitoringKafkaClusters:
     - name: dc1
       bootstrapEndpoint: kafka.dc1.svc.cluster.local:9071
@@ -17,3 +11,13 @@ spec:
         type: plain
         oauthbearer:
           secretRef: credential
+  dependencies:
+    connect:
+      - name: connect
+        url: https://connect:8083
+        tls:
+          enabled: true
+      - name: replicator
+        url: https://replicator:8083
+        tls:
+          enabled: true

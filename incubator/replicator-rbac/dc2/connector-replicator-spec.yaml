@@ -13,7 +13,7 @@ spec:
          bearer:
             secretRef: credential
   configs:
-     topic.whitelist: "pageviews, _schemas_schemaregistry_dc1"
+     topic.whitelist: "cfk-playground-producer-topic"
      key.converter: "io.confluent.connect.replicator.util.ByteArrayConverter"
      value.converter: "io.confluent.connect.replicator.util.ByteArrayConverter"
      src.kafka.sasl.mechanism: "PLAIN"
@@ -31,7 +31,7 @@ spec:
      src.consumer.group.id: "replicator"
      src.consumer.confluent.monitoring.interceptor.sasl.mechanism: "PLAIN"
      src.consumer.interceptor.classes: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
-     src.consumer.confluent.monitoring.interceptor.bootstrap.servers: "kafka.dc1.svc.cluster.local:9092"
+     src.consumer.confluent.monitoring.interceptor.bootstrap.servers: "kafka.source.svc.cluster.local:9092"
      src.consumer.confluent.monitoring.interceptor.security.protocol: "SASL_SSL"
      src.consumer.confluent.monitoring.interceptor.ssl.truststore.location: "/mnt/sslcerts/truststore.jks"
      src.consumer.confluent.monitoring.interceptor.ssl.truststore.password: "mystorepassword"

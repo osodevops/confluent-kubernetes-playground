@@ -3,29 +3,42 @@ kind: Kafka
 metadata:
   name: kafka
 spec:
-  replicas: 3
+  podTemplate:
+    resources:
+      requests:
+        cpu: 100m # 1
+        memory: 512Mi # 4Gi
   configOverrides:
     server:
+      - confluent.schema.registry.url=https://schemaregistry:8081
       - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-      - confluent.schema.registry.url=https://schemaregistry:8081
-  metricReporter:
-    bootstrapEndpoint: kafka:9071
-    enabled: true
-    authentication:
-      type: plain
-      jaasConfigPassThrough:
-        secretRef: credential
+      - authorizer.class.name=io.confluent.kafka.security.authorizer.ConfluentServerAuthorizer
+      - confluent.authorizer.access.rule.providers=ZK_ACL,CONFLUENT
   listeners:
     internal:
       authentication:
         type: plain
         jaasConfigPassThrough:
           secretRef: credential
+        jaasConfig: null
+#          secretRef: credential
+      tls:
+        enabled: true
     external:
       authentication:
         type: plain
         jaasConfigPassThrough:
           secretRef: credential
-
+        jaasConfig: null
+#          secretRef: credential
+      externalAccess:
+        type: loadBalancer
+        loadBalancer:
+          bootstrapPrefix: bootstrap
+          brokerPrefix: broker
+          domain: dc1.com
+      tls:
+        enabled: true
+        secretRef: external-tls-dc1

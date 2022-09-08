@@ -1,0 +1,8 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Schema
+metadata:
+  name: pageviews
+spec:
+  data:
+    configRef: pageviews
+    format: avro

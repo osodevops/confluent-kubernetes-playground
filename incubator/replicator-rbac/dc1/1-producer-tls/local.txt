@@ -1,0 +1,12 @@
+kafka-avro-console-producer \
+    --bootstrap-server localhost:9071 \
+    --topic cfk-playground-producer-topic  \
+    --property parse.key=true \
+    --property "key.separator= "\
+    --property key.schema='{"type":"string"}' \
+    --property value.schema='{"type":"record","name":"myrecord","fields":[{"name":"f1","type":"string"}]}' \
+    --property schema.registry.url=https://localhost:8081
+    --record-size 1024 \
+    --throughput 50 \
+    --producer.config /mnt/kafka.properties \
+    --num-records 10000000

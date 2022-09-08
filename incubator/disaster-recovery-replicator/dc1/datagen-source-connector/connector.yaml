@@ -1,0 +1,37 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: pageviews
+  namespace: confluent
+spec:
+  class: "io.confluent.kafka.connect.datagen.DatagenConnector"
+  taskMax: 4
+  connectClusterRef:
+    name: connect
+  connectRest:
+    authentication:
+      type: bearer
+      bearer:
+        secretRef: credential
+  configs:
+    kafka.topic: "pageviews"
+    quickstart: "pageviews"
+    key.converter.basic.auth.credentials.source: "USER_INFO"
+    key.converter.schemas.enable: "true"
+    key.converter: "io.confluent.connect.avro.AvroConverter"
+    key.converter.schema.registry.url: "https://schemaregistry:8081"
+    key.converter.schema.registry.basic.auth.user.info: "kafka:kafka-secret"
+    key.converter.schema.registry.ssl.truststore.location: "/mnt/sslcerts/truststore.jks"
+    key.converter.schema.registry.ssl.truststore.password: "${file:/mnt/sslcerts/jksPassword.txt:jksPassword}"
+    value.converter.basic.auth.credentials.source: "USER_INFO"
+    value.converter.schemas.enable: "true"
+    value.converter: "io.confluent.connect.avro.AvroConverter"
+    value.converter.schema.registry.url: "https://schemaregistry:8081"
+    value.converter.schema.registry.basic.auth.user.info: "kafka:kafka-secret"
+    value.converter.schema.registry.ssl.truststore.location: "/mnt/sslcerts/truststore.jks"
+    value.converter.schema.registry.ssl.truststore.password: "${file:/mnt/sslcerts/jksPassword.txt:jksPassword}"
+    max.interval: "100"
+    iterations: "10000000"
+
+

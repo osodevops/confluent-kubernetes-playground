@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dc2
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dc1

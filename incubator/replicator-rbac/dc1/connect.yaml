@@ -1,0 +1,7 @@
+apiVersion: platform.confluent.io/v1beta1
+# Confluent Replicator is built as a connector, and so will use the `Connect` CRD.
+kind: Connect
+metadata:
+  name: connect
+spec:
+  replicas: 1

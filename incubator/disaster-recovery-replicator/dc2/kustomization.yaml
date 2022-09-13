@@ -11,4 +11,4 @@ patchesStrategicMerge:
   - connect.yaml
   - schema-registry.yaml
 #  - kafka.yaml
-#  - control-center.yaml
+  - control-center.yaml

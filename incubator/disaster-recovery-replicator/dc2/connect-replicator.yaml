@@ -23,9 +23,14 @@ spec:
     jvm:
       - -Djavax.net.ssl.trustStore=/mnt/sslcerts/truststore.jks
       - -Djavax.net.ssl.trustStorePassword=mystorepassword
+      - -Djavax.net.ssl.keyStore=/mnt/sslcerts/truststore.jks
+      - -Djavax.net.ssl.keyStorePassword=mystorepassword
     server:
       - connector.class=io.confluent.connect.replicator.ReplicatorSourceConnector
-      - rest.extension.classes=io.confluent.connect.replicator.monitoring.ReplicatorMonitoringExtension
+#      - rest.extension.classes=io.confluent.connect.replicator.monitoring.ReplicatorMonitoringExtension,io.confluent.connect.security.ConnectSecurityExtension,io.confluent.connect.secretregistry.ConnectSecretRegistryExtension
+      - rest.extension.classes=io.confluent.connect.security.ConnectSecurityExtension,io.confluent.connect.replicator.monitoring.ReplicatorMonitoringExtension
+    log4j:
+      - log4j.rootLogger=ERROR, stdout
   dependencies:
     kafka:
       bootstrapEndpoint: kafka:9071
@@ -45,5 +50,5 @@ spec:
           secretRef: credential
       tls:
         enabled: true
-    interceptor:
-      enabled: true
+#    interceptor:
+#      enabled: true

@@ -10,6 +10,8 @@ spec:
       - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
       - confluent.schema.registry.url=https://schemaregistry:8081
+    log4j:
+      - log4j.rootLogger=ERROR, stdout
   metricReporter:
     bootstrapEndpoint: kafka:9071
     enabled: true

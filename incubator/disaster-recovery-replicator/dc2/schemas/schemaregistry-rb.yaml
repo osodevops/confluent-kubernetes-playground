@@ -11,3 +11,27 @@ spec:
     name: kafka
     type: user
   role: ClusterAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: replicator-0
+spec:
+  clustersScopeByIds:
+    connectClusterId: dc2.replicator
+  principal:
+    name: kafka
+    type: user
+  role: ClusterAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: connect-0
+spec:
+  clustersScopeByIds:
+    connectClusterId: dc2.connect
+  principal:
+    name: kafka
+    type: user
+  role: ClusterAdmin

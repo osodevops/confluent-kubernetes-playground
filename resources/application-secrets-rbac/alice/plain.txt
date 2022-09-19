@@ -1,0 +1,2 @@
+username=alice
+password=alice-secret

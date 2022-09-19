@@ -4,10 +4,12 @@ namespace: dc1
 resources:
 - ../../../base/cfk-components/confluent-rbac
 - datagen-source-connector
-- schemas
-#- 1-producer-tls
+#- schemas
+- replicator-rb-dc1.yaml
 patchesStrategicMerge:
   - connect.yaml
   - kafka.yaml
+  - ksqldb.yaml
+  - restproxy.yaml
   - zookeeper.yaml
   - control-center.yaml

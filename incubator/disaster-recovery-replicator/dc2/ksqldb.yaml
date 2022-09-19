@@ -1,6 +1,8 @@
 apiVersion: platform.confluent.io/v1beta1
-kind: Connect
+kind: KsqlDB
 metadata:
-  name: connect
+  name: ksqldb
 spec:
   replicas: 0
+
+

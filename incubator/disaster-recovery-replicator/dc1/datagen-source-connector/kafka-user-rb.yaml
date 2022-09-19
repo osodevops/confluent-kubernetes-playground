@@ -1,0 +1,25 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: connect-1
+spec:
+  clustersScopeByIds:
+    connectClusterId: dc1.connect
+  principal:
+    name: kafka
+    type: user
+  role: ClusterAdmin
+---
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: schemaregistry-0
+spec:
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_schemaregistry_dc1
+  principal:
+    name: kafka
+    type: user
+  role: SystemAdmin

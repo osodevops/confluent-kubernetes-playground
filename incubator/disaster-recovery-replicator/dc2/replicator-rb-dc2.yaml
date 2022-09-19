@@ -1,0 +1,94 @@
+#apiVersion: platform.confluent.io/v1beta1
+#kind: ConfluentRolebinding
+#metadata:
+#  name: pageviews-rb
+#spec:
+#  principal:
+#    name: alice
+#    type: user
+#  resourcePatterns:
+#    - name: dc2.replicator
+#      patternType: PREFIXED
+#      resourceType: Topic
+#    - name: dc2.replicator
+#      patternType: LITERAL
+#      resourceType: Group
+#    - name: replictor
+#      patternType: LITERAL
+#      resourceType: Group
+#    - name: _confluent
+#      patternType: PREFIXED
+#      resourceType: Topic
+#    - name: pageviews
+#      patternType: LITERAL
+#      resourceType: Topic
+#    - name: _schemas_schemaregistry_dc1
+#      patternType: LITERAL
+#      resourceType: Topic
+#    - name: __consumer_timestamps
+#      patternType: LITERAL
+#      resourceType: Topic
+#    - name: __consumer_offsets
+#      patternType: LITERAL
+#      resourceType: Topic
+#  role: ResourceOwner
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: replicator-cluster-alice
+spec:
+  principal:
+    type: user
+    name: alice
+  clustersScopeByIds:
+    connectClusterId: dc2.replicator
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: replicator-cluster-kafka
+spec:
+  principal:
+    type: user
+    name: kafka
+  clustersScopeByIds:
+    connectClusterId: dc2.replicator
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: schemaregistry-kafka-user
+spec:
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_schemaregistry_dc2
+  principal:
+    name: alice
+    type: user
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: schemaregistry-alice-user
+spec:
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_schemaregistry_dc2
+  principal:
+    name: kafka
+    type: user
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: replicator-cluster-systemadmin
+spec:
+  kafkaRestClassRef:
+    name: default
+  principal:
+    name: alice
+    type: user
+  role: SystemAdmin

@@ -5,10 +5,12 @@ resources:
 - ../../../base/cfk-components/confluent-rbac
 - connect-replicator.yaml
 - connector-replicator-spec.yaml
-- schemas
+- replicator-rb-dc2.yaml
 patchesStrategicMerge:
   - zookeeper.yaml
   - connect.yaml
   - schema-registry.yaml
+  - ksqldb.yaml
+  - restproxy.yaml
 #  - kafka.yaml
   - control-center.yaml

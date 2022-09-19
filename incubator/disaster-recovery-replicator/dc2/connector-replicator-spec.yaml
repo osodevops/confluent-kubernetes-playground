@@ -13,7 +13,7 @@ spec:
          bearer:
             secretRef: credential-alice
   configs:
-     topic.whitelist: "pageviews, _schemas_schemaregistry_dc1"
+     topic.whitelist: "pageviews, _schemas_schemaregistry_dc1, inventory"
      topic.regex: "(?!__confluent.|_confluent.|connect.|__consumer_offsets|_schemas$).*"
 #     topic.regex: "^(?!page)"
      key.converter: "io.confluent.connect.replicator.util.ByteArrayConverter"

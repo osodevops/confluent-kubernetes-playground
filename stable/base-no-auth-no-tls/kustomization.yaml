@@ -4,4 +4,4 @@ namespace: sandbox
 resources:
 - namespace.yaml
 - ../../base/cfk-components/confluent-no-auth-no-tls
-- ../../base/cfk-components/confluent-no-auth-no-tls/ksqldb
+

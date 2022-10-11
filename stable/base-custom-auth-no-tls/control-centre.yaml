@@ -1,0 +1,19 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: ControlCenter
+metadata:
+  name: controlcenter
+spec:
+  authentication:
+    type: basic
+    basic:
+      secretRef: credential
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka:9071
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: credential
+    connect: null
+    ksqldb: null
+    schemaRegistry: null

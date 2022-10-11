@@ -1,0 +1,31 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+spec:
+  replicas: 3
+  dataVolumeCapacity: 10Gi
+  configOverrides:
+    server:
+      - confluent.schema.registry.url=http://schemaregistry:8081
+  metricReporter:
+    enabled: true
+    bootstrapEndpoint: kafka:9071
+    authentication:
+      type: plain
+      jaasConfig:
+        secretRef: credential
+  listeners:
+    internal:
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: credential
+  dependencies:
+    zookeeper:
+      endpoint: zookeeper:2181
+      authentication:
+        type: digest
+        jaasConfig:
+          secretRef: credential
+

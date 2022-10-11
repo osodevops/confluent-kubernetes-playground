@@ -10,9 +10,9 @@ spec:
       bootstrapEndpoint: kafka:9071
     connect:
       - name: connect
-        url: https://connect:8083
+        url: http://connect:8083
     ksqldb:
       - name: ksqldb
-        url: https://ksqldb:8088
+        url: http://ksqldb:8088
     schemaRegistry:
-      url: https://schemaregistry:8081
+      url: http://schemaregistry:8081

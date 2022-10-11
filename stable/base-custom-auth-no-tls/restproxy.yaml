@@ -1,0 +1,7 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestProxy
+metadata:
+  name: kafkarestproxy
+spec:
+  replicas: 0
+

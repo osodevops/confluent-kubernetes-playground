@@ -7,7 +7,7 @@ spec:
   dataVolumeCapacity: 10Gi
   configOverrides:
     server:
-      - confluent.schema.registry.url=https://schemaregistry:8081
+      - confluent.schema.registry.url=http://schemaregistry:8081
   metricReporter:
     enabled: true
   dependencies:

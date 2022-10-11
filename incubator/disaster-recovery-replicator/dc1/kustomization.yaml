@@ -3,9 +3,13 @@ kind: Kustomization
 namespace: dc1
 resources:
 - ../../../base/cfk-components/confluent-rbac
+- ../../../resources/application-secrets-rbac/alice
+- ../../../resources/application-secrets-rbac/emmy
 - datagen-source-connector
+- replicator
 #- schemas
 - replicator-rb-dc1.yaml
+- 1-producer-tls
 patchesStrategicMerge:
   - connect.yaml
   - kafka.yaml

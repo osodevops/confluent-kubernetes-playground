@@ -1,0 +1,17 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: StressChaos
+metadata:
+  name: broker-memory-stress
+spec:
+  mode: one
+  selector:
+    namespaces:
+      - 'master'
+    labelSelectors:
+      "statefulset.kubernetes.io/pod-name": "zookeeper-0"
+#       "app": "kafka"
+  stressors:
+    memory:
+      workers: 4
+      size: '3G'
+  duration: "1m"

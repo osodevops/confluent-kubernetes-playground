@@ -28,7 +28,7 @@ spec:
                 --record-size 1024 \
                 --throughput -1 \
                 --producer.config /mnt/kafka.properties \
-                --num-records 10000000
+                --num-records 10
           volumeMounts:
             - name: kafka-properties
               mountPath: /mnt

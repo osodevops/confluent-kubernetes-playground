@@ -1,0 +1,84 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: connect-1
+spec:
+  clustersScopeByIds:
+    connectClusterId: dc2.connect
+  principal:
+    name: kafka
+    type: user
+  role: ClusterAdmin
+#---
+#apiVersion: platform.confluent.io/v1beta1
+#kind: ConfluentRolebinding
+#metadata:
+#  name: kafka-cluster-emmy
+#spec:
+#  clustersScopeByIds:
+#    kafkaClusterId: default
+#  principal:
+#    name: emmy
+#    type: user
+#  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: alice-connect-1
+spec:
+  clustersScopeByIds:
+    connectClusterId: dc2.connect
+  principal:
+    name: alice
+    type: user
+  role: ClusterAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: emmy-connect-1
+spec:
+  clustersScopeByIds:
+    connectClusterId: dc2.connect
+  principal:
+    name: emmy
+    type: user
+  role: ClusterAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: schemaregistry-0
+spec:
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_schemaregistry_dc2
+  principal:
+    name: kafka
+    type: user
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: alice-schemaregistry-0
+spec:
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_schemaregistry_dc2
+  principal:
+    name: alice
+    type: user
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: emmy-schemaregistry-0
+spec:
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_schemaregistry_dc2
+  principal:
+    name: emmy
+    type: user
+  role: SystemAdmin

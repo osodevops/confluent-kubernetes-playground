@@ -3,4 +3,13 @@ kind: Connect
 metadata:
   name: connect
 spec:
-  replicas: 0
+  replicas: 1
+  build:
+    type: onDemand
+    onDemand:
+      plugins:
+        locationType: confluentHub
+        confluentHub:
+          - name: kafka-connect-datagen
+            owner: confluentinc
+            version: 0.5.3

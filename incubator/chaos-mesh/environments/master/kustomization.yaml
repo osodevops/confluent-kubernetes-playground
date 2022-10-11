@@ -6,7 +6,7 @@ resources:
   - namespace.yaml
   - sr-linking-topic-demo.yaml
   - master-rest-class.yaml
-  - schema-registry.yaml
   - schemas
 patchesStrategicMerge:
   - kafka.yaml
+  - schema-registry.yaml

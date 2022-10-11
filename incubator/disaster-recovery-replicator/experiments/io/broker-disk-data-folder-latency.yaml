@@ -1,0 +1,15 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: IOChaos
+metadata:
+  name: broker-disk-data-folder-latency-fault
+  namespace: master
+spec:
+  action: latency
+  mode: one
+  selector:
+    labelSelectors:
+      "app": "kafka"
+  volumePath: /mnt/data/data0
+  delay: '200ms'
+  percent: 50
+  duration: '1m'

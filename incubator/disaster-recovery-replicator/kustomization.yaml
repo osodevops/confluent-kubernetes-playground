@@ -5,6 +5,8 @@ resources:
 #- filebeat
 #- kibana
 #- logstash
+#- chaos-mesh
+#- experiments
 - dc1-namespace.yaml
 - dc2-namespace.yaml
 - dc1

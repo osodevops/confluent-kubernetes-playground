@@ -5,6 +5,29 @@ metadata:
   name: controlcenter
 spec:
   replicas: 1
+  configOverrides:
+    server:
+      - confluent.controlcenter.connect.healthcheck.endpoint=/connectors
+    #  monitoringKafkaClusters:
+    #    - name: dc1
+    #      bootstrapEndpoint: kafka.dc1.svc.cluster.local:9071
+    #      authentication:
+    #        type: oauthbearer
+    #        oauthbearer:
+    #          secretRef: credential
+    #      tls:
+    #        enabled: true
+    #        secretRef: credential
+  dependencies:
+    connect:
+      - name: connect
+        url: https://connect:8083
+        tls:
+          enabled: true
+      - name: replicator
+        url: https://replicator:8083
+        tls:
+          enabled: true
 #  configOverrides:
 #    server:
 #      - confluent.controlcenter.internal.topics.replication=1

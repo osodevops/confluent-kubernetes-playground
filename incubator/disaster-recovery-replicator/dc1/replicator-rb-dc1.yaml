@@ -2,10 +2,42 @@
 apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
-  name: replicator-rb-dc1
+  name: replicator-rb-dc1-alice
 spec:
   principal:
     name: alice
+    type: user
+  resourcePatterns:
+    - name: replicator
+      patternType: LITERAL
+      resourceType: Group
+    - name: _confluent-command
+      patternType: LITERAL
+      resourceType: Topic
+    - name: pageviews
+      patternType: LITERAL
+      resourceType: Topic
+    - name: inventory
+      patternType: LITERAL
+      resourceType: Topic
+    - name: inventory
+      patternType: LITERAL
+      resourceType: Topic
+    - name: _schemas_schemaregistry_dc1
+      patternType: LITERAL
+      resourceType: Topic
+    - name: __consumer_timestamps
+      patternType: LITERAL
+      resourceType: Topic
+  role: ResourceOwner
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: replicator-rb-dc1-emmy
+spec:
+  principal:
+    name: emmy
     type: user
   resourcePatterns:
     - name: replicator
@@ -27,7 +59,6 @@ spec:
       patternType: LITERAL
       resourceType: Topic
   role: ResourceOwner
----
 #apiVersion: platform.confluent.io/v1beta1
 #kind: ConfluentRolebinding
 #metadata:

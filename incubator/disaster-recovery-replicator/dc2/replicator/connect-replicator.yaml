@@ -28,6 +28,9 @@ spec:
     server:
       - connector.class=io.confluent.connect.replicator.ReplicatorSourceConnector
       - rest.extension.classes=io.confluent.connect.security.ConnectSecurityExtension,io.confluent.connect.replicator.monitoring.ReplicatorMonitoringExtension
+      - confluent.monitoring.interceptor.sasl.login.callback.handler.class=io.confluent.kafka.clients.plugins.auth.token.TokenUserLoginCallbackHandler
+#    log4j:
+#      - log4j.rootLogger=DEBUG, stdout
   dependencies:
     kafka:
       bootstrapEndpoint: kafka:9071
@@ -47,4 +50,22 @@ spec:
           secretRef: credential
       tls:
         enabled: true
+    interceptor:
+      enabled: true
+      consumer:
+        bootstrapEndpoint: kafka:9073
+        tls:
+          enabled: true
+        authentication:
+          type: plain
+          jaasConfigPassThrough:
+            secretRef: credential
+      producer:
+        bootstrapEndpoint: kafka:9073
+        tls:
+          enabled: true
+        authentication:
+          type: plain
+          jaasConfigPassThrough:
+            secretRef: credential
 

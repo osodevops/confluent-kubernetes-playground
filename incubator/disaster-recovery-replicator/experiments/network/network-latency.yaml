@@ -1,0 +1,16 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: network-delay
+spec:
+  action: delay
+  mode: one
+  selector:
+    namespaces:
+      - master
+    labelSelectors:
+      'app': 'kafka'
+  delay:
+    latency: '1000ms'
+    correlation: '100'
+    jitter: '0ms'

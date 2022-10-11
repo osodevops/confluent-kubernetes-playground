@@ -3,9 +3,10 @@ kind: Kustomization
 namespace: dc2
 resources:
 - ../../../base/cfk-components/confluent-rbac
-- connect-replicator.yaml
-- connector-replicator-spec.yaml
-- replicator-rb-dc2.yaml
+- ../../../resources/application-secrets-rbac/alice
+- ../../../resources/application-secrets-rbac/emmy
+- replicator
+#- datagen-source-connector-failover
 patchesStrategicMerge:
   - zookeeper.yaml
   - connect.yaml

@@ -1,0 +1,13 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: kafka-pod-failure-single
+spec:
+  action: pod-failure
+  mode: one
+  duration: '2m'
+  selector:
+    namespaces:
+      - master
+    labelSelectors:
+      'app': 'kafka'

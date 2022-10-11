@@ -13,4 +13,22 @@ spec:
           - name: kafka-connect-datagen
             owner: confluentinc
             version: 0.5.3
-
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka:9071
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: credential-emmy
+      tls:
+        enabled: true
+    mds:
+      endpoint: https://kafka:8090
+      tokenKeyPair:
+        secretRef: credential-emmy
+      authentication:
+        type: bearer
+        bearer:
+          secretRef: credential-emmy
+      tls:
+        enabled: true

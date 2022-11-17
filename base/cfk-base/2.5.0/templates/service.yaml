@@ -1,0 +1,24 @@
+---
+# Source: confluent-for-kubernetes/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: confluent-for-kubernetes
+    app.kubernetes.io/name: confluent-for-kubernetes
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: "confluent-operator"
+    helm.sh/chart: confluent-for-kubernetes-0.581.16
+  name: confluent-operator
+  namespace:  cft-plt-qa
+spec:
+  ports:
+    - name: http-metric
+      port: 7778
+      protocol: TCP
+      targetPort: 7778
+  selector:
+    app: "confluent-operator"
+    app.kubernetes.io/name: "confluent-operator"
+  type: ClusterIP

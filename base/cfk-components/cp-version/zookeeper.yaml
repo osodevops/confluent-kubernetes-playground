@@ -4,5 +4,5 @@ metadata:
   name: zookeeper
 spec:
   image:
-    application: confluentinc/cp-zookeeper:7.2.1
-    init: confluentinc/confluent-init-container:2.4.0
+    application: confluentinc/cp-zookeeper:7.3.0
+    init: confluentinc/confluent-init-container:2.5.0

@@ -1,0 +1,16 @@
+---
+# Source: confluent-for-kubernetes/templates/licensing.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    app: confluent-for-kubernetes
+    app.kubernetes.io/name: confluent-for-kubernetes
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: "confluent-operator"
+    helm.sh/chart: confluent-for-kubernetes-0.581.16
+  namespace: cft-plt-qa
+  name: confluent-operator-licensing
+type: Opaque
+data:

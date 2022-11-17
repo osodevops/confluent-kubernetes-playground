@@ -1,0 +1,8 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KsqlDB
+metadata:
+  name: ksqldb
+spec:
+  image:
+    application: confluentinc/cp-ksqldb-server:7.2.1
+    init: confluentinc/confluent-init-container:2.4.0

@@ -1,7 +1,8 @@
 #!/bin/bash
-
-export APP_VERSION=2.4.1
-export CHART_VERSION=0.517.23
+export APP_VERSION=2.5.0
+export CHART_VERSION=0.581.16
+#export APP_VERSION=2.4.1
+#export CHART_VERSION=0.517.23
 #export APP_VERSION=2.4.0
 #export CHART_VERSION=0.517.12
 #export APP_VERSION=2.3.0

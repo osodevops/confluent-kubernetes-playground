@@ -1,28 +1,28 @@
 # OPERATOR FOR PRODUCTION NAMESPACE
----
-kind: "Application"
-apiVersion: "argoproj.io/v1alpha1"
-metadata:
-  name: "cfk-operator"
-spec:
-  destination:
-    namespace: "prod"
-    server: "https://kubernetes.default.svc"
-  project: "default"
-  source:
-    chart: "confluent-for-kubernetes"
-    repoURL: "https://packages.confluent.io/helm"
-    targetRevision: "0.581.16"
-    helm:
-      parameters:
-        - name: "namespaced"
-          value: "false"
-  #      valueFiles:
-  #      - "values.yaml"
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+#---
+#kind: "Application"
+#apiVersion: "argoproj.io/v1alpha1"
+#metadata:
+#  name: "cfk-operator"
+#spec:
+#  destination:
+#    namespace: "prod"
+#    server: "https://kubernetes.default.svc"
+#  project: "default"
+#  source:
+#    chart: "confluent-for-kubernetes"
+#    repoURL: "https://packages.confluent.io/helm"
+#    targetRevision: "0.581.16"
+#    helm:
+#      parameters:
+#        - name: "namespaced"
+#          value: "true"
+#  #      valueFiles:
+#  #      - "values.yaml"
+#  syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
 ---
 kind: "Application"
 apiVersion: "argoproj.io/v1alpha1"

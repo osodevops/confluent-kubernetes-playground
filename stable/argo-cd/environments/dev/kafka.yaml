@@ -9,11 +9,6 @@ spec:
   configOverrides:
     server:
       - confluent.schema.registry.url=https://schemaregistry:8081
-      - listener.name.internal.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-      - listener.name.external.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-      - listener.name.replication.plain.sasl.server.callback.handler.class=io.confluent.security.auth.provider.ldap.LdapAuthenticateCallbackHandler
-      - authorizer.class.name=io.confluent.kafka.security.authorizer.ConfluentServerAuthorizer
-      - confluent.authorizer.access.rule.providers=ZK_ACL,CONFLUENT
       - confluent.balancer.topic.replication.factor=1
       - confluent.license.topic.replication.factor=1
       - confluent.tier.metadata.replication.factor=1

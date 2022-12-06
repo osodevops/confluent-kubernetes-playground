@@ -5,7 +5,4 @@ resources:
 - confluent-dev.yaml
 #- confluent-prod.yaml
 #- confluent-test.yaml
-- ldap.yaml
-- operator.yaml
-- operator-repo.yaml
 #- sealed-secrets.yaml

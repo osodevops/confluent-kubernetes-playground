@@ -2,11 +2,8 @@
 kind: "Application"
 apiVersion: "argoproj.io/v1alpha1"
 metadata:
-  creationTimestamp: "2022-02-28T09:23:24Z"
   name: "confluent-dev"
   namespace: "argocd"
-  resourceVersion: "131538"
-  uid: "df0737c5-50c9-4539-b5aa-1e42c5016017"
 spec:
   destination:
     namespace: "dev"

@@ -4,6 +4,7 @@ namespace: dev
 resources:
   - ../../../../base/cfk-components/confluent-no-auth-tls
 patchesStrategicMerge:
+  - zookeeper.yaml
   - kafka.yaml
   - connect.yaml
   - ksqldb.yaml

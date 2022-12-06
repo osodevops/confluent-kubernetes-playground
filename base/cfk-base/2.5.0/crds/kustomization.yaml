@@ -13,4 +13,5 @@ resources:
   - platform.confluent.io_ksqldbs.yaml
   - platform.confluent.io_schemaexporters.yaml
   - platform.confluent.io_schemaregistries.yaml
+  - platform.confluent.io_schemas.yaml
   - platform.confluent.io_zookeepers.yaml

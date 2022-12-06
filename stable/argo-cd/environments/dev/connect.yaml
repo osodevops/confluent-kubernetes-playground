@@ -3,6 +3,7 @@ kind: Connect
 metadata:
   name: connect
 spec:
+  replicas: 0
   configOverrides:
     server:
       - offset.storage.replication.factor=1

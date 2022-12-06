@@ -12,7 +12,6 @@ metadata:
     helm.sh/chart: confluent-for-kubernetes-0.581.16
     version: 0.581.16
   name: confluent-operator
-  namespace:  cft-plt-qa
 spec:
   replicas: 1
   selector:

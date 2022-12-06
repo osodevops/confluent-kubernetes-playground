@@ -1,9 +1,0 @@
-apiVersion: platform.confluent.io/v1beta1
-kind: SchemaRegistry
-metadata:
-  name: schemaregistry
-spec:
-  configOverrides:
-    server:
-      - kafkastore.topic.replication.factor=1
-

@@ -4,4 +4,3 @@ resources:
 - namespace.yaml
 - argo-cd
 - argo-apps
-

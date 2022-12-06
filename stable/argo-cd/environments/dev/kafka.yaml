@@ -3,9 +3,6 @@ kind: Kafka
 metadata:
   name: kafka
 spec:
-  image:
-    application: confluentinc/cp-server:7.0.1
-    init: confluentinc/confluent-init-container:2.2.0
   configOverrides:
     server:
       - confluent.schema.registry.url=https://schemaregistry:8081

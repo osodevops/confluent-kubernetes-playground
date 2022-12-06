@@ -6,5 +6,5 @@ resources:
 patchesStrategicMerge:
   - connect.yaml
   - control-centre.yaml
-  - kafka.yaml
+#  - kafka.yaml
   - schema-registry.yaml

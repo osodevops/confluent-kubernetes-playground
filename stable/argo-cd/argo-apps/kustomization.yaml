@@ -3,6 +3,4 @@ kind: Kustomization
 namespace: argocd
 resources:
 - confluent-dev.yaml
-#- confluent-prod.yaml
-#- confluent-test.yaml
-#- sealed-secrets.yaml
+- confluent-prod.yaml

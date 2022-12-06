@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    path: incubator/argo-cd/environments/ldap
+    path: stable/argo-cd/environments/ldap
     repoURL: https://github.com/osodevops/confluent-kubernetes-playground.git
     targetRevision: HEAD
   destination:

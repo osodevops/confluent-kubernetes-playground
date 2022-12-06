@@ -13,7 +13,7 @@ spec:
     server: "https://kubernetes.default.svc"
   project: "default"
   source:
-    path: "incubator/argo-cd/environments/dev"
+    path: "stable/argo-cd/environments/dev"
     repoURL: "https://github.com/osodevops/confluent-kubernetes-playground.git"
     targetRevision: "HEAD"
   syncPolicy:

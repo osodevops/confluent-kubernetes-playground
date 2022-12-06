@@ -8,4 +8,4 @@ resources:
 - ldap.yaml
 - operator.yaml
 - operator-repo.yaml
-- sealed-secrets.yaml
+#- sealed-secrets.yaml

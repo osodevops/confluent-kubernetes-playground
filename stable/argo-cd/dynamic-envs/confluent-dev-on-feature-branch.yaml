@@ -14,20 +14,20 @@ spec:
             key: token
         cloneProtocol: https
         filters:
-          - repositoryMatch: ^argocd-example-apps
+          - repositoryMatch: ^argocd-confluent-deployments
             branchMatch: ^feature
   template:
     metadata:
-      name: "{{ repository }}-guestbook"
+      name: "{{ repository }}-{{ branchNormalized }}"
     spec:
       project: "default"
       source:
         repoURL: "{{ url }}"
-        targetRevision: "{{ branch }}"
-        path: kustomize-guestbook
+        targetRevision: HEAD
+        path: kustomize/dev
       destination:
         server: https://kubernetes.default.svc
-        namespace: "dev-{{ sha }}"
+        namespace: "dev-{{ branchNormalized }}"
       syncPolicy:
         syncOptions:
           - CreateNamespace=true

@@ -1,8 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: argocd
 resources:
-- namespace.yaml
-- argo-cd
-- operators
-- dynamic-envs
-#- argo-apps
+- confluent-helm.yaml
+- test-topic.yaml

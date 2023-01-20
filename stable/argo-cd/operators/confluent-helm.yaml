@@ -1,0 +1,25 @@
+---
+kind: "Application"
+apiVersion: "argoproj.io/v1alpha1"
+metadata:
+  name: "confluent-operator"
+spec:
+  destination:
+    namespace: "confluent"
+    server: "https://kubernetes.default.svc"
+  project: "default"
+  source:
+    chart: confluent-for-kubernetes
+    repoURL: https://packages.confluent.io/helm
+    targetRevision: 0.581.16
+    helm:
+      releaseName: confluent-operator
+      parameters:
+        - name: namespaced
+          value: "false"
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true

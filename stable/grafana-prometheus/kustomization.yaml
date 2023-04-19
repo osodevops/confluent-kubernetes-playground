@@ -1,10 +1,12 @@
 namespace: sandbox
 resources:
   - namespace.yaml
-  - ../../base/cfk-components/confluent-no-auth-no-tls
-  - ../../resources/producers/4-producers-no-tls
+  - ../../base/cfk-components/confluent-rbac
+#  - ../../base/cfk-components/confluent-no-auth-no-tls
+  - ../../resources/producers/4-producers-tls
   - grafana
   - prometheus
+  - opendlap
 
 
 

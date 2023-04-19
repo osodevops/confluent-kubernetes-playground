@@ -27,6 +27,9 @@ data:
     - /etc/config/rules
     - /etc/config/alerts
     scrape_configs:
+    - job_name: "ldap-exporter"
+      static_configs:
+        - targets: ["ldap-exporter:9330"]
     - job_name: "prometheus"
       static_configs:
         - targets: ["localhost:9090"]

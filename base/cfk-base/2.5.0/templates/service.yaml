@@ -11,12 +11,17 @@ metadata:
     app.kubernetes.io/component: "confluent-operator"
     helm.sh/chart: confluent-for-kubernetes-0.581.16
   name: confluent-operator
+  namespace:  default
 spec:
   ports:
     - name: http-metric
       port: 7778
       protocol: TCP
       targetPort: 7778
+    - name: webhook
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
   selector:
     app: "confluent-operator"
     app.kubernetes.io/name: "confluent-operator"

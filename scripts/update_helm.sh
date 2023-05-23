@@ -30,7 +30,9 @@ export CHART_VERSION=0.581.16
 helm repo add confluentinc https://packages.confluent.io/helm
 helm repo update
 helm search repo confluent --versions
-helm template confluentinc/confluent-for-kubernetes --version $CHART_VERSION --include-crds --set namespaced=false --output-dir .
+helm template confluentinc/confluent-for-kubernetes --version $CHART_VERSION --include-crds --set webhooks.tls.secretRef=credential --set webhooks.enabled=true --set namespaced=false --output-dir .
+
+#helm template confluentinc/confluent-for-kubernetes --version $CHART_VERSION --include-crds --set namespaced=false --output-dir .
 mkdir -p ../base/cfk-base/$APP_VERSION/crds
 mkdir -p ../base/cfk-base/$APP_VERSION/templates
 #FIX need to remove old sym link before creating new one

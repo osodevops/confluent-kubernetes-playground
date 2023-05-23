@@ -9,3 +9,4 @@ resources:
   - licensing.yaml
   - service.yaml
   - serviceaccount.yaml
+  - validatingwebhookconfiguration.yaml

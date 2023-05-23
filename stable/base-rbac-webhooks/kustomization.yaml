@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: sandbox
+resources:
+- ../../base/cfk-components/confluent-rbac
+#- storage_class.yaml
+#- ../../base/cfk-components/confluent-rbac/connect
+#- ../../base/cfk-components/confluent-rbac/ksqldb
+#- ../../base/cfk-components/confluent-rbac/rest-proxy
+#- ../../base/cfk-components/confluent-rbac/schema-registry
+patchesStrategicMerge:
+  - kafka.yaml
+  - ksqldb.yaml
+

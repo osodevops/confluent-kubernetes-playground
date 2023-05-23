@@ -14,8 +14,30 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: confluent-for-kubernetes
+  namespace: default
 roleRef:
   kind: ClusterRole
   name: confluent-operator
   apiGroup: rbac.authorization.k8s.io
 # Webhook configurations are cluster scoped
+---
+# Source: confluent-for-kubernetes/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: confluent-for-kubernetes
+    app.kubernetes.io/name: confluent-for-kubernetes
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: "confluent-operator"
+    helm.sh/chart: confluent-for-kubernetes-0.581.16
+  name: confluent-operator-webhook-default
+subjects:
+  - kind: ServiceAccount
+    name: confluent-for-kubernetes
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: confluent-operator-webhook-default
+  apiGroup: rbac.authorization.k8s.io

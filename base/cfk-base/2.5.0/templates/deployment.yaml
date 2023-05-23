@@ -12,6 +12,7 @@ metadata:
     helm.sh/chart: confluent-for-kubernetes-0.581.16
     version: 0.581.16
   name: confluent-operator
+  namespace:  default
 spec:
   replicas: 1
   selector:
@@ -76,6 +77,19 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.uid
+          - name: CONFLUENT_WEBHOOKS_SECRET_NAME
+            value: credential-operator
+          - name: CONFLUENT_WEBHOOKS_PORT
+            value: "8443"
+        volumeMounts:
+          - mountPath: /mnt/sslcerts/webhook
+            name: webhook-certs
+            readOnly: true
+      volumes:
+        - name: webhook-certs
+          secret:
+            defaultMode: 420
+            secretName: credential-operator
       serviceAccountName: confluent-for-kubernetes
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
